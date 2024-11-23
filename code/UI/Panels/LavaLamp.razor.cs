@@ -36,6 +36,13 @@ public partial class LavaLamp : PanelComponent
 		}
 	}
 
+	[Property, Group( "Interactivity" )]
+	public float AttractForce { get; set; } = 4f;
+	[Property, Group( "Interactivity" ), InputAction]
+	public string AttractAction { get; set; } = "attack1";
+	[Property, Group( "Interactivity" ), InputAction]
+	public string SpawnAction { get; set; } = "attack2";
+
 	[Property, Group( "Color")] 
 	public Color LavaColor { get; set; } = Color.Orange;
 
@@ -263,12 +270,12 @@ public partial class LavaLamp : PanelComponent
 		if ( !Renderer.IsValid() || !World.IsValid() )
 			return;
 
-		if ( Input.Down( "attack1" ) )
+		if ( Input.Down( AttractAction ) )
 		{
 			var mouseUv = Renderer.ScreenToPanelUV( Renderer.MousePosition );
-			World.AttractToPoint( mouseUv, 1f );
+			World.AttractToPoint( mouseUv, AttractForce );
 		}
-		if ( Input.Pressed( "attack2" ) )
+		if ( Input.Pressed( SpawnAction ) )
 		{
 			SpawnMetaball( Renderer.MousePosition, LavaColor );
 		}

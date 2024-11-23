@@ -27,6 +27,8 @@
             {
               "__type": "LavaLamp",
               "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
+              "AttractAction": "attack1",
+              "AttractForce": 4,
               "ConvectionNoiseScale": 10,
               "ConvectionNoiseScrolling": "10,7,0",
               "ConvectionPower": 0.01,
@@ -47,6 +49,7 @@
               "MinHeatY": -0.75,
               "MinTemperature": 0,
               "SaturationVariance": 0.05,
+              "SpawnAction": "attack2",
               "ValueVariance": 0.05,
               "World": {
                 "_type": "component",
@@ -287,22 +290,64 @@
       ]
     },
     {
-      "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+      "__guid": "0c7e26ec-aba1-4d11-b6e1-1187a5b52c52",
       "Flags": 0,
-      "Name": "Lava Lamp Light",
+      "Name": "Lava Lamp Mount",
       "Position": "16,0.000005103648,3.800187",
-      "Tags": "light_point,light",
       "Enabled": true,
-      "Components": [
+      "Children": [
         {
-          "__type": "Sandbox.PointLight",
-          "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-          "Attenuation": 6.08,
-          "FogMode": "Enabled",
-          "FogStrength": 1,
-          "LightColor": "0.53023,0.47039,0.25402,1",
-          "Radius": 400,
-          "Shadows": true
+          "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+          "Flags": 0,
+          "Name": "Lava Lamp Light",
+          "Tags": "light_point,light",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.PointLight",
+              "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+              "Attenuation": 6.08,
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "0.53023,0.47039,0.25402,1",
+              "Radius": 400,
+              "Shadows": true
+            },
+            {
+              "__type": "LavaLampFlicker",
+              "__guid": "cfb52e67-3c47-40b9-b9a9-1007ac71e0fa",
+              "HighVelocityAttenuation": 0.25,
+              "LampLight": {
+                "_type": "component",
+                "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                "component_type": "PointLight"
+              },
+              "LightSaturationOffset": -0.2,
+              "LightValueOffset": -0.5,
+              "LowVelocityAttenuation": 2,
+              "PositionScale": 10,
+              "VelocityMaxInput": 20,
+              "World": {
+                "_type": "component",
+                "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+                "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
+                "component_type": "LavaWorld"
+              }
+            },
+            {
+              "__type": "ManagedLight",
+              "__guid": "8cbfe7de-9273-4926-b536-b7f27697a803",
+              "Index": 0,
+              "ShadowResolution": 2048,
+              "TargetLight": {
+                "_type": "component",
+                "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                "component_type": "PointLight"
+              }
+            }
+          ]
         }
       ]
     },
