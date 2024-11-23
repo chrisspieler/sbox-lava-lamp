@@ -1,0 +1,70 @@
+﻿using Sandbox.Utility;
+
+public class Metaball2D
+{
+	[ConVar( "metaball_debug" )]
+	public static bool Debug { get; set; }
+
+	public Metaball2D( LavaWorld world ) 
+	{
+		World = world;
+	}
+
+	public Metaball2D( LavaWorld world, Vector2 position, Color color, float radius )
+	{
+		World = world;
+		Position = position;
+		BallColor = color;
+		Radius = radius;
+	}
+
+	public LavaWorld World { get; init; }
+	public Vector2 Position { get; set; }
+	public Color BallColor { get; set; }
+	public float Radius { get; set; }
+	public Vector2 Velocity { get; set; }
+
+
+	public const int MAX_BALLS = 256;
+	public static Material Material => Material.FromShader( "shaders/ui_metaball.shader" );
+
+	internal RenderData GetRenderData()
+	{
+		var color = BallColor;
+		if ( Debug )
+		{
+			var t = Velocity.Length.LerpInverse( 0f, 0.5f );
+			t = Easing.EaseIn( t );
+			color = Color.Lerp( Color.Blue * 0.7f, Color.Red * 0.4f, t );
+		}
+		return new RenderData( Position, color, Radius );
+	}
+
+	internal readonly struct RenderData
+	{
+		public RenderData() { }
+		public RenderData( Vector2 position, Color color, float radius )
+		{
+			Position = new Vector4()
+			{
+				x = position.x,
+				y = position.y,
+				z = radius
+			};
+			Color = color;
+		}
+
+		public Vector4 Position { get; init; }
+		public Vector4 Color { get; init; }
+		public float Radius => Position.z;
+
+		public readonly RenderData WithColor( Color color )
+			=> this with { Color = color };
+
+		public readonly RenderData WithPosition( Vector2 position )
+			=> this with { Position = Position with { x = position.x, y = position.y } };
+
+		public readonly RenderData WithRadius( float radius )
+			=> this with { Position = Position with { z = radius } };
+	}
+}
