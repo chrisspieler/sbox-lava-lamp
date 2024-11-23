@@ -27,15 +27,25 @@
             {
               "__type": "LavaLamp",
               "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
-              "CutoffSharpness": 1,
+              "ConvectionNoiseScale": 10,
+              "ConvectionNoiseScrolling": "10,7,0",
+              "ConvectionPower": 0.01,
+              "CoolingPerSecond": 10,
+              "CutoffSharpness": 0.5,
               "CutoffThreshold": 0.1,
               "Debug": false,
               "FastLavaColor": "1,1,0,1",
-              "HueVariance": 0.05,
+              "HeatDirection": "0,-1",
+              "HeatPerSecond": 0.25,
+              "HueVariance": 0.02,
               "InnerBlend": 1,
-              "LavaColor": "1,0.6,0,1",
-              "LavaMaxSpeed": 1,
+              "LavaColor": "1,0.13333,0,1",
+              "LavaMaxSpeed": 0.5,
               "LavaMinSpeed": 0,
+              "MaxHeatY": 1,
+              "MaxTemperature": 6,
+              "MinHeatY": -0.75,
+              "MinTemperature": 0,
               "SaturationVariance": 0.05,
               "ValueVariance": 0.05,
               "World": {
@@ -49,10 +59,23 @@
               "__type": "LavaWorld",
               "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
               "GravityDirection": "0,1",
-              "GravityAttractionScale": 1,
+              "GravityAttractionScale": 0.1,
               "LavaAttractionRange": 0.05,
-              "LavaAttractionScale": 1,
+              "LavaAttractionScale": 0.04,
               "WallRestitution": 1
+            },
+            {
+              "__type": "LavaLampGenerator",
+              "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
+              "MaxRadius": 0.25,
+              "MetaballCount": 48,
+              "MinRadius": 0.05,
+              "World": {
+                "_type": "component",
+                "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+                "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
+                "component_type": "LavaWorld"
+              }
             }
           ]
         }
@@ -353,7 +376,7 @@
           "Flags": 0,
           "Name": "ducc (5)",
           "Position": "44.89011,26.5484,0",
-          "Rotation": "0,0,-0.1426285,0.9897764",
+          "Rotation": "0,0,-0.7156924,0.6984157",
           "Enabled": true,
           "Components": [
             {

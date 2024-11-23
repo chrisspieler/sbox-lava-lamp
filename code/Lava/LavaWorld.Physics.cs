@@ -105,10 +105,12 @@
 
 	private void AttractToLava()
 	{
+		if ( LavaAttractionScale == 0f )
+			return;
 
 		foreach( var ball in Metaballs )
 		{
-			AttractToPoint( ball.Position, 1f, minDistance: LavaAttractionRange );
+			AttractToPoint( ball.Position, LavaAttractionScale, minDistance: LavaAttractionRange );
 		}
 	}
 

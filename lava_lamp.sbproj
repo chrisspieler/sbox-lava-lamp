@@ -1,10 +1,10 @@
 {
   "Title": "Lava Lamp",
   "Type": "game",
-  "Org": "local",
+  "Org": "duccsoft",
   "Ident": "lava_lamp",
   "Schema": 1,
-  "IncludeSourceFiles": false,
+  "IncludeSourceFiles": true,
   "Resources": null,
   "PackageReferences": [],
   "EditorReferences": null,
