@@ -264,6 +264,83 @@
       ]
     },
     {
+      "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+      "Flags": 0,
+      "Name": "Lava Lamp Light",
+      "Position": "16,0.000005103648,3.800187",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+          "Attenuation": 6.08,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.53023,0.47039,0.25402,1",
+          "Radius": 400,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "efb01339-b30d-47b6-ab4e-b1abe0f56e6e",
+      "Flags": 0,
+      "Name": "Overhead Light",
+      "Position": "88,7.703373,64",
+      "Tags": "light_point,light",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.PointLight",
+          "__guid": "7e119ceb-ee25-4de8-9c6c-361015ea4174",
+          "Attenuation": 0.44666672,
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.04997,0.06042,0.13953,1",
+          "Radius": 400,
+          "Shadows": true
+        }
+      ]
+    },
+    {
+      "__guid": "47d05032-e79a-494b-b5d6-9bcbde44585b",
+      "Flags": 0,
+      "Name": "Gradient Fog",
+      "Position": "242.6873,46.98777,0",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.GradientFog",
+          "__guid": "9b8dc964-a978-42d6-9dde-5195d4ca63f9",
+          "Color": "0.11163,0.11163,0.11163,0.62",
+          "EndDistance": 256,
+          "FalloffExponent": 1,
+          "Height": 244.86665,
+          "StartDistance": 0,
+          "VerticalFalloffExponent": 2.7333324
+        }
+      ]
+    },
+    {
+      "__guid": "849a3404-c668-4abb-b995-81464aa031c9",
+      "Flags": 0,
+      "Name": "Volumetric Fog",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.VolumetricFogVolume",
+          "__guid": "0a975c59-4631-4317-8ca2-d3de9ad50bc0",
+          "Bounds": {
+            "Mins": "-15000,-15000,-15000",
+            "Maxs": "15000,15000,15000"
+          },
+          "FalloffExponent": 1,
+          "Strength": 1
+        }
+      ]
+    },
+    {
       "__guid": "2e8eeb2a-1132-4dbc-a1d2-a1f95d75ff27",
       "Flags": 0,
       "Name": "the true council",
@@ -424,44 +501,6 @@
       ]
     },
     {
-      "__guid": "849a3404-c668-4abb-b995-81464aa031c9",
-      "Flags": 0,
-      "Name": "Volumetric Fog",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.VolumetricFogVolume",
-          "__guid": "0a975c59-4631-4317-8ca2-d3de9ad50bc0",
-          "Bounds": {
-            "Mins": "-15000,-15000,-15000",
-            "Maxs": "15000,15000,15000"
-          },
-          "FalloffExponent": 1,
-          "Strength": 1
-        }
-      ]
-    },
-    {
-      "__guid": "efb01339-b30d-47b6-ab4e-b1abe0f56e6e",
-      "Flags": 0,
-      "Name": "Point Light",
-      "Position": "33.74065,7.703359,41.44621",
-      "Tags": "light_point,light",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.PointLight",
-          "__guid": "7e119ceb-ee25-4de8-9c6c-361015ea4174",
-          "Attenuation": 1,
-          "FogMode": "Enabled",
-          "FogStrength": 1,
-          "LightColor": "0.2734,0.31856,0.66047,1",
-          "Radius": 400,
-          "Shadows": true
-        }
-      ]
-    },
-    {
       "__guid": "5764d4ba-30ab-4c7c-a680-f9e7ebb58f73",
       "Flags": 0,
       "Name": "Box",
@@ -521,13 +560,13 @@
               "1,0,0",
               "-1,0,0",
               "0,-1,0",
-              "1,0,0"
+              "1,-0,0"
             ],
             "TextureVAxis": [
               "0,-1,0",
               "0,0,-1",
               "0,0,-1",
-              "0,0,-1"
+              "-0,0,-1"
             ],
             "TextureScale": [
               "0.25,0.25",
@@ -861,6 +900,187 @@
           "Tint": "1,1,1,1"
         }
       ]
+    },
+    {
+      "__guid": "9bf9eff0-7cb1-4715-90eb-e7615d00a30a",
+      "Flags": 0,
+      "Name": "storage_box_02",
+      "Position": "118.0081,9.422522,30.99994",
+      "Rotation": "0,0,0.6994875,0.7146447",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "dd528d76-2603-498d-b3ca-436d3564618b",
+          "BodyGroups": 18446744073709551615,
+          "Health": 5,
+          "IsStatic": true,
+          "MaterialGroup": "default",
+          "Model": "models/props/trim_sheets/storage/storage_box_02.vmdl",
+          "StartAsleep": false,
+          "Tint": "0.20958,0.22485,0.26047,1"
+        }
+      ]
+    },
+    {
+      "__guid": "847944e6-c277-4bb3-8e0a-d8e5b0381a68",
+      "Flags": 0,
+      "Name": "rubbish_can",
+      "Position": "95.76782,-3.69627,1.37968",
+      "Rotation": "0.4786683,-0.5202065,-0.3932444,-0.5878952",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "3668ebf0-97e4-43c8-b49d-e45aaaa5ce7c",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "40a5d8de-fd12-4aa6-a699-919a97328fb4",
+      "Flags": 0,
+      "Name": "rubbish_can",
+      "Position": "100.1749,21.59456,1.394503",
+      "Rotation": "-0.6815055,0.1910284,0.2220404,0.6706389",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "e4abf555-c71f-4f2b-8e7e-0f0bb08634a2",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "91b21f6c-eeff-4f39-95ce-3d34e4b9ff22",
+      "Flags": 0,
+      "Name": "rubbish_can",
+      "Position": "95.33842,3.146736,4.654524",
+      "Rotation": "-0.6789387,-0.7341922,0.001900178,0.0007380527",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "e5d21aaf-669c-4bdf-a4f6-b86356b5007c",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "9af50169-132c-4cdf-ad2d-f52387bbd480",
+      "Flags": 0,
+      "Name": "rubbish_can",
+      "Position": "96.1939,18.51624,1.404282",
+      "Rotation": "-0.06651405,0.7055351,-0.3703601,0.6005244",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "e4961aae-a022-45e8-94f9-2a959b4afb54",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "79dcc417-699d-4abf-b504-b6bd87f4ae98",
+      "Flags": 0,
+      "Name": "rubbish_cup",
+      "Position": "90.51944,24.65643,0.1079578",
+      "Rotation": "-0.005746141,0.002328255,0.932342,0.3615247",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "98518bc0-fec3-4888-b26a-c22d1c0de392",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_cup.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "0ee9e23c-c4b3-4ce0-8e1d-707f57913cc3",
+      "Flags": 0,
+      "Name": "rubbish_cup",
+      "Position": "87.43636,2.107206,1.235061",
+      "Rotation": "-0.4917501,0.4576387,0.2095135,0.7105299",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "a8d4d493-8d45-439e-b4a6-d49cd2cfa45d",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_cup.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "c067c5e8-f39e-445c-8c4b-de73372d25d3",
+      "Flags": 0,
+      "Name": "rubbish_bag",
+      "Position": "64.841,31.59804,0.2095682",
+      "Rotation": "-0.04596746,0.01396889,-0.3013693,0.9522964",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "1ae84949-2b1d-4844-9a74-71c34d24053a",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": true,
+          "Model": "models/sbox_props/bin/rubbish_bag.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "5140b9dc-f10c-458a-ad1f-cb70ebce8d7d",
+      "Flags": 0,
+      "Name": "cereal_open",
+      "Position": "90.83517,-22.40793,0.0000000000000001981461",
+      "Rotation": "0,0,0.9792721,0.2025488",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.Prop",
+          "__guid": "426532d5-60c0-44e6-ad1c-b4c569a6eda8",
+          "BodyGroups": 18446744073709551615,
+          "Health": 0,
+          "IsStatic": false,
+          "Model": "models/props/packaged_food/cereal_open.vmdl",
+          "StartAsleep": false,
+          "Tint": "1,1,1,1"
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -894,10 +1114,15 @@
     "facepunch.bed_frame_01#43590",
     "facepunch.carpet_b#18623",
     "facepunch.carpet_c#18624",
+    "facepunch.cereal_open#55837",
     "facepunch.floor_wood_laminated#18686",
     "facepunch.mattress#33675",
     "facepunch.modern_shelving_a1#43529",
     "facepunch.plaster_a#18740",
+    "facepunch.rubbish_bag#33653",
+    "facepunch.rubbish_can#33656",
+    "facepunch.rubbish_cup#33654",
+    "facepunch.storage_box_02#43565",
     "facepunch.wall_brick_b2#47421",
     "facepunch.wooden_chair_a#43573",
     "facepunch.wooden_desk_01#43580",
