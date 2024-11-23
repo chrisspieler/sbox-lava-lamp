@@ -1,6 +1,4 @@
-﻿using static MetaballRenderer;
-
-public partial class LavaLamp : PanelComponent
+﻿public partial class LavaLamp : PanelComponent
 {
 	private struct MetaballColorExtData 
 	{
@@ -18,6 +16,15 @@ public partial class LavaLamp : PanelComponent
 	}
 
 	[Property] public LavaWorld World { get; set; }
+
+	[Property] public bool Debug
+	{
+		get => Metaball2D.Debug;
+		set
+		{
+			Metaball2D.Debug = value;
+		}
+	}
 
 	[Property, Group( "Color")] 
 	public Color LavaColor { get; set; } = Color.Orange;
@@ -48,7 +55,7 @@ public partial class LavaLamp : PanelComponent
 
 	private MetaballRenderer Renderer { get; set; }
 
-	private Dictionary<Metaball2D, MetaballColorExtData> _colorData = new();
+	private readonly Dictionary<Metaball2D, MetaballColorExtData> _colorData = new();
 
 	protected override void OnTreeFirstBuilt()
 	{

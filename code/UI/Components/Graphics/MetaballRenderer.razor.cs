@@ -9,6 +9,40 @@ public partial class MetaballRenderer : Panel
 
 	private Material _metaballMaterial = Metaball2D.Material;
 
+	public override void Tick()
+	{
+		if ( Metaball2D.Debug )
+		{
+			_lastTextPosition = new Vector2( 30f, 50f );
+			var screenSize = Screen.Size;
+			PrintDebugText( $"Screen Size: {screenSize}" );
+			var screenRect = new Rect( 0, 0, screenSize.x, screenSize.y );
+			var worldStart = ScreenToPanelUV( screenRect.TopLeft );
+			var worldEnd = ScreenToPanelUV( screenRect.BottomRight );
+			PrintDebugText( $"World Size: {worldStart} to {worldEnd}" );
+			var mousePos = ScreenToPanelUV( MousePosition );
+			PrintDebugText( $"Mouse Position: {mousePos}" );
+		}
+	}
+
+	private Vector2 _lastTextPosition;
+
+	private void PrintDebugText( string text, Vector2? screenPixel = null, TextFlag flags = TextFlag.LeftTop )
+	{
+		var camera = Scene.Camera;
+		var debugOverlay = DebugOverlaySystem.Current;
+		if ( debugOverlay is null || !camera.IsValid() )
+			return;
+
+		screenPixel ??= _lastTextPosition;
+
+		var ray = camera.ScreenPixelToRay( _lastTextPosition );
+		var worldPos = ray.Project( 100f );
+		var size = 4f;
+		debugOverlay.Text( worldPos, text, size: size, flags: flags, overlay: true );
+		_lastTextPosition.y += size * 4f;
+	}
+
 	public Vector2 ScreenToPanelUV( Vector2 screenPos )
 	{
 		var aspect = Screen.Width / Screen.Height;

@@ -1,10 +1,20 @@
 ﻿public partial class LavaWorld : Component
 {
-	[Property, Range( 0f, 5f )] public float LavaAttractionScale { get; set; } = 1f;
-	[Property, Range( 0f, 1f )] public float LavaAttractionRange { get; set; } = 0.05f;
+	[Property, Range( 0f, 5f ), Group( "Physics" )] 
+	public float GravityAttractionScale { get; set; } = 1f;
+
+	[Property, Group( "Physics" )] 
+	public Vector2 GravityDirection = Vector2.Up;
+
+	[Property, Range( 0f, 5f ), Group( "Physics" )] 
+	public float LavaAttractionScale { get; set; } = 1f;
+
+	[Property, Range( 0f, 1f ), Group( "Physics" )] 
+	public float LavaAttractionRange { get; set; } = 0.05f;
 
 	protected override void OnUpdate()
 	{
+		AttractToGravity();
 		AttractToLava();
 		ApplyVelocity();
 	}
@@ -16,6 +26,14 @@
 			// Apply damping.
 			ball.Velocity = ball.Velocity.LerpTo( Vector2.Zero, Time.Delta * ball.Radius );
 			ball.Position = ball.Position + ball.Velocity * Time.Delta;
+		}
+	}
+
+	private void AttractToGravity()
+	{
+		foreach( var ball in Metaballs )
+		{
+			ball.Velocity += GravityDirection * GravityAttractionScale * 0.25f * Time.Delta;
 		}
 	}
 
