@@ -101,6 +101,18 @@ public partial class Lava3D : Component
 
 	private async void UpdateMetaballs()
 	{
+		/* To update a metaball, we remove a sphere from the SDFWorld in the shape of the previously
+		 * cached position and radius of the metaball. Then, we add a new sphere to the SDFWorld using 
+		 * the current position and radius of the LavaWorld metaball. 
+		 * 
+		 * This results in two operations: Add and Subtract.
+		 * 
+		 * Using this method, 48 metaballs (that's 96 operations total) would update in about 16ms.
+		 *																
+		 * If instead of using a Subtract operation, clear the SDF world and apply only the Add operations,
+		 * updates take longer - about 32ms. So in this case, it seems that modifications are more performant.
+		 */
+
 		var timer = FastTimer.StartNew();
 		var modInfo = GetMetaballModifications( SDFVolume, _metaballSdf );
 		UpdateTask = SDFWorld.SetModificationsAsync( modInfo.Mods );

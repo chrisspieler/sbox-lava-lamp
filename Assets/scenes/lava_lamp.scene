@@ -35,7 +35,7 @@
               "Components": [
                 {
                   "__type": "Lava3D",
-                  "__guid": "4d17fedc-5737-49e8-9f56-6da33675b907",
+                  "__guid": "c6f47e8a-e427-4561-9d4f-299f712e6204",
                   "LavaWorld": {
                     "_type": "component",
                     "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -116,7 +116,7 @@
               "__type": "LavaLampGenerator",
               "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
               "MaxRadius": 0.25,
-              "MetaballCount": 96,
+              "MetaballCount": 48,
               "MinRadius": 0.05,
               "World": {
                 "_type": "component",
