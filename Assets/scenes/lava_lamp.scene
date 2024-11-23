@@ -29,6 +29,7 @@
               "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
               "CutoffSharpness": 1,
               "CutoffThreshold": 0.1,
+              "Debug": false,
               "FastLavaColor": "1,1,0,1",
               "HueVariance": 0.05,
               "InnerBlend": 1,
@@ -50,7 +51,8 @@
               "GravityDirection": "0,1",
               "GravityAttractionScale": 1,
               "LavaAttractionRange": 0.05,
-              "LavaAttractionScale": 1
+              "LavaAttractionScale": 1,
+              "WallRestitution": 1
             }
           ]
         }

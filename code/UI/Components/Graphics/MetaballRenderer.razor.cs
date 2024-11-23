@@ -36,19 +36,21 @@ public partial class MetaballRenderer : Panel
 
 		screenPixel ??= _lastTextPosition;
 
-		var ray = camera.ScreenPixelToRay( _lastTextPosition );
+		var ray = camera.ScreenPixelToRay( screenPixel.Value );
 		var worldPos = ray.Project( 100f );
 		var size = 4f;
 		debugOverlay.Text( worldPos, text, size: size, flags: flags, overlay: true );
-		_lastTextPosition.y += size * 4f;
+		_lastTextPosition.y += Screen.Height / 100f * 4f;
 	}
 
 	public Vector2 ScreenToPanelUV( Vector2 screenPos )
 	{
 		var aspect = Screen.Width / Screen.Height;
-		var uv = screenPos / Box.Rect.Size - 0.5f;
+		// var uv = screenPos / Box.Rect.Size - 0.5f;
+		var uv = screenPos / Screen.Size - 0.5f;
 		uv = 2 * uv;
-		// Need to offset the UV when the panel is in the center of the screen. Fix this?
+		// Need to offset the UV when the panel is in the center of the screen.
+		// TODO: Handle any panel position.
 		// uv = 2 * (uv - 0.5f);
 		uv.x *= aspect;
 		return uv;

@@ -68,7 +68,7 @@ PS
 		return smoothstep( 0, 1, feather );
 	}
 
-	float4 renderMetaBalls(float2 uv ) {
+	float4 RenderMetaBalls(float2 uv ) {
 		
 		float shapeInfluence = 0;
 		float4 colorInfluence = 0;
@@ -76,10 +76,8 @@ PS
 		for( int i = 0; i < BallCount.x; i++ )
 		{
 			Metaball ball = Balls[i];
-			float sdf = ball.SDF( uv );
 			float influence;
 			influence = pow( ball.Radius / length( uv - ball.Position ), InnerBlend );
-			// distance to outside of circle
 			shapeInfluence += influence;
 			colorInfluence += ball.Color * influence;
 		}
@@ -94,21 +92,25 @@ PS
 	RenderState( ColorWriteEnable0, RGBA );
 	RenderState( FillMode, SOLID );
 	RenderState( CullMode, NONE );
-
-	// No depth
 	RenderState( DepthWriteEnable, false );
 	
 	#define SUBPIXEL_AA_MAGIC 0.5
+
+	float2 UvToMetaballWorld( float2 uv ) 
+	{
+		float2 worldPos = 2 * ( uv - 0.5 );
+		float aspect = g_vViewportSize.x / g_vViewportSize.y;
+		worldPos.x *= aspect;
+		return worldPos;
+	}
 
 	PS_OUTPUT MainPs( PS_INPUT i )
 	{
 		PS_OUTPUT o;
 		UI_CommonProcessing_Pre( i );
 		
-		float aspect = g_vViewportSize.x / g_vViewportSize.y;
-		float2 uv = 2 * ( i.vTexCoord.xy - 0.5 );
-		uv.x *= aspect;
-		o.vColor = renderMetaBalls( uv );
+		float2 worldPos = UvToMetaballWorld( i.vTexCoord.xy );
+		o.vColor = RenderMetaBalls( worldPos );
 		return UI_CommonProcessing_Post( i, o );
 	}
 }
