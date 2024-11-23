@@ -38,10 +38,12 @@
                   "__guid": "4d17fedc-5737-49e8-9f56-6da33675b907",
                   "LavaWorld": {
                     "_type": "component",
-                    "component_id": "519fa215-a70a-4826-a9e2-37d12c0090a5",
-                    "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+                    "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+                    "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
                     "component_type": "LavaWorld"
                   },
+                  "SdfInitializeTime": "0.00ms",
+                  "SdfLastUpdateTime": "0.00ms",
                   "SDFVolume": "sdf/sdf_lava_volume.sdfvol",
                   "SDFWorld": {
                     "_type": "component",
@@ -56,28 +58,6 @@
                   "HasPhysics": false,
                   "IsFinite": true,
                   "Size": "64,64,64"
-                },
-                {
-                  "__type": "LavaWorld",
-                  "__guid": "519fa215-a70a-4826-a9e2-37d12c0090a5",
-                  "GravityDirection": "0,1",
-                  "GravityAttractionScale": 1,
-                  "LavaAttractionRange": 0.05,
-                  "LavaAttractionScale": 1,
-                  "WallRestitution": 0.1
-                },
-                {
-                  "__type": "LavaLampGenerator",
-                  "__guid": "f50f8692-048d-4223-8420-e2703aa18b62",
-                  "MaxRadius": 0.15,
-                  "MetaballCount": 96,
-                  "MinRadius": 0.05,
-                  "World": {
-                    "_type": "component",
-                    "component_id": "519fa215-a70a-4826-a9e2-37d12c0090a5",
-                    "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
-                    "component_type": "LavaWorld"
-                  }
                 }
               ]
             }
@@ -92,7 +72,6 @@
             {
               "__type": "LavaLamp",
               "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
-              "__enabled": false,
               "AttractAction": "attack1",
               "AttractForce": 4,
               "ConvectionNoiseScale": 10,
@@ -137,7 +116,7 @@
               "__type": "LavaLampGenerator",
               "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
               "MaxRadius": 0.25,
-              "MetaballCount": 48,
+              "MetaballCount": 96,
               "MinRadius": 0.05,
               "World": {
                 "_type": "component",

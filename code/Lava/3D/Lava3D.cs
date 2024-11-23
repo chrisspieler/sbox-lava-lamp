@@ -1,8 +1,6 @@
 ﻿using Sandbox.Diagnostics;
-using Sandbox.Polygons;
 using Sandbox.Sdf;
 using System;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 public partial class Lava3D : Component
@@ -10,6 +8,13 @@ public partial class Lava3D : Component
 	[Property] public LavaWorld LavaWorld { get; set; }
 	[Property] public Sdf3DWorld SDFWorld { get; set; }
 	[Property] public Sdf3DVolume SDFVolume { get; set; }
+
+	private Dictionary<Metaball2D, SphereSdf3D> _metaballSdf = new();
+	[Property] public string SdfLastUpdateTime => $"{_sdfLastUpdateTime:F2}ms";
+	private float _sdfLastUpdateTime;
+
+	[Property] public string SdfInitializeTime => $"{_sdfInitializeTime:F2}ms";
+	private float _sdfInitializeTime;
 
 	public Vector3 LavaToWorld( Vector2 lavaPos )
 	{
@@ -45,6 +50,7 @@ public partial class Lava3D : Component
 	}
 
 	private Task InitializationTask { get; set; } = null;
+	private Task UpdateTask { get; set; } = null;
 
 	protected override void OnUpdate()
 	{
@@ -54,6 +60,11 @@ public partial class Lava3D : Component
 		// If we have metaballs, haven't added them to the SDF world, and aren't in the process of doing so...
 		if ( LavaWorld.MetaballCount != 0 && InitializationTask == null && SDFWorld.ModificationCount == 0 )
 			InitializeSDFWorld();
+
+		if ( UpdateTask is null )
+		{
+			UpdateMetaballs();
+		}
 	}
 
 	private async void InitializeSDFWorld()
@@ -65,7 +76,7 @@ public partial class Lava3D : Component
 		var tasks = CreateAllSDFShapes( SDFVolume );
 		InitializationTask = Task.WhenAll( tasks );
 		await InitializationTask;
-		Log.Info( $"Initialized SDF world with {LavaWorld.MetaballCount} spheres in: {timer.ElapsedMilliSeconds:F2}ms" );
+		_sdfInitializeTime = (float)timer.ElapsedMilliSeconds;
 	}
 
 	private IEnumerable<Task> CreateAllSDFShapes( Sdf3DVolume volume )
@@ -84,6 +95,36 @@ public partial class Lava3D : Component
 		var position = LavaToWorld( metaball.Position );
 		var radius = LavaScaleToWorld( metaball.Radius );
 		var sphere = new SphereSdf3D( position, radius.x );
-		return SDFWorld.AddAsync( new SphereSdf3D( position, radius.x ), volume );
+		_metaballSdf[metaball] = sphere;
+		return SDFWorld.AddAsync( sphere, volume );
+	}
+
+	private async void UpdateMetaballs()
+	{
+		var timer = FastTimer.StartNew();
+		var modInfo = GetMetaballModifications( SDFVolume, _metaballSdf );
+		UpdateTask = SDFWorld.SetModificationsAsync( modInfo.Mods );
+		await UpdateTask;
+		_metaballSdf = modInfo.NewSpheres;
+		UpdateTask = null;
+		_sdfLastUpdateTime = (float)timer.ElapsedMilliSeconds;
+	}
+
+	private record MetaballModInfo( IEnumerable<Modification<Sdf3DVolume, ISdf3D>> Mods, Dictionary<Metaball2D, SphereSdf3D> NewSpheres);
+
+	private MetaballModInfo GetMetaballModifications( Sdf3DVolume volume, Dictionary<Metaball2D, SphereSdf3D> oldSpheres )
+	{
+		var mods = new List<Modification<Sdf3DVolume, ISdf3D>>();
+		var newSpheres = new Dictionary<Metaball2D, SphereSdf3D>();
+		foreach( ( Metaball2D metaball, SphereSdf3D sphere ) in oldSpheres )
+		{
+			mods.Add( new( sphere, volume, Operator.Subtract ) );
+			var position = LavaToWorld( metaball.Position );
+			var radius = LavaScaleToWorld( metaball.Radius );
+			var newSphere = new SphereSdf3D( position, radius.x );
+			mods.Add( new( newSphere, volume, Operator.Add ) );
+			newSpheres[metaball] = newSphere;
+		}
+		return new MetaballModInfo( mods, newSpheres );
 	}
 }
