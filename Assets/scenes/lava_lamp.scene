@@ -19,6 +19,71 @@
       ],
       "Children": [
         {
+          "__guid": "4dc97025-27f7-49f0-93c8-b93dd4b7bdc9",
+          "Flags": 0,
+          "Name": "3D Lava Lamp",
+          "Position": "24,0,0",
+          "Enabled": true,
+          "Children": [
+            {
+              "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+              "Flags": 0,
+              "Name": "Lava 3D",
+              "Position": "-8,-8,0",
+              "Scale": "0.25,0.25,0.25",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Lava3D",
+                  "__guid": "4d17fedc-5737-49e8-9f56-6da33675b907",
+                  "LavaWorld": {
+                    "_type": "component",
+                    "component_id": "519fa215-a70a-4826-a9e2-37d12c0090a5",
+                    "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+                    "component_type": "LavaWorld"
+                  },
+                  "SDFVolume": "sdf/sdf_lava_volume.sdfvol",
+                  "SDFWorld": {
+                    "_type": "component",
+                    "component_id": "75ecf460-a5f6-4c9a-8999-c08f3a0c8f60",
+                    "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+                    "component_type": "Sdf3DWorld"
+                  }
+                },
+                {
+                  "__type": "Sandbox.Sdf.Sdf3DWorld",
+                  "__guid": "75ecf460-a5f6-4c9a-8999-c08f3a0c8f60",
+                  "HasPhysics": false,
+                  "IsFinite": true,
+                  "Size": "64,64,64"
+                },
+                {
+                  "__type": "LavaWorld",
+                  "__guid": "519fa215-a70a-4826-a9e2-37d12c0090a5",
+                  "GravityDirection": "0,1",
+                  "GravityAttractionScale": 1,
+                  "LavaAttractionRange": 0.05,
+                  "LavaAttractionScale": 1,
+                  "WallRestitution": 0.1
+                },
+                {
+                  "__type": "LavaLampGenerator",
+                  "__guid": "f50f8692-048d-4223-8420-e2703aa18b62",
+                  "MaxRadius": 0.15,
+                  "MetaballCount": 96,
+                  "MinRadius": 0.05,
+                  "World": {
+                    "_type": "component",
+                    "component_id": "519fa215-a70a-4826-a9e2-37d12c0090a5",
+                    "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+                    "component_type": "LavaWorld"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
           "__guid": "1483f045-f12d-4942-bd1e-df2107f116b6",
           "Flags": 0,
           "Name": "Lava Lamp",
@@ -27,6 +92,7 @@
             {
               "__type": "LavaLamp",
               "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
+              "__enabled": false,
               "AttractAction": "attack1",
               "AttractForce": 4,
               "ConvectionNoiseScale": 10,
@@ -79,6 +145,71 @@
                 "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
                 "component_type": "LavaWorld"
               }
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "0c7e26ec-aba1-4d11-b6e1-1187a5b52c52",
+              "Flags": 0,
+              "Name": "Lava Lamp Mount",
+              "Position": "16,0.000005103648,3.800187",
+              "Enabled": true,
+              "Children": [
+                {
+                  "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                  "Flags": 0,
+                  "Name": "Lava Lamp Light",
+                  "Tags": "light_point,light",
+                  "Enabled": true,
+                  "Components": [
+                    {
+                      "__type": "Sandbox.PointLight",
+                      "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                      "Attenuation": 6.08,
+                      "FogMode": "Enabled",
+                      "FogStrength": 1,
+                      "LightColor": "0.53023,0.47039,0.25402,1",
+                      "Radius": 400,
+                      "Shadows": true
+                    },
+                    {
+                      "__type": "LavaLampFlicker",
+                      "__guid": "cfb52e67-3c47-40b9-b9a9-1007ac71e0fa",
+                      "__enabled": false,
+                      "HighVelocityAttenuation": 0.25,
+                      "LampLight": {
+                        "_type": "component",
+                        "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                        "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                        "component_type": "PointLight"
+                      },
+                      "LightSaturationOffset": -0.2,
+                      "LightValueOffset": -0.5,
+                      "LowVelocityAttenuation": 2,
+                      "PositionScale": 10,
+                      "VelocityMaxInput": 20,
+                      "World": {
+                        "_type": "component",
+                        "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+                        "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
+                        "component_type": "LavaWorld"
+                      }
+                    },
+                    {
+                      "__type": "ManagedLight",
+                      "__guid": "8cbfe7de-9273-4926-b536-b7f27697a803",
+                      "Index": 0,
+                      "ShadowResolution": 2048,
+                      "TargetLight": {
+                        "_type": "component",
+                        "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                        "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                        "component_type": "PointLight"
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -261,7 +392,7 @@
           "__guid": "a1af3a16-d023-4623-9332-57c761f08047",
           "FogMode": "Enabled",
           "FogStrength": 1,
-          "LightColor": "0.12807,0.14399,0.14884,1",
+          "LightColor": "0.88619,0.95205,0.97209,1",
           "Shadows": true,
           "SkyColor": "0,0,0,0"
         },
@@ -278,7 +409,6 @@
       "Name": "2D Skybox",
       "Position": "194.2362,-12.38285,-126.876",
       "Tags": "skybox",
-      "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -286,68 +416,6 @@
           "SkyIndirectLighting": false,
           "SkyMaterial": "materials/skybox/skybox_studio_02.vmat",
           "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "0c7e26ec-aba1-4d11-b6e1-1187a5b52c52",
-      "Flags": 0,
-      "Name": "Lava Lamp Mount",
-      "Position": "16,0.000005103648,3.800187",
-      "Enabled": true,
-      "Children": [
-        {
-          "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
-          "Flags": 0,
-          "Name": "Lava Lamp Light",
-          "Tags": "light_point,light",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.PointLight",
-              "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-              "Attenuation": 6.08,
-              "FogMode": "Enabled",
-              "FogStrength": 1,
-              "LightColor": "0.53023,0.47039,0.25402,1",
-              "Radius": 400,
-              "Shadows": true
-            },
-            {
-              "__type": "LavaLampFlicker",
-              "__guid": "cfb52e67-3c47-40b9-b9a9-1007ac71e0fa",
-              "HighVelocityAttenuation": 0.25,
-              "LampLight": {
-                "_type": "component",
-                "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-                "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
-                "component_type": "PointLight"
-              },
-              "LightSaturationOffset": -0.2,
-              "LightValueOffset": -0.5,
-              "LowVelocityAttenuation": 2,
-              "PositionScale": 10,
-              "VelocityMaxInput": 20,
-              "World": {
-                "_type": "component",
-                "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
-                "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
-                "component_type": "LavaWorld"
-              }
-            },
-            {
-              "__type": "ManagedLight",
-              "__guid": "8cbfe7de-9273-4926-b536-b7f27697a803",
-              "Index": 0,
-              "ShadowResolution": 2048,
-              "TargetLight": {
-                "_type": "component",
-                "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-                "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
-                "component_type": "PointLight"
-              }
-            }
-          ]
         }
       ]
     },
@@ -409,744 +477,755 @@
       ]
     },
     {
-      "__guid": "2e8eeb2a-1132-4dbc-a1d2-a1f95d75ff27",
+      "__guid": "dbd97086-9b94-47f3-832c-d4a290b8b218",
       "Flags": 0,
-      "Name": "the true council",
-      "Position": "-4.820268,14.73212,-0.00001659617",
-      "Rotation": "0,0,-0.1262088,0.9920037",
-      "Enabled": true,
-      "Children": [
-        {
-          "__guid": "b1d551d2-fe74-488d-94fa-5ace56fab1e6",
-          "Flags": 0,
-          "Name": "ducc (5)",
-          "Position": "44.89011,26.5484,0",
-          "Rotation": "0,0,-0.7156924,0.6984157",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "d1937abb-ba9f-4352-a748-825c10bd4515",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "Model": "models/duck_decoration/duck_decoration.vmdl",
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "__guid": "64320ca3-87c6-472e-9bf5-090f77b8cae1",
-          "Flags": 0,
-          "Name": "ducc (4)",
-          "Position": "57.59355,20.42263,0",
-          "Rotation": "0,0,-0.2706001,0.9626919",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "b78e6e76-06a5-4286-98bf-ac328f5aee36",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "Model": "models/duck_decoration/duck_decoration.vmdl",
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "__guid": "18bf1950-c299-45b6-944e-f9a2ef885de1",
-          "Flags": 0,
-          "Name": "ducc (3)",
-          "Position": "70.91309,10.58645,0",
-          "Rotation": "0,0,-0.4893829,-0.872069",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "3c6ac71e-fa0a-42f2-b244-ba3df5567b96",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "Model": "models/duck_decoration/duck_decoration.vmdl",
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "__guid": "3e3c3eb1-10f6-42f3-951b-dd8ef7feb19d",
-          "Flags": 0,
-          "Name": "ducc (2)",
-          "Position": "57.19432,-27.84947,0",
-          "Rotation": "0,0,-0.9999254,-0.01221646",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "0a2d81f2-14dc-4d5c-9b5c-55d1106d5821",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "Model": "models/duck_decoration/duck_decoration.vmdl",
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "__guid": "b19af3a5-f3ae-4c23-9a37-be5c19937678",
-          "Flags": 0,
-          "Name": "ducc (1)",
-          "Position": "70.2067,-17.43105,0",
-          "Rotation": "0,0,-0.3713684,-0.9284855",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "c84c9d54-7235-4940-aeff-ab1b8a19e469",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "Model": "models/duck_decoration/duck_decoration.vmdl",
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        },
-        {
-          "__guid": "de10bb7d-6f6f-44d1-816a-46eb095edff5",
-          "Flags": 0,
-          "Name": "ducc",
-          "Position": "75.74436,-4.365024,0",
-          "Rotation": "0,-0,-0.9284856,0.3713683",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "1582e4fd-be0d-4fd2-8763-b6c7aaac6b08",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "Model": "models/duck_decoration/duck_decoration.vmdl",
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "__guid": "5764d4ba-30ab-4c7c-a680-f9e7ebb58f73",
-      "Flags": 0,
-      "Name": "Box",
-      "Position": "64,0,0",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.MeshComponent",
-          "__guid": "1942b609-2603-4c43-9dc6-db4cabcb0f26",
-          "Collision": "Mesh",
-          "Color": "1,1,1,1",
-          "HideInGame": false,
-          "IsTrigger": false,
-          "Mesh": {
-            "Topology": "H4sIAAAAAAAACoWQ1woDMQwE55JLu/Re/v8/HYasQW8xGIx21lppAj7AyO/M8n4CE7AGTsABeAA3YMiVba21WNmV\u002Bjz/qPfapWiL9FDvPV/R2p8ju0m\u002BIX\u002BZc1/6bUvOMawedXlZPeo9u0d9CRwzt9lWmf9a8p6T1be8rB51eVk96vZwdjOp2/eeffqHudzrO7o1d2NO3/KyetTlZfX0DO7OTH1HzmNP618R7QXg5AEAAA==",
-            "Positions": [
-              "-64,-128,0",
-              "64,-128,0",
-              "64,128,0",
-              "-64,128,0",
-              "64,-128,96",
-              "-64,-128,96",
-              "64,128,96",
-              "64,-128,96",
-              "-64,128,96",
-              "64,128,96"
-            ],
-            "TextureCoord": [
-              "1.5,1",
-              "0,0",
-              "1.5,-1",
-              "1,0",
-              "0.5,-1",
-              "1,0",
-              "0.5,1",
-              "0,0",
-              "-1,-0.75",
-              "0,0",
-              "-1,0",
-              "0,0",
-              "0,-0.75",
-              "0,0",
-              "-1,-0.75",
-              "0,0",
-              "-1,0",
-              "0,0",
-              "1,-0.75",
-              "0,0",
-              "0,-0.75",
-              "0,0",
-              "0,0",
-              "0,0",
-              "1,-0.75",
-              "0,0"
-            ],
-            "TextureUAxis": [
-              "1,0,0",
-              "-1,0,0",
-              "0,-1,0",
-              "1,-0,0"
-            ],
-            "TextureVAxis": [
-              "0,-1,0",
-              "0,0,-1",
-              "0,0,-1",
-              "-0,0,-1"
-            ],
-            "TextureScale": [
-              "0.25,0.25",
-              "0.25,0.25",
-              "0.25,0.25",
-              "0.25,0.25"
-            ],
-            "TextureOffset": [
-              "256,0",
-              "0,0",
-              "0,0",
-              "0,0"
-            ],
-            "MaterialIndex": [
-              5,
-              6,
-              6,
-              6
-            ],
-            "EdgeFlags": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "Materials": [
-              "materials/generic/floor_wood_laminated.vmat",
-              "materials/generic/plaster_a.vmat",
-              "materials/interior/vintage_wallpaper_a/vintage_wallpaper_a.vmat",
-              "materials/glitchvid/carpet/carpet_pattern02.vmat",
-              "materials/generic/carpet_b.vmat",
-              "materials/generic/carpet_c.vmat",
-              "materials/generic/wall_brick_b2.vmat"
-            ]
-          },
-          "SmoothingAngle": 40,
-          "Static": true,
-          "SurfaceVelocity": "0,0,0"
-        }
-      ]
-    },
-    {
-      "__guid": "d0071b79-4c37-4756-8944-884ced8bbe67",
-      "Flags": 0,
-      "Name": "Box (1)",
-      "Position": "64,0,0",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.MeshComponent",
-          "__guid": "062d4100-e165-44f9-a80f-6d303cb4a79a",
-          "Collision": "Mesh",
-          "Color": "0.05116,0.05116,0.05116,1",
-          "HideInGame": false,
-          "IsTrigger": false,
-          "Mesh": {
-            "Topology": "H4sIAAAAAAAACu2Q2wnAMAwDL3Yf0BG6/54pArkkH\u002BkEPciHkXyYXMANbMAJNCCBHegL1NELZrSvPOyQk6HbnJf/cB7upvNyFenu100//UV/Nc4PUoDxYeQBAAA=",
-            "Positions": [
-              "-64,-128,0",
-              "64,-128,0",
-              "64,128,0",
-              "-64,128,0",
-              "64,-128,96",
-              "-64,-128,96",
-              "64,128,96",
-              "64,-128,96",
-              "-64,128,96",
-              "64,128,96"
-            ],
-            "TextureCoord": [
-              "1.5,1",
-              "0,0",
-              "1.5,-1",
-              "1,0",
-              "0.5,-1",
-              "1,0",
-              "0.5,1",
-              "0,0",
-              "-1,-0.75",
-              "0,0",
-              "-1,0",
-              "0,0",
-              "0,-0.75",
-              "0,0",
-              "-1,-0.75",
-              "0,0",
-              "-1,0",
-              "0,0",
-              "1,-0.75",
-              "0,0",
-              "0,-0.75",
-              "0,0",
-              "0,0",
-              "0,0",
-              "1,-0.75",
-              "0,0"
-            ],
-            "TextureUAxis": [
-              "1,0,0",
-              "-1,0,0",
-              "0,-1,0",
-              "1,-0,0"
-            ],
-            "TextureVAxis": [
-              "0,-1,0",
-              "0,0,-1",
-              "0,0,-1",
-              "-0,0,-1"
-            ],
-            "TextureScale": [
-              "0.25,0.25",
-              "0.25,0.25",
-              "0.25,0.25",
-              "0.25,0.25"
-            ],
-            "TextureOffset": [
-              "256,0",
-              "0,0",
-              "0,0",
-              "0,0"
-            ],
-            "MaterialIndex": [
-              5,
-              2,
-              2,
-              2
-            ],
-            "EdgeFlags": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "Materials": [
-              "materials/generic/floor_wood_laminated.vmat",
-              "materials/generic/plaster_a.vmat",
-              "materials/interior/vintage_wallpaper_a/vintage_wallpaper_a.vmat",
-              "materials/glitchvid/carpet/carpet_pattern02.vmat",
-              "materials/generic/carpet_b.vmat",
-              "materials/generic/carpet_c.vmat"
-            ]
-          },
-          "SmoothingAngle": 40,
-          "Static": true,
-          "SurfaceVelocity": "0,0,0"
-        }
-      ]
-    },
-    {
-      "__guid": "cfe71c51-cff5-44bb-8c55-4ae3d7319c56",
-      "Flags": 0,
-      "Name": "Envmap Probe",
-      "Position": "32,0,16",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.EnvmapProbe",
-          "__guid": "6f54d79f-5b76-4cbc-916b-719c518e52d5",
-          "Texture": "textures/cubemaps/default2.vtex",
-          "Bounds": {
-            "Mins": "-1000,-1000,-1000",
-            "Maxs": "1000,1000,1000"
-          },
-          "DelayBetweenUpdates": 0.1,
-          "Feathering": 0.02,
-          "FrameInterval": 5,
-          "MaxDistance": 512,
-          "MultiBounce": true,
-          "Projection": "Box",
-          "RenderDynamically": true,
-          "TintColor": "0.00465,0.00465,0.00465,1",
-          "UpdateStrategy": "OnEnabled",
-          "ZFar": 4096,
-          "ZNear": 16
-        }
-      ]
-    },
-    {
-      "__guid": "216d9d83-4522-4f04-afdc-f32a1c288c0a",
-      "Flags": 0,
-      "Name": "wooden_desk_01",
-      "Position": "112,-50.41405,0.000003696419",
-      "Rotation": "0,0,1,0.0000001947072",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "bf10adaa-fdc6-4b14-b1d4-2251de0886c9",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/props/trim_sheets/desk/wooden_desk/wooden_desk_01.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "c98f14ce-1153-4f18-a213-eb293cc552e5",
-      "Flags": 0,
-      "Name": "wooden_chair_a",
-      "Position": "102.1992,-50.98489,0.01967738",
-      "Rotation": "0,0,0.1817217,0.98335",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "1d52db29-8b7d-432a-916f-62775cd8a66e",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/props/trim_sheets/chairs/wooden_chair_a.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "67452a54-2df3-4a11-abb1-f0e48c1092b7",
-      "Flags": 0,
-      "Name": "modern_shelving_a1",
-      "Position": "128,30.16334,0.000003064316",
-      "Rotation": "0,0,1,0.0000001947072",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "cad8bd90-9446-416c-ae92-6fd03c6ad058",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/props/trim_sheets/shelving/modern_shelving/modern_shelving_a1.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "1f3e0aaf-86b7-44c6-82c0-4858c10287b7",
-      "Flags": 0,
-      "Name": "bed_frame_01",
-      "Position": "60.07285,80,0",
-      "Rotation": "0,0,1,0.0000001947072",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "7a19f795-d944-4c4a-b5a7-c9f790bb5725",
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "Model": "models/props/trim_sheets/bed_frame/bed_frame_01.vmdl",
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.ModelCollider",
-          "__guid": "a3e842c8-ae84-47ed-9a02-e84e00b60a43",
-          "IsTrigger": false,
-          "Model": "models/props/trim_sheets/bed_frame/bed_frame_01.vmdl",
-          "Static": false,
-          "SurfaceVelocity": "0,0,0"
-        }
-      ]
-    },
-    {
-      "__guid": "94e58097-ba13-4a78-9f39-4d308d081dd5",
-      "Flags": 0,
-      "Name": "mattress",
-      "Position": "56,79.99998,13.89379",
-      "Rotation": "0,0,0.7071069,-0.7071066",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "36cd1343-f604-412d-8c7c-65a389c8f2d8",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/mattress/mattress.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "9bf9eff0-7cb1-4715-90eb-e7615d00a30a",
-      "Flags": 0,
-      "Name": "storage_box_02",
-      "Position": "118.0081,9.422522,30.99994",
-      "Rotation": "0,0,0.6994875,0.7146447",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "dd528d76-2603-498d-b3ca-436d3564618b",
-          "BodyGroups": 18446744073709551615,
-          "Health": 5,
-          "IsStatic": true,
-          "MaterialGroup": "default",
-          "Model": "models/props/trim_sheets/storage/storage_box_02.vmdl",
-          "StartAsleep": false,
-          "Tint": "0.20958,0.22485,0.26047,1"
-        }
-      ]
-    },
-    {
-      "__guid": "847944e6-c277-4bb3-8e0a-d8e5b0381a68",
-      "Flags": 0,
-      "Name": "rubbish_can",
-      "Position": "95.76782,-3.69627,1.37968",
-      "Rotation": "0.4786683,-0.5202065,-0.3932444,-0.5878952",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "3668ebf0-97e4-43c8-b49d-e45aaaa5ce7c",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "40a5d8de-fd12-4aa6-a699-919a97328fb4",
-      "Flags": 0,
-      "Name": "rubbish_can",
-      "Position": "100.1749,21.59456,1.394503",
-      "Rotation": "-0.6815055,0.1910284,0.2220404,0.6706389",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "e4abf555-c71f-4f2b-8e7e-0f0bb08634a2",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "91b21f6c-eeff-4f39-95ce-3d34e4b9ff22",
-      "Flags": 0,
-      "Name": "rubbish_can",
-      "Position": "95.33842,3.146736,4.654524",
-      "Rotation": "-0.6789387,-0.7341922,0.001900178,0.0007380527",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "e5d21aaf-669c-4bdf-a4f6-b86356b5007c",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "9af50169-132c-4cdf-ad2d-f52387bbd480",
-      "Flags": 0,
-      "Name": "rubbish_can",
-      "Position": "96.1939,18.51624,1.404282",
-      "Rotation": "-0.06651405,0.7055351,-0.3703601,0.6005244",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "e4961aae-a022-45e8-94f9-2a959b4afb54",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_can.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "79dcc417-699d-4abf-b504-b6bd87f4ae98",
-      "Flags": 0,
-      "Name": "rubbish_cup",
-      "Position": "90.51944,24.65643,0.1079578",
-      "Rotation": "-0.005746141,0.002328255,0.932342,0.3615247",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "98518bc0-fec3-4888-b26a-c22d1c0de392",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_cup.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "0ee9e23c-c4b3-4ce0-8e1d-707f57913cc3",
-      "Flags": 0,
-      "Name": "rubbish_cup",
-      "Position": "87.43636,2.107206,1.235061",
-      "Rotation": "-0.4917501,0.4576387,0.2095135,0.7105299",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "a8d4d493-8d45-439e-b4a6-d49cd2cfa45d",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_cup.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "c067c5e8-f39e-445c-8c4b-de73372d25d3",
-      "Flags": 0,
-      "Name": "rubbish_bag",
+      "Name": "Room",
       "Position": "64.841,31.59804,0.2095682",
       "Rotation": "-0.04596746,0.01396889,-0.3013693,0.9522964",
       "Enabled": true,
-      "Components": [
+      "Children": [
         {
-          "__type": "Sandbox.Prop",
-          "__guid": "1ae84949-2b1d-4844-9a74-71c34d24053a",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": true,
-          "Model": "models/sbox_props/bin/rubbish_bag.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ]
-    },
-    {
-      "__guid": "5140b9dc-f10c-458a-ad1f-cb70ebce8d7d",
-      "Flags": 0,
-      "Name": "cereal_open",
-      "Position": "90.83517,-22.40793,0.0000000000000001981461",
-      "Rotation": "0,0,0.9792721,0.2025488",
-      "Enabled": true,
-      "Components": [
+          "__guid": "c067c5e8-f39e-445c-8c4b-de73372d25d3",
+          "Flags": 0,
+          "Name": "rubbish_bag",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "1ae84949-2b1d-4844-9a74-71c34d24053a",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_bag.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
         {
-          "__type": "Sandbox.Prop",
-          "__guid": "426532d5-60c0-44e6-ad1c-b4c569a6eda8",
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": false,
-          "Model": "models/props/packaged_food/cereal_open.vmdl",
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
+          "__guid": "0ee9e23c-c4b3-4ce0-8e1d-707f57913cc3",
+          "Flags": 0,
+          "Name": "rubbish_cup",
+          "Position": "35.44849,-11.1673,-0.08565611",
+          "Rotation": "-0.5764755,0.2680532,0.4278181,0.6424914",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "a8d4d493-8d45-439e-b4a6-d49cd2cfa45d",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_cup.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "79dcc417-699d-4abf-b504-b6bd87f4ae98",
+          "Flags": 0,
+          "Name": "rubbish_cup",
+          "Position": "24.99719,9.06448,0.7442032",
+          "Rotation": "-0.002579103,-0.04742202,0.9968451,0.06359604",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "98518bc0-fec3-4888-b26a-c22d1c0de392",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_cup.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9af50169-132c-4cdf-ad2d-f52387bbd480",
+          "Flags": 0,
+          "Name": "rubbish_can",
+          "Position": "33.17239,7.190949,1.85686",
+          "Rotation": "-0.2431896,0.6604691,-0.1402104,0.6964055",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "e4961aae-a022-45e8-94f9-2a959b4afb54",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "91b21f6c-eeff-4f39-95ce-3d34e4b9ff22",
+          "Flags": 0,
+          "Name": "rubbish_can",
+          "Position": "41.31782,-6.123635,3.829451",
+          "Rotation": "-0.4252805,-0.9038775,-0.04120101,0.02108343",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "e5d21aaf-669c-4bdf-a4f6-b86356b5007c",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "40a5d8de-fd12-4aa6-a699-919a97328fb4",
+          "Flags": 0,
+          "Name": "rubbish_can",
+          "Position": "34.65781,11.97796,2.306926",
+          "Rotation": "-0.6788394,-0.0430439,0.4128195,0.6057264",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "e4abf555-c71f-4f2b-8e7e-0f0bb08634a2",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "847944e6-c277-4bb3-8e0a-d8e5b0381a68",
+          "Flags": 0,
+          "Name": "rubbish_can",
+          "Position": "45.60204,-11.13451,0.05156124",
+          "Rotation": "0.5910775,-0.3248461,-0.5688848,-0.4706085",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "3668ebf0-97e4-43c8-b49d-e45aaaa5ce7c",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/bin/rubbish_can.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9bf9eff0-7cb1-4715-90eb-e7615d00a30a",
+          "Flags": 0,
+          "Name": "storage_box_02",
+          "Position": "56.27953,9.440275,31.78107",
+          "Rotation": "0.02307934,-0.04213645,0.8814914,0.4697495",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "dd528d76-2603-498d-b3ca-436d3564618b",
+              "BodyGroups": 18446744073709551615,
+              "Health": 5,
+              "IsStatic": true,
+              "MaterialGroup": "default",
+              "Model": "models/props/trim_sheets/storage/storage_box_02.vmdl",
+              "StartAsleep": false,
+              "Tint": "0.20958,0.22485,0.26047,1"
+            }
+          ]
+        },
+        {
+          "__guid": "94e58097-ba13-4a78-9f39-4d308d081dd5",
+          "Flags": 0,
+          "Name": "mattress",
+          "Position": "-35.06073,33.02881,16.97092",
+          "Rotation": "-0.04238139,-0.02262641,0.4602751,-0.8864754",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "36cd1343-f604-412d-8c7c-65a389c8f2d8",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/sbox_props/mattress/mattress.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1f3e0aaf-86b7-44c6-82c0-4858c10287b7",
+          "Flags": 0,
+          "Name": "bed_frame_01",
+          "Position": "-31.7446,36.69473,3.362467",
+          "Rotation": "-0.01396888,-0.04596746,0.9522964,-0.3013691",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "7a19f795-d944-4c4a-b5a7-c9f790bb5725",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "Model": "models/props/trim_sheets/bed_frame/bed_frame_01.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.ModelCollider",
+              "__guid": "a3e842c8-ae84-47ed-9a02-e84e00b60a43",
+              "IsTrigger": false,
+              "Model": "models/props/trim_sheets/bed_frame/bed_frame_01.vmdl",
+              "Static": false,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ]
+        },
+        {
+          "__guid": "67452a54-2df3-4a11-abb1-f0e48c1092b7",
+          "Flags": 0,
+          "Name": "modern_shelving_a1",
+          "Position": "52.48681,35.02334,3.108129",
+          "Rotation": "-0.01396888,-0.04596746,0.9522964,-0.3013691",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "cad8bd90-9446-416c-ae92-6fd03c6ad058",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/props/trim_sheets/shelving/modern_shelving/modern_shelving_a1.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c98f14ce-1153-4f18-a213-eb293cc552e5",
+          "Flags": 0,
+          "Name": "wooden_chair_a",
+          "Position": "78.0649,-45.81967,-4.6948",
+          "Rotation": "0.04266365,-0.02208959,0.4694044,0.8816753",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "1d52db29-8b7d-432a-916f-62775cd8a66e",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/props/trim_sheets/chairs/wooden_chair_a.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "216d9d83-4522-4f04-afdc-f32a1c288c0a",
+          "Flags": 0,
+          "Name": "wooden_desk_01",
+          "Position": "85.75316,-39.74012,-4.136918",
+          "Rotation": "-0.01396888,-0.04596746,0.9522964,-0.3013691",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "bf10adaa-fdc6-4b14-b1d4-2251de0886c9",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "Model": "models/props/trim_sheets/desk/wooden_desk/wooden_desk_01.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "cfe71c51-cff5-44bb-8c55-4ae3d7319c56",
+          "Flags": 0,
+          "Name": "Envmap Probe",
+          "Position": "-8.667925,-46.0483,11.43355",
+          "Rotation": "0.04596746,-0.01396889,0.3013693,0.9522964",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.EnvmapProbe",
+              "__guid": "6f54d79f-5b76-4cbc-916b-719c518e52d5",
+              "Texture": "textures/cubemaps/default2.vtex",
+              "Bounds": {
+                "Mins": "-1000,-1000,-1000",
+                "Maxs": "1000,1000,1000"
+              },
+              "DelayBetweenUpdates": 0.1,
+              "Feathering": 0.02,
+              "FrameInterval": 5,
+              "MaxDistance": 512,
+              "MultiBounce": true,
+              "Projection": "Box",
+              "RenderDynamically": true,
+              "TintColor": "0.00465,0.00465,0.00465,1",
+              "UpdateStrategy": "OnEnabled",
+              "ZFar": 4096,
+              "ZNear": 16
+            }
+          ]
+        },
+        {
+          "__guid": "d0071b79-4c37-4756-8944-884ced8bbe67",
+          "Flags": 0,
+          "Name": "Floor",
+          "Position": "17.48927,-26.18635,-2.75462",
+          "Rotation": "0.04596746,-0.01396889,0.3013693,0.9522964",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.MeshComponent",
+              "__guid": "062d4100-e165-44f9-a80f-6d303cb4a79a",
+              "Collision": "Mesh",
+              "Color": "0.05116,0.05116,0.05116,1",
+              "HideInGame": false,
+              "IsTrigger": false,
+              "Mesh": {
+                "Topology": "H4sIAAAAAAAACu2Q2wnAMAwDL3Yf0BG6/54pArkkH\u002BkEPciHkXyYXMANbMAJNCCBHegL1NELZrSvPOyQk6HbnJf/cB7upvNyFenu100//UV/Nc4PUoDxYeQBAAA=",
+                "Positions": [
+                  "-64,-128,0",
+                  "64,-128,0",
+                  "64,128,0",
+                  "-64,128,0",
+                  "64,-128,96",
+                  "-64,-128,96",
+                  "64,128,96",
+                  "64,-128,96",
+                  "-64,128,96",
+                  "64,128,96"
+                ],
+                "TextureCoord": [
+                  "1.5,1",
+                  "0,0",
+                  "1.5,-1",
+                  "1,0",
+                  "0.5,-1",
+                  "1,0",
+                  "0.5,1",
+                  "0,0",
+                  "-1,-0.75",
+                  "0,0",
+                  "-1,0",
+                  "0,0",
+                  "0,-0.75",
+                  "0,0",
+                  "-1,-0.75",
+                  "0,0",
+                  "-1,0",
+                  "0,0",
+                  "1,-0.75",
+                  "0,0",
+                  "0,-0.75",
+                  "0,0",
+                  "0,0",
+                  "0,0",
+                  "1,-0.75",
+                  "0,0"
+                ],
+                "TextureUAxis": [
+                  "1,0,0",
+                  "-1,0,0",
+                  "0,-1,0",
+                  "1,-0,0"
+                ],
+                "TextureVAxis": [
+                  "0,-1,0",
+                  "0,0,-1",
+                  "0,0,-1",
+                  "-0,0,-1"
+                ],
+                "TextureScale": [
+                  "0.25,0.25",
+                  "0.25,0.25",
+                  "0.25,0.25",
+                  "0.25,0.25"
+                ],
+                "TextureOffset": [
+                  "256,0",
+                  "0,0",
+                  "0,0",
+                  "0,0"
+                ],
+                "MaterialIndex": [
+                  5,
+                  2,
+                  2,
+                  2
+                ],
+                "EdgeFlags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Materials": [
+                  "materials/generic/floor_wood_laminated.vmat",
+                  "materials/generic/plaster_a.vmat",
+                  "materials/interior/vintage_wallpaper_a/vintage_wallpaper_a.vmat",
+                  "materials/glitchvid/carpet/carpet_pattern02.vmat",
+                  "materials/generic/carpet_b.vmat",
+                  "materials/generic/carpet_c.vmat"
+                ]
+              },
+              "SmoothingAngle": 40,
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ]
+        },
+        {
+          "__guid": "5764d4ba-30ab-4c7c-a680-f9e7ebb58f73",
+          "Flags": 0,
+          "Name": "Walls",
+          "Position": "17.48927,-26.18635,-2.75462",
+          "Rotation": "0.04596746,-0.01396889,0.3013693,0.9522964",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.MeshComponent",
+              "__guid": "1942b609-2603-4c43-9dc6-db4cabcb0f26",
+              "Collision": "Mesh",
+              "Color": "1,1,1,1",
+              "HideInGame": false,
+              "IsTrigger": false,
+              "Mesh": {
+                "Topology": "H4sIAAAAAAAACoWQ1woDMQwE55JLu/Re/v8/HYasQW8xGIx21lppAj7AyO/M8n4CE7AGTsABeAA3YMiVba21WNmV\u002Bjz/qPfapWiL9FDvPV/R2p8ju0m\u002BIX\u002BZc1/6bUvOMawedXlZPeo9u0d9CRwzt9lWmf9a8p6T1be8rB51eVk96vZwdjOp2/eeffqHudzrO7o1d2NO3/KyetTlZfX0DO7OTH1HzmNP618R7QXg5AEAAA==",
+                "Positions": [
+                  "-64,-128,0",
+                  "64,-128,0",
+                  "64,128,0",
+                  "-64,128,0",
+                  "64,-128,96",
+                  "-64,-128,96",
+                  "64,128,96",
+                  "64,-128,96",
+                  "-64,128,96",
+                  "64,128,96"
+                ],
+                "TextureCoord": [
+                  "1.5,1",
+                  "0,0",
+                  "1.5,-1",
+                  "1,0",
+                  "0.5,-1",
+                  "1,0",
+                  "0.5,1",
+                  "0,0",
+                  "-1,-0.75",
+                  "0,0",
+                  "-1,0",
+                  "0,0",
+                  "0,-0.75",
+                  "0,0",
+                  "-1,-0.75",
+                  "0,0",
+                  "-1,0",
+                  "0,0",
+                  "1,-0.75",
+                  "0,0",
+                  "0,-0.75",
+                  "0,0",
+                  "0,0",
+                  "0,0",
+                  "1,-0.75",
+                  "0,0"
+                ],
+                "TextureUAxis": [
+                  "1,0,0",
+                  "-1,0,0",
+                  "0,-1,0",
+                  "1,-0,0"
+                ],
+                "TextureVAxis": [
+                  "0,-1,0",
+                  "0,0,-1",
+                  "0,0,-1",
+                  "-0,0,-1"
+                ],
+                "TextureScale": [
+                  "0.25,0.25",
+                  "0.25,0.25",
+                  "0.25,0.25",
+                  "0.25,0.25"
+                ],
+                "TextureOffset": [
+                  "256,0",
+                  "0,0",
+                  "0,0",
+                  "0,0"
+                ],
+                "MaterialIndex": [
+                  5,
+                  6,
+                  6,
+                  6
+                ],
+                "EdgeFlags": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "Materials": [
+                  "materials/generic/floor_wood_laminated.vmat",
+                  "materials/generic/plaster_a.vmat",
+                  "materials/interior/vintage_wallpaper_a/vintage_wallpaper_a.vmat",
+                  "materials/glitchvid/carpet/carpet_pattern02.vmat",
+                  "materials/generic/carpet_b.vmat",
+                  "materials/generic/carpet_c.vmat",
+                  "materials/generic/wall_brick_b2.vmat"
+                ]
+              },
+              "SmoothingAngle": 40,
+              "Static": true,
+              "SurfaceVelocity": "0,0,0"
+            }
+          ]
+        },
+        {
+          "__guid": "2e8eeb2a-1132-4dbc-a1d2-a1f95d75ff27",
+          "Flags": 0,
+          "Name": "the true council",
+          "Position": "-47.2781,-53.606,-5.326614",
+          "Rotation": "0.04736289,-0.008055692,0.1787713,0.982717",
+          "Enabled": true,
+          "Children": [
+            {
+              "__guid": "b1d551d2-fe74-488d-94fa-5ace56fab1e6",
+              "Flags": 0,
+              "Name": "ducc (5)",
+              "Position": "44.89011,26.5484,0",
+              "Rotation": "0,0,-0.7156924,0.6984157",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "d1937abb-ba9f-4352-a748-825c10bd4515",
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "Model": "models/duck_decoration/duck_decoration.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            },
+            {
+              "__guid": "64320ca3-87c6-472e-9bf5-090f77b8cae1",
+              "Flags": 0,
+              "Name": "ducc (4)",
+              "Position": "57.59355,20.42263,0",
+              "Rotation": "0,0,-0.2706001,0.9626919",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "b78e6e76-06a5-4286-98bf-ac328f5aee36",
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "Model": "models/duck_decoration/duck_decoration.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            },
+            {
+              "__guid": "18bf1950-c299-45b6-944e-f9a2ef885de1",
+              "Flags": 0,
+              "Name": "ducc (3)",
+              "Position": "70.91309,10.58645,0",
+              "Rotation": "0,0,-0.4893829,-0.872069",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "3c6ac71e-fa0a-42f2-b244-ba3df5567b96",
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "Model": "models/duck_decoration/duck_decoration.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            },
+            {
+              "__guid": "3e3c3eb1-10f6-42f3-951b-dd8ef7feb19d",
+              "Flags": 0,
+              "Name": "ducc (2)",
+              "Position": "57.19432,-27.84947,0",
+              "Rotation": "0,0,-0.9999254,-0.01221646",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "0a2d81f2-14dc-4d5c-9b5c-55d1106d5821",
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "Model": "models/duck_decoration/duck_decoration.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            },
+            {
+              "__guid": "b19af3a5-f3ae-4c23-9a37-be5c19937678",
+              "Flags": 0,
+              "Name": "ducc (1)",
+              "Position": "70.2067,-17.43105,0",
+              "Rotation": "0,0,-0.3713684,-0.9284855",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "c84c9d54-7235-4940-aeff-ab1b8a19e469",
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "Model": "models/duck_decoration/duck_decoration.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            },
+            {
+              "__guid": "de10bb7d-6f6f-44d1-816a-46eb095edff5",
+              "Flags": 0,
+              "Name": "ducc",
+              "Position": "75.74436,-4.365024,0",
+              "Rotation": "0,-0,-0.9284856,0.3713683",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.ModelRenderer",
+                  "__guid": "1582e4fd-be0d-4fd2-8763-b6c7aaac6b08",
+                  "BodyGroups": 18446744073709551615,
+                  "CreateAttachments": false,
+                  "Model": "models/duck_decoration/duck_decoration.vmdl",
+                  "RenderOptions": {
+                    "GameLayer": true,
+                    "OverlayLayer": false,
+                    "BloomLayer": false,
+                    "AfterUILayer": false
+                  },
+                  "RenderType": "On",
+                  "Tint": "1,1,1,1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "__guid": "5140b9dc-f10c-458a-ad1f-cb70ebce8d7d",
+          "Flags": 0,
+          "Name": "cereal_open",
+          "Position": "52.33004,-29.06072,-3.070297",
+          "Rotation": "-0.004368691,-0.04784403,0.9935993,-0.1022361",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "426532d5-60c0-44e6-ad1c-b4c569a6eda8",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": false,
+              "Model": "models/props/packaged_food/cereal_open.vmdl",
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
         }
       ]
     }

@@ -1,0 +1,12 @@
+{
+  "Material": "materials/sdf_lava/sdf_lava.vmat",
+  "IsTextureSourceOnly": false,
+  "CollisionTags": "lava",
+  "QualityLevel": "Custom",
+  "ChunkResolution": 16,
+  "ChunkSize": 16,
+  "MaxDistance": 4,
+  "ReferencedTextures": [],
+  "__references": [],
+  "__version": 0
+}

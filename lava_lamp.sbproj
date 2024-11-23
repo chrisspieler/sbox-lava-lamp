@@ -33,7 +33,10 @@
       "Whitelist": true,
       "ReleaseMode": "Debug",
       "AssemblyReferences": [],
-      "IgnoreFolders": [],
+      "IgnoreFolders": [
+        "editor",
+        "unittest"
+      ],
       "DistinctAssemblyReferences": []
     }
   }
