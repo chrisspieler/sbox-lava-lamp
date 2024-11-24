@@ -160,7 +160,7 @@
               "Debug": false,
               "FastLavaColor": "1,1,0,1",
               "HeatDirection": "0,-1",
-              "HeatPerSecond": 0.25,
+              "HeatPerSecond": 200,
               "HueVariance": 0.02,
               "InnerBlend": 1,
               "LavaColor": "1,0.13333,0,1",
