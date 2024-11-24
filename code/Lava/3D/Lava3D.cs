@@ -73,6 +73,7 @@ public partial class Lava3D : Component
 			return;
 
 		var timer = FastTimer.StartNew();
+		SDFWorld.Opacity = 0.99f;
 		var tasks = CreateAllSDFShapes( SDFVolume );
 		InitializationTask = Task.WhenAll( tasks );
 		await InitializationTask;

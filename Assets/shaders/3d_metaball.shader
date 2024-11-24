@@ -34,9 +34,9 @@ PS
 {
     #include "common/pixel.hlsl"
 
-	float3 LavaColorCool < Attribute( "LavaColorCool" ); UiType( Color ); Default3( 1, 0.2, 0 ); >;
-	float3 LavaColorHot < Attribute( "LavaColorHot" ); UiType( Color ); Default3( 1, 0.5, 0 ); >;
-	float LavaHotHeight < Attribute( "LavaHotHeight" ); Range( 0, 100 ); UiType( Slider ); Default( 10 ); >;
+	float3 LavaColorCool < Attribute( "LavaColorCool" ); UiType( Color ); Default3( 1, 0.1, 0 ); >;
+	float3 LavaColorHot < Attribute( "LavaColorHot" ); UiType( Color ); Default3( 1, 0.3, 0 ); >;
+	float LavaHotHeight < Attribute( "LavaHotHeight" ); Range( 0, 100 ); UiType( Slider ); Default( 16 ); >;
 
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
