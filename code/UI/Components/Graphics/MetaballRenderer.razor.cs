@@ -2,6 +2,9 @@
 
 public partial class MetaballRenderer : Panel
 {
+	[ConVar( "metaball_render_2d" )]
+	public static bool Render2D { get; set; } = false;
+
 	public LavaWorld World { get; set; }
 	public float CutoffThreshold { get; set; }
 	public float CutoffSharpness { get; set; }
@@ -59,6 +62,9 @@ public partial class MetaballRenderer : Panel
 	public override void DrawBackground( ref RenderState state )
 	{
 		if ( !World.IsValid() || World.MetaballCount < 1 )
+			return;
+
+		if ( !Render2D )
 			return;
 
 		var metaballData = World.Metaballs

@@ -109,8 +109,8 @@ public partial class Lava3D : Component
 		 * 
 		 * Using this method, 48 metaballs (that's 96 operations total) would update in about 16ms.
 		 *																
-		 * If instead of using a Subtract operation, clear the SDF world and apply only the Add operations,
-		 * updates take longer - about 32ms. So in this case, it seems that modifications are more performant.
+		 * If instead of using a Subtract operation, we clear the SDF world and apply only the Add operations,
+		 * updates take longer - about 32ms. So in this case, it's faster to double up on operations.
 		 */
 
 		var timer = FastTimer.StartNew();

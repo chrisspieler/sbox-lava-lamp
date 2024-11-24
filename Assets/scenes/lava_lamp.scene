@@ -29,7 +29,7 @@
               "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
               "Flags": 0,
               "Name": "Lava 3D",
-              "Position": "-8,-8,0",
+              "Position": "-8,-6,0",
               "Scale": "0.25,0.25,0.25",
               "Enabled": true,
               "Components": [
