@@ -126,17 +126,21 @@ public partial class Lava3D : Component
 
 	private MetaballModInfo GetMetaballModifications( Sdf3DVolume volume, Dictionary<Metaball2D, SphereSdf3D> oldSpheres )
 	{
-		var mods = new List<Modification<Sdf3DVolume, ISdf3D>>();
+		var subtractions = new List<Modification<Sdf3DVolume, ISdf3D>>();
+		var additions = new List<Modification<Sdf3DVolume, ISdf3D>>();
 		var newSpheres = new Dictionary<Metaball2D, SphereSdf3D>();
 		foreach( ( Metaball2D metaball, SphereSdf3D sphere ) in oldSpheres )
 		{
-			mods.Add( new( sphere, volume, Operator.Subtract ) );
+			subtractions.Add( new( sphere, volume, Operator.Subtract ) );
 			var position = LavaToWorld( metaball.Position );
 			var radius = LavaScaleToWorld( metaball.Radius );
 			var newSphere = new SphereSdf3D( position, radius.x );
-			mods.Add( new( newSphere, volume, Operator.Add ) );
+			additions.Add( new( newSphere, volume, Operator.Add ) );
 			newSpheres[metaball] = newSphere;
 		}
+		var mods = new List<Modification<Sdf3DVolume, ISdf3D>>();
+		mods.AddRange( subtractions );
+		mods.AddRange( additions );
 		return new MetaballModInfo( mods, newSpheres );
 	}
 }
