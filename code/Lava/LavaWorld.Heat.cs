@@ -33,21 +33,30 @@ public partial class LavaWorld : Component
 	{
 		foreach ( var ball in Metaballs )
 		{
-			var position = ball.Position;
-			var height = position.z.LerpInverse( -SimulationSize.z, SimulationSize.z );
-			var heating = VerticalHeatingCurve.Evaluate( height );
-			var cooling = VerticalCoolingCurve.Evaluate( height );
+			var heating = GetHeating( ball.Position );
+			var cooling = GetCooling( ball.Position );
 			ball.Temperature -= cooling * Time.Delta * ( 1f - ball.Radius );
 			ball.Temperature += heating * Time.Delta * ( 1f - ball.Radius );
 			ball.Temperature = ball.Temperature.Clamp( 0f, MaxTemperature );
 			var heatDir = HeatDirection * ball.Temperature * Time.Delta;
-			var noise = GetConvectionNoise( position );
-			heatDir += noise * ConvectionPower * Time.Delta;
+			heatDir += GetConvection( ball.Position ) * Time.Delta;
 			ball.Velocity += heatDir;
 		}
 	}
 
-	private Vector3 GetConvectionNoise( Vector3 position )
+	public float GetHeating( Vector3 position )
+	{
+		var height = position.z.LerpInverse( -SimulationSize.z, SimulationSize.z );
+		return VerticalHeatingCurve.Evaluate( height );
+	}
+
+	public float GetCooling( Vector3 position )
+	{
+		var height = position.z.LerpInverse( -SimulationSize.z, SimulationSize.z );
+		return VerticalCoolingCurve.Evaluate( height );
+	}
+
+	private Vector3 GetConvection( Vector3 position )
 	{
 		var noiseScale = 1f / ConvectionNoiseScale;
 		var scroll = ConvectionNoiseScrolling * Time.Now;
@@ -55,6 +64,6 @@ public partial class LavaWorld : Component
 		var yNoise = Noise.Perlin( scroll.y * noiseScale, noiseScale, _convectionNoiseSeed );
 		var dir = new Vector3( 0, -xNoise, yNoise );
 		dir = dir * 2 - 1;
-		return dir * 0.2f;
+		return dir * ConvectionPower;
 	}
 }

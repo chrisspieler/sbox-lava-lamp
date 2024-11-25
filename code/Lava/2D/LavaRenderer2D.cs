@@ -1,4 +1,7 @@
-﻿public partial class LavaRenderer2D : Component
+﻿using Sandbox.Rendering;
+using System;
+
+public partial class LavaRenderer2D : Component
 {
 	[ConVar( "metaball_render_2d" )]
 	public static bool RenderToScreen { get; set; } = true;
@@ -91,6 +94,63 @@
 			return;
 
 		var hud = camera.Hud;
+		DrawHeatGrid( hud );
+		DebugDrawMetaballs( hud );
+		_lastTextPosition = new Vector2( 15f, 0f );
+		var screenSize = Screen.Size;
+		var renderRect = GetCenteredScreenRect();
+		hud.DrawRect( renderRect, Color.Transparent, Vector4.Zero, Vector4.One * 2, Color.Green.WithAlpha( 0.15f ) );
+		PrintDebugText( $"Screen Size: {screenSize}, Render Rect: {renderRect.Size}" );
+		var worldStart = -World.SimulationSize;
+		var worldEnd = World.SimulationSize;
+		PrintDebugText( $"World Size: {worldStart} to {worldEnd}" );
+		var mousePos = ScreenToPoint( Mouse.Position );
+		var mouseUv = ScreenToUV( Mouse.Position );
+		PrintDebugText( $"Mouse Position: {mousePos}, Mouse UV: {mouseUv}" );
+	}
+
+	private void DrawHeatGrid( HudPainter hud, float res = 32f )
+	{
+		res = MathF.Max( 16f, res );
+		var screenRect = GetCenteredScreenRect();
+		var xMin = screenRect.Position.x;
+		var xMax = xMin + screenRect.Size.x;
+		var yMin = screenRect.Position.y;
+		var yMax = yMin + screenRect.Size.y;
+		for ( float y = yMin; y < yMax; y += res )
+		{
+			for ( float x = xMin; x < xMax; x += res )
+			{
+				var screenPos = new Vector2( x, y );
+				var temp = GetTileTemperature( screenPos + res * 0.5f );
+				var color = GetTemperatureDebugColor( temp );
+				var xSize = MathF.Min( res, xMax - x );
+				var ySize = MathF.Min( res, yMax - y );
+				var tileSize = new Vector2( xSize, ySize );
+				var tileRect = new Rect( screenPos, tileSize );
+				hud.DrawRect( tileRect, color.WithAlpha( 0.05f ), default, Vector4.One, color.WithAlpha( 0.025f) );
+			}
+		}
+	}
+
+	private float GetTileTemperature( Vector2 screenPos )
+	{
+		var tilePoint = ScreenToPoint( screenPos );
+		var heating = World.GetHeating( tilePoint );
+		var cooling = World.GetCooling( tilePoint );
+		return heating - cooling;
+	}
+
+	private Color GetTemperatureDebugColor( float temperature )
+	{
+		var maxCooling = -World.VerticalCoolingCurve.ValueRange.y;
+		var maxHeating = World.VerticalHeatingCurve.ValueRange.y;
+		var frac = temperature.LerpInverse( maxCooling, maxHeating );
+		return Color.Lerp( Color.Blue, Color.Red, frac );
+	}
+
+	private void DebugDrawMetaballs( HudPainter hud )
+	{
 		for ( int i = 0; i < World.MetaballCount; i++ )
 		{
 			var ball = World[i];
@@ -99,19 +159,9 @@
 			var rect = new Rect( screenPos - screenRadius, screenRadius * 2f );
 			var screenDiameter = screenRadius * 2f;
 			hud.DrawRect( rect, Color.Transparent, new Vector4( screenDiameter, screenDiameter ), new Vector4( 1f, 1f ), Color.Green.WithAlpha( 0.1f ) );
-			Gizmo.Draw.Color = Color.White;
-			Gizmo.Draw.ScreenText( $"{i}", screenPos, "Consolas", 12, TextFlag.Center );
+			var text = new TextRendering.Scope( $"{i}", Color.White, 12, "Consolas" );
+			hud.DrawText( text, rect );
 		}
-		_lastTextPosition = new Vector2( 15f, 0f );
-		var screenSize = Screen.Size;
-		var renderRect = GetCenteredScreenRect();
-		PrintDebugText( $"Screen Size: {screenSize}, Render Rect: {renderRect.Size}" );
-		var worldStart = -World.SimulationSize;
-		var worldEnd = World.SimulationSize;
-		PrintDebugText( $"World Size: {worldStart} to {worldEnd}" );
-		var mousePos = ScreenToPoint( Mouse.Position );
-		var mouseUv = ScreenToUV( Mouse.Position );
-		PrintDebugText( $"Mouse Position: {mousePos}, Mouse UV: {mouseUv}" );
 	}
 
 	private Vector2 _lastTextPosition;

@@ -34,9 +34,12 @@ public class Metaball
 		var color = CalculatedColor;
 		if ( Debug )
 		{
-			var t = Velocity.Length.LerpInverse( 0f, 0.5f );
+			var t = Velocity.Length.LerpInverse( 0f, 1f );
 			t = Easing.EaseIn( t );
-			color = Color.Lerp( Color.Blue * 0.7f, Color.Red * 0.4f, t );
+			var r = t * 0.4f;
+			var g = Temperature.LerpInverse( 0f, World.MaxTemperature );
+			var b = ( 1f - t ) * 0.7f;
+			color = new Color( r, g, b, 0.5f );
 		}
 		return new RenderData( Position, color, Radius );
 	}
