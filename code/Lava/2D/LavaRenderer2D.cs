@@ -1,7 +1,7 @@
 ﻿public partial class LavaRenderer2D : Component
 {
 	[ConVar( "metaball_render_2d" )]
-	public static bool RenderToScreen { get; set; } = false;
+	public static bool RenderToScreen { get; set; } = true;
 
 	[Property] public LavaWorld World { get; set; }
 	[Property, Range( 0f, 1f ), Group( "Attributes" )] public float CutoffThreshold { get; set; } = 0.1f;

@@ -21,7 +21,7 @@
           "HeatDirection": "0,-1",
           "HueVariance": 0.02,
           "LavaAttractionRange": 0.05,
-          "LavaAttractionScale": 0.025,
+          "LavaAttractionScale": 0.01,
           "LavaColor": "1,0.13333,0,1",
           "MaxTemperature": 0.1,
           "MaxVelocity": "100,100,0",
@@ -71,9 +71,9 @@
         {
           "__type": "LavaLampGenerator",
           "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-          "MaxRadius": 0.05,
-          "MetaballCount": 256,
-          "MinRadius": 0.05,
+          "MaxRadius": 0.15,
+          "MetaballCount": 50,
+          "MinRadius": 0.04,
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
