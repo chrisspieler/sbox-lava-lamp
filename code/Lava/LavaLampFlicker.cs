@@ -51,7 +51,7 @@ public class LavaLampFlicker : Component
 		for ( int i = 0; i < balls.Count; i++ )
 		{
 			var ball = balls[i];
-			var color = ball.BallColor.Clamp01();
+			var color = ball.CalculatedColor.Clamp01();
 			
 			if ( i == 0 )
 			{

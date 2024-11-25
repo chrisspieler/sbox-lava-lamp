@@ -6,16 +6,6 @@
 	[Property, Range( -10f, 10f ), Feature( "Collision" )]
 	public float WallBounce { get; set; } = 2f;
 
-	protected override void OnUpdate()
-	{
-		ApplyDamping();
-		AttractToGravity();
-		AttractToLava();
-		ApplyVelocity();
-	}
-
-
-
 	private void AdvanceBall( Metaball ball, Vector3 wishTranslation, int depth )
 	{
 		if ( depth > 3 )

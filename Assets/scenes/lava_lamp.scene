@@ -10,19 +10,69 @@
         {
           "__type": "LavaWorld",
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-          "DampingStrength": 1,
+          "ConvectionNoiseScale": 100,
+          "ConvectionNoiseScrolling": "200,15,0",
+          "ConvectionPower": 0.02,
+          "DampingStrength": 0.1,
           "EnableCollision": true,
-          "GravityForce": "0,0.15,0",
+          "EnableHeat": true,
+          "FastLavaColor": "1,1,0,1",
+          "GravityForce": "0,0.025,0",
+          "HeatDirection": "0,-1",
+          "HueVariance": 0.02,
           "LavaAttractionRange": 0.05,
-          "LavaAttractionScale": 0.04,
+          "LavaAttractionScale": 0.025,
+          "LavaColor": "1,0.13333,0,1",
+          "MaxTemperature": 0.1,
           "MaxVelocity": "100,100,0",
+          "MetaballCount": 0,
+          "SaturationVariance": 0.05,
+          "ValueVariance": 0.05,
+          "VerticalCoolingCurve": {
+            "rangey": "0,0.3",
+            "frames": [
+              {
+                "x": 0.050000004,
+                "y": 0,
+                "in": 0,
+                "out": 0,
+                "mode": "Linear"
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -2.4705884,
+                "out": 2.4705884,
+                "mode": "Mirrored"
+              }
+            ]
+          },
+          "VerticalHeatingCurve": {
+            "rangey": "0,0.001",
+            "frames": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 1.9032255,
+                "out": -1.9032255,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 0.10000001,
+                "y": 0.005319149,
+                "in": 0.06629843,
+                "out": -0.06629843,
+                "mode": "Mirrored"
+              }
+            ]
+          },
           "WallBounce": 1
         },
         {
           "__type": "LavaLampGenerator",
           "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-          "MaxRadius": 0.25,
-          "MetaballCount": 36,
+          "MaxRadius": 0.05,
+          "MetaballCount": 256,
           "MinRadius": 0.05,
           "World": {
             "_type": "component",
@@ -32,29 +82,12 @@
           }
         },
         {
-          "__type": "LavaLamp",
-          "__guid": "fb5beab8-ee93-4482-a763-fc02075536b4",
+          "__type": "LavaDebugger",
+          "__guid": "2fb81853-6420-4c72-a193-9a275c60992f",
           "AttractAction": "attack1",
           "AttractForce": 4,
-          "ConvectionNoiseScale": 10,
-          "ConvectionNoiseScrolling": "10,7,0",
-          "ConvectionPower": 0.01,
-          "CoolingPerSecond": 10,
           "Debug": false,
-          "FastLavaColor": "1,1,0,1",
-          "HeatDirection": "0,-1",
-          "HeatPerSecond": 200,
-          "HueVariance": 0.02,
-          "LavaColor": "1,0.13333,0,1",
-          "LavaMaxSpeed": 0.5,
-          "LavaMinSpeed": 0,
-          "MaxHeatY": 1,
-          "MaxTemperature": 6,
-          "MinHeatY": -0.75,
-          "MinTemperature": 0,
-          "SaturationVariance": 0.05,
           "SpawnAction": "attack2",
-          "ValueVariance": 0.05,
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -73,8 +106,8 @@
         {
           "__type": "LavaRenderer2D",
           "__guid": "e2bd6b12-9179-4364-99cd-3856606d17b1",
-          "CutoffSharpness": 0.5,
-          "CutoffThreshold": 0.1,
+          "CutoffSharpness": 1,
+          "CutoffThreshold": 0,
           "InnerBlend": 1,
           "World": {
             "_type": "component",
@@ -155,7 +188,6 @@
       "Flags": 0,
       "Name": "3D Lava Lamp",
       "Position": "24,0,0",
-      "Enabled": true,
       "Children": [
         {
           "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",

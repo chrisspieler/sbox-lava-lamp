@@ -40,6 +40,6 @@
 		var y = Game.Random.Float( 0.8f, 1f );
 		var position = new Vector2( x, y );
 		var radius = Game.Random.Float( MinRadius, MaxRadius );
-		World.AddMetaball( position, Color.Orange, radius );
+		World.AddMetaball( position, World.LavaColor, radius );
 	}
 }

@@ -5,6 +5,17 @@
 	[Property, Range( 0f, 2f ), Group( "Velocity" )]
 	public float DampingStrength { get; set; } = 1f;
 
+	private void ApplyDamping()
+	{
+		if ( DampingStrength == 0f )
+			return;
+
+		foreach ( var ball in Metaballs )
+		{
+			ball.Velocity = ball.Velocity.LerpTo( Vector2.Zero, DampingStrength * 0.1f * ball.Radius );
+		}
+	}
+
 	private void ApplyVelocity()
 	{
 		foreach ( var ball in Metaballs )
@@ -22,17 +33,6 @@
 			{
 				ball.Position += velocity;
 			}
-		}
-	}
-
-	private void ApplyDamping()
-	{
-		if ( DampingStrength == 0f )
-			return;
-
-		foreach ( var ball in Metaballs )
-		{
-			ball.Velocity = ball.Velocity.LerpTo( Vector2.Zero, DampingStrength * 0.1f * ball.Radius );
 		}
 	}
 }

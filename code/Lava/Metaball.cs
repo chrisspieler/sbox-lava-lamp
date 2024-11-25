@@ -14,23 +14,24 @@ public class Metaball
 	{
 		World = world;
 		Position = position;
-		BallColor = color;
+		InitialColor = color;
 		Radius = radius;
 	}
 
 	public LavaWorld World { get; init; }
 	public Vector3 Position { get; set; }
-	public Color BallColor { get; set; }
+	public Color InitialColor { get; set; }
+	public Color CalculatedColor { get; set; }
 	public float Radius { get; set; }
 	public Vector3 Velocity { get; set; }
-
+	public float Temperature { get; set; }
 
 	public const int MAX_BALLS = 256;
 	public static Material Material2D => Material.FromShader( "shaders/2d_metaball.shader" );
 
 	internal RenderData GetRenderData()
 	{
-		var color = BallColor;
+		var color = CalculatedColor;
 		if ( Debug )
 		{
 			var t = Velocity.Length.LerpInverse( 0f, 0.5f );

@@ -4,6 +4,21 @@
 	private List<Metaball> _metaballs = new();
 	[Property] public int MetaballCount => _metaballs.Count;
 
+	protected override void OnStart()
+	{
+		_convectionNoiseSeed = Game.Random.Float( 0f, 5000f );
+	}
+
+	protected override void OnUpdate()
+	{
+		ApplyHeat();
+		ApplyDamping();
+		AttractToGravity();
+		AttractToLava();
+		ApplyVelocity();
+		UpdateColor();
+	}
+
 	public Vector2 ScreenToWorld( Vector2 screenPos )
 	{
 		var aspect = Screen.Width / Screen.Height;
@@ -21,7 +36,11 @@
 			return null;
 		}
 
-		var metaball = new Metaball( this, position, color, radius );
+		color = RandomizeHsv( color );
+		var metaball = new Metaball( this, position, color, radius )
+		{
+			Temperature = Game.Random.Float( 0, MaxTemperature * 0.5f )
+		};
 		_metaballs.Add( metaball );
 		return metaball;
 	}
