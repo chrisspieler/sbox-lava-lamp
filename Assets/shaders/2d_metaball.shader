@@ -59,6 +59,7 @@ PS
 	float InnerBlend < Attribute( "InnerBlend"); Default( 3 ); >;
 	float CutoffThreshold < Attribute( "CutoffThreshold" ); Default( 0.06 ); >;
 	float CutoffSharpness < Attribute( "CutoffSharpness" ); Default( 4 ); >;
+	float3 SimulationSize < Attribute( "SimulationSize" ); Default3( 1, 1, 1 ); >;
 
 	float GetCutoff( float shapeInfluence, float threshold, float sharpness )
 	{
@@ -67,7 +68,7 @@ PS
 		return smoothstep( 0, 1, feather );
 	}
 
-	float4 RenderMetaBalls(float2 uv ) {
+	float4 RenderMetaBalls(float2 worldPos ) {
 		
 		float shapeInfluence = 0;
 		float4 colorInfluence = 0;
@@ -76,7 +77,7 @@ PS
 		{
 			Metaball ball = Balls[i];
 			float influence;
-			influence = pow( ball.Radius / length( uv - ball.Position ), InnerBlend );
+			influence = pow( ball.Radius / length( worldPos - ball.Position.yz ), InnerBlend );
 			shapeInfluence += influence;
 			colorInfluence += ball.Color * influence;
 		}
@@ -97,9 +98,10 @@ PS
 
 	float2 UvToMetaballWorld( float2 uv ) 
 	{
-		float2 worldPos = 2 * ( uv - 0.5 );
-		float aspect = g_vViewportSize.x / g_vViewportSize.y;
-		worldPos.x *= aspect;
+		uv -= 0.5;
+		uv *= 2;
+		float2 worldPos = float2( -uv.x, -uv.y );
+		worldPos *= SimulationSize.yz;
 		return worldPos;
 	}
 

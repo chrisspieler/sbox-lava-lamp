@@ -39,11 +39,9 @@ public partial class LavaRendererLibsdf : Component
 		}
 	}
 
-	public Vector3 LavaToLocal( Vector2 lavaPos )
+	public Vector3 LavaToLocal( Vector3 lavaPos )
 	{
-		var localPos = new Vector3( 0f, -lavaPos.x, -lavaPos.y ) * SDFWorld.Size;
-		// Awful hack to accomodate another hack where the screen aspect ratio is baked in to the LavaWorld size.
-		localPos.y *= Screen.Height / Screen.Width;
+		var localPos = lavaPos * SDFWorld.Size;
 		localPos = (localPos + SDFWorld.Size) / 2f;
 		// Log.Info( $"lavaPos: {lavaPos}, scale: {LavaWorldScale}, localPos: {localPos}" );
 		return localPos;
@@ -81,7 +79,7 @@ public partial class LavaRendererLibsdf : Component
 			return Task.CompletedTask;
 
 		var position = LavaToLocal( metaball.Position );
-		var radius = metaball.Radius * SDFWorld.Size * 0.5f;
+		var radius = metaball.Radius * SDFWorld.Size;
 		var sphere = new SphereSdf3D( position, radius.x );
 		_metaballSdf[metaball] = sphere;
 		return SDFWorld.AddAsync( sphere, volume );
@@ -121,7 +119,7 @@ public partial class LavaRendererLibsdf : Component
 		{
 			subtractions.Add( new( sphere, volume, Operator.Subtract ) );
 			var position = LavaToLocal( metaball.Position );
-			var radius = metaball.Radius * SDFWorld.Size * 0.5f;
+			var radius = metaball.Radius * SDFWorld.Size;
 			var newSphere = new SphereSdf3D( position, radius.x );
 			additions.Add( new( newSphere, volume, Operator.Add ) );
 			newSpheres[metaball] = newSphere;

@@ -1,6 +1,7 @@
 ﻿public class LavaDebugger : Component
 {
 	[Property] public LavaWorld World { get; set; }
+	[Property] public LavaRenderer2D Renderer2D { get; set; }
 
 	[Property] public bool Debug
 	{
@@ -42,8 +43,8 @@
 		var mousePos = Mouse.Position;
 		if ( Input.Down( AttractAction ) )
 		{
-			var mouseUv = LavaRenderer2D.ScreenToShaderCoords( mousePos );
-			World.AttractToPoint( mouseUv, AttractForce );
+			var mousePoint = Renderer2D.ScreenToPoint( mousePos );
+			World.AttractToPoint( mousePoint, AttractForce );
 		}
 		if ( Input.Pressed( SpawnAction ) )
 		{
@@ -66,6 +67,6 @@
 		if ( !World.IsValid() )
 			return null;
 
-		return World.AddMetaball( LavaRenderer2D.ScreenToShaderCoords( screenPos ), color, size );
+		return World.AddMetaball( Renderer2D.ScreenToPoint( screenPos ), color, size );
 	}
 }

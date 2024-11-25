@@ -19,51 +19,108 @@
 		};
 	}
 
+	public Vector2 PointToScreenScale => (1f / GetScreenAspect()) * World.GetSimulationAspect() * Screen.Size;
+
+	public Rect GetCenteredScreenRect()
+	{
+		var simAspect = World.GetSimulationAspect();
+		var screenAspect = GetScreenAspect();
+		var rectSize = Screen.Size * (1f / screenAspect) * simAspect;
+		var xMargin = (Screen.Size.x - rectSize.x) * 0.5f;
+		var yMargin = (Screen.Size.y - rectSize.y) * 0.5f;
+		var offset = new Vector2( xMargin, yMargin );
+		return new Rect( offset, rectSize );
+	}
+
+	private Vector2 GetScreenAspect()
+	{
+		var yScale = 1f;
+		var xScale = 1f;
+		if ( Screen.Height > Screen.Width )
+		{
+			yScale = Screen.Width / Screen.Height;
+		}
+		else
+		{
+			xScale = Screen.Width / Screen.Height;
+		}
+		return new Vector2( xScale, yScale );
+	}
+
+	public Vector2 ScreenToUV( Vector2 screenPos )
+	{
+		var screenNormal = screenPos / Screen.Size;
+		var screenScales = GetScreenAspect();
+		// Scale around center of screen by aspect ratio.
+		var uv = screenNormal - 0.5f;
+		uv *= screenScales;
+		uv += 0.5f;
+		return uv;
+	}
+
+	public Vector2 PointToScreen( Vector3 simPosition )
+	{
+		var uv = World.PointToUV( simPosition );
+		var screenAspect = 1f / GetScreenAspect();
+		var simAspect = World.GetSimulationAspect();
+		// Scale around center of screen by inverse of aspect ratio.
+		uv -= 0.5f;
+		uv *= screenAspect * simAspect;
+		uv += 0.5f;
+		return uv * Screen.Size;
+	}
+
+	public Vector3 ScreenToPoint( Vector2 screenPos )
+	{
+		// For now, the on-screen representation of a simulation is centered in middle of the screen,
+		// and stretched uniformly so that its largest axis snugly fits the sides of the screen.
+
+		var screenNormal = screenPos / Screen.Size;
+		var screenScales = GetScreenAspect();
+		// Scale around center of screen by aspect ratio.
+		screenNormal -= 0.5f;
+		screenNormal *= screenScales;
+		screenNormal += 0.5f;
+		return World.UVToPoint( screenNormal );
+	}
+
 	protected override void OnPreRender()
 	{
-		if ( Metaball.Debug )
+		var camera = Scene.Camera;
+		if ( !Metaball.Debug || !camera.IsValid() )
+			return;
+
+		var hud = camera.Hud;
+		for ( int i = 0; i < World.MetaballCount; i++ )
 		{
-			_lastTextPosition = new Vector2( 30f, 50f );
-			var screenSize = Screen.Size;
-			PrintDebugText( $"Screen Size: {screenSize}" );
-			var screenRect = new Rect( 0, 0, screenSize.x, screenSize.y );
-			var worldStart = ScreenToShaderCoords( screenRect.TopLeft );
-			var worldEnd = ScreenToShaderCoords( screenRect.BottomRight );
-			PrintDebugText( $"World Size: {worldStart} to {worldEnd}" );
-			var mousePos = ScreenToShaderCoords( Mouse.Position );
-			PrintDebugText( $"Mouse Position: {mousePos}" );
+			var ball = World[i];
+			var screenPos = PointToScreen( ball.Position );
+			var screenRadius = ball.Radius * PointToScreenScale.x;
+			var rect = new Rect( screenPos - screenRadius, screenRadius * 2f );
+			var screenDiameter = screenRadius * 2f;
+			hud.DrawRect( rect, Color.Transparent, new Vector4( screenDiameter, screenDiameter ), new Vector4( 1f, 1f ), Color.Green.WithAlpha( 0.1f ) );
+			Gizmo.Draw.Color = Color.White;
+			Gizmo.Draw.ScreenText( $"{i}", screenPos, "Consolas", 12, TextFlag.Center );
 		}
+		_lastTextPosition = new Vector2( 15f, 0f );
+		var screenSize = Screen.Size;
+		var renderRect = GetCenteredScreenRect();
+		PrintDebugText( $"Screen Size: {screenSize}, Render Rect: {renderRect.Size}" );
+		var worldStart = -World.SimulationSize;
+		var worldEnd = World.SimulationSize;
+		PrintDebugText( $"World Size: {worldStart} to {worldEnd}" );
+		var mousePos = ScreenToPoint( Mouse.Position );
+		var mouseUv = ScreenToUV( Mouse.Position );
+		PrintDebugText( $"Mouse Position: {mousePos}, Mouse UV: {mouseUv}" );
 	}
 
 	private Vector2 _lastTextPosition;
 
 	private void PrintDebugText( string text, Vector2? screenPixel = null, TextFlag flags = TextFlag.LeftTop )
 	{
-		var camera = Scene.Camera;
-		var debugOverlay = DebugOverlaySystem.Current;
-		if ( debugOverlay is null || !camera.IsValid() )
-			return;
-
 		screenPixel ??= _lastTextPosition;
-
-		var ray = camera.ScreenPixelToRay( screenPixel.Value );
-		var worldPos = ray.Project( 100f );
-		var size = 4f;
-		debugOverlay.Text( worldPos, text, size: size, flags: flags, overlay: true );
+		Gizmo.Draw.ScreenText( text, screenPixel.Value, font: "Consolas", flags: flags );
 		_lastTextPosition.y += Screen.Height / 100f * 4f;
-	}
-
-	public static Vector2 ScreenToShaderCoords( Vector2 screenPos )
-	{
-		var aspect = Screen.Width / Screen.Height;
-		// var uv = screenPos / Box.Rect.Size - 0.5f;
-		var uv = screenPos / Screen.Size - 0.5f;
-		uv = 2 * uv;
-		// Need to offset the UV when the panel is in the center of the screen.
-		// TODO: Handle any panel position.
-		// uv = 2 * (uv - 0.5f);
-		uv.x *= aspect;
-		return uv;
 	}
 
 	private void Render( SceneObject sceneObject )
@@ -75,7 +132,7 @@
 
 		UpdateAttributes();
 
-		var screenRect = new Rect( Vector2.Zero, Screen.Size );
+		var screenRect = GetCenteredScreenRect();
 		Graphics.DrawQuad( screenRect, _metaballMaterial, Color.White );
 	}
 
@@ -90,6 +147,7 @@
 		var innerBlend = 1f.LerpTo( 4f, InnerBlend );
 
 		Graphics.Attributes.SetData( "BallBuffer", metaballData );
+		Graphics.Attributes.Set( "SimulationSize", World.SimulationSize );
 		Graphics.Attributes.Set( "BallCount", metaballData.Count );
 		Graphics.Attributes.Set( "CutoffThreshold", cutoffThreshold );
 		Graphics.Attributes.Set( "CutoffSharpness", cutoffSharpness );

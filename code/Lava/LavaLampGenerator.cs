@@ -36,9 +36,9 @@
 		if ( !World.IsValid() )
 			return;
 
-		var x = Game.Random.Float( -0.95f, 0.95f );
-		var y = Game.Random.Float( 0.8f, 1f );
-		var position = new Vector2( x, y );
+		var y = Game.Random.Float( World.SimulationSize.y * -0.95f, World.SimulationSize.y * 0.95f );
+		var z = Game.Random.Float( World.SimulationSize.z * -0.8f, World.SimulationSize.z * -1f );
+		var position = new Vector3( 0, y, z );
 		var radius = Game.Random.Float( MinRadius, MaxRadius );
 		World.AddMetaball( position, World.LavaColor, radius );
 	}

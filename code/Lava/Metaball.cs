@@ -63,9 +63,6 @@ public class Metaball
 		public readonly RenderData WithColor( Color color )
 			=> this with { Color = color };
 
-		public readonly RenderData WithPosition( Vector2 position )
-			=> this with { Position = Position with { x = position.x, y = position.y, z = 0 } };
-
 		public readonly RenderData WithPosition( Vector3 position )
 			=> this with { Position = Position with { x = position.x, y = position.y, z = position.z } };
 
