@@ -1,8 +1,7 @@
-﻿using Sandbox.Services;
-using Sandbox.Utility;
+﻿using Sandbox.Utility;
 using System;
 
-public partial class LavaLamp : PanelComponent
+public class LavaLamp : Component
 {
 	private struct MetaballExtData 
 	{
@@ -94,20 +93,13 @@ public partial class LavaLamp : PanelComponent
 	[Property, Group( "Heat" )] 
 	public float ConvectionNoiseScale { get; set; } = 10f;
 
-
-	[Property, Range( 0f, 1f ), Group( "Shader")] public float CutoffThreshold { get; set; } = 0.5f;
-	[Property, Range( 0f, 1f ), Group( "Shader" )] public float CutoffSharpness { get; set; } = 0.5f;
-	[Property, Range( 0f, 1f ), Group( "Shader" )] public float InnerBlend { get; set; } = 0.5f;
-
 	public IEnumerable<Metaball> Metaballs => World?.Metaballs;
-
-	private MetaballRenderer Renderer { get; set; }
 
 	private readonly Dictionary<Metaball, MetaballExtData> _metaballData = new();
 
 	private float _convectionNoiseSeed;
 
-	protected override void OnTreeFirstBuilt()
+	protected override void OnStart()
 	{
 		World ??= GetComponent<LavaWorld>();
 
@@ -118,12 +110,11 @@ public partial class LavaLamp : PanelComponent
 
 	protected override void OnUpdate()
 	{
-		if ( !World.IsValid() || !Renderer.IsValid() )
+		if ( !World.IsValid() )
 			return;
 
 		UpdateInput();
 		UpdateColor();
-		UpdateAttributes();
 		UpdateCursor();
 		UpdateHeat();
 	}
@@ -145,14 +136,17 @@ public partial class LavaLamp : PanelComponent
 			return;
 
 		if ( !_metaballData.TryGetValue( metaball, out MetaballExtData data ) )
+		{
+			InitializeMetaballData( metaball );
 			return;
+		}
 
 		var baseColor = GetLavaBaseColor( metaball.Velocity );
 		metaball.BallColor = data.Apply( baseColor );
 		return;
 	}
 
-	private Color GetLavaBaseColor( Vector2 velocity )
+	private Color GetLavaBaseColor( Vector3 velocity )
 	{
 		var speed = velocity.Length.LerpInverse( LavaMinSpeed, LavaMaxSpeed );
 		return Color.Lerp( LavaColor, FastLavaColor, speed );
@@ -224,12 +218,12 @@ public partial class LavaLamp : PanelComponent
 		return dir * 0.2f;
 	}
 
-	public Metaball SpawnMetaball( Vector2 panelPos, Color color, float size = 0.15f )
+	public Metaball SpawnMetaball( Vector2 screenPos, Color color, float size = 0.15f )
 	{
-		if ( !World.IsValid() || !Renderer.IsValid() )
+		if ( !World.IsValid() )
 			return null;
 
-		return World.AddMetaball( Renderer.ScreenToPanelUV( panelPos ), color, size );
+		return World.AddMetaball( LavaRenderer2D.ScreenToShaderCoords( screenPos ), color, size );
 	}
 
 	private MetaballExtData RandomizeHsv()
@@ -245,16 +239,6 @@ public partial class LavaLamp : PanelComponent
 		};
 	}
 
-	private void UpdateAttributes()
-	{
-		if ( Renderer is null )
-			return;
-
-		Renderer.CutoffThreshold = 10f.LerpTo( 1000f, CutoffThreshold );
-		Renderer.CutoffSharpness = 1f.LerpTo( 20f, CutoffSharpness );
-		Renderer.InnerBlend = 1f.LerpTo( 4f, InnerBlend );
-	}
-
 	private void UpdateCursor()
 	{
 		var camera = Scene.Camera;
@@ -267,17 +251,18 @@ public partial class LavaLamp : PanelComponent
 
 	private void UpdateInput()
 	{
-		if ( !Renderer.IsValid() || !World.IsValid() )
+		if ( !World.IsValid() )
 			return;
 
+		var mousePos = Mouse.Position;
 		if ( Input.Down( AttractAction ) )
 		{
-			var mouseUv = Renderer.ScreenToPanelUV( Renderer.MousePosition );
+			var mouseUv = LavaRenderer2D.ScreenToShaderCoords( mousePos );
 			World.AttractToPoint( mouseUv, AttractForce );
 		}
 		if ( Input.Pressed( SpawnAction ) )
 		{
-			SpawnMetaball( Renderer.MousePosition, LavaColor );
+			SpawnMetaball( mousePos, LavaColor );
 		}
 	}
 }

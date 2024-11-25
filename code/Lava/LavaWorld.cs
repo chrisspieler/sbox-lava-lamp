@@ -2,7 +2,7 @@
 {
 	public IEnumerable<Metaball> Metaballs => _metaballs;
 	private List<Metaball> _metaballs = new();
-	public int MetaballCount => _metaballs.Count;
+	[Property] public int MetaballCount => _metaballs.Count;
 
 	public Vector2 ScreenToWorld( Vector2 screenPos )
 	{

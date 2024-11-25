@@ -49,6 +49,7 @@ public class Metaball
 			{
 				x = position.x,
 				y = position.y,
+				z = position.z,
 				w = radius
 			};
 			Color = color;

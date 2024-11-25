@@ -10,46 +10,41 @@
         {
           "__type": "LavaWorld",
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-          "GravityDirection": "0,1",
-          "GravityAttractionScale": 0.1,
+          "DampingStrength": 1,
+          "EnableCollision": true,
+          "GravityForce": "0,0.15,0",
           "LavaAttractionRange": 0.05,
           "LavaAttractionScale": 0.04,
-          "WallRestitution": 1
-        }
-      ]
-    },
-    {
-      "__guid": "1483f045-f12d-4942-bd1e-df2107f116b6",
-      "Flags": 0,
-      "Name": "2D Lava Lamp",
-      "Enabled": true,
-      "Components": [
+          "MaxVelocity": "100,100,0",
+          "WallBounce": 1
+        },
         {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "0402d2c5-3106-48df-8d6d-51f907af200b",
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ScaleStrategy": "ConsistentHeight",
-          "ZIndex": 100
+          "__type": "LavaLampGenerator",
+          "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
+          "MaxRadius": 0.25,
+          "MetaballCount": 36,
+          "MinRadius": 0.05,
+          "World": {
+            "_type": "component",
+            "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+            "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
+            "component_type": "LavaWorld"
+          }
         },
         {
           "__type": "LavaLamp",
-          "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
+          "__guid": "fb5beab8-ee93-4482-a763-fc02075536b4",
           "AttractAction": "attack1",
           "AttractForce": 4,
           "ConvectionNoiseScale": 10,
           "ConvectionNoiseScrolling": "10,7,0",
           "ConvectionPower": 0.01,
           "CoolingPerSecond": 10,
-          "CutoffSharpness": 0.5,
-          "CutoffThreshold": 0.1,
           "Debug": false,
           "FastLavaColor": "1,1,0,1",
           "HeatDirection": "0,-1",
           "HeatPerSecond": 200,
           "HueVariance": 0.02,
-          "InnerBlend": 1,
           "LavaColor": "1,0.13333,0,1",
           "LavaMaxSpeed": 0.5,
           "LavaMinSpeed": 0,
@@ -66,13 +61,21 @@
             "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
             "component_type": "LavaWorld"
           }
-        },
+        }
+      ]
+    },
+    {
+      "__guid": "1483f045-f12d-4942-bd1e-df2107f116b6",
+      "Flags": 0,
+      "Name": "2D Lava Lamp",
+      "Enabled": true,
+      "Components": [
         {
-          "__type": "LavaLampGenerator",
-          "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-          "MaxRadius": 0.25,
-          "MetaballCount": 36,
-          "MinRadius": 0.05,
+          "__type": "LavaRenderer2D",
+          "__guid": "e2bd6b12-9179-4364-99cd-3856606d17b1",
+          "CutoffSharpness": 0.5,
+          "CutoffThreshold": 0.1,
+          "InnerBlend": 1,
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -270,8 +273,8 @@
       "__guid": "05db56b1-81ea-49c5-8cec-e68fd728275e",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "0.4575729,-0.8174009,10.31898",
-      "Rotation": "0.0003444099,-0.01860527,0.01850504,0.9996555",
+      "Position": "-2,0,8.11898",
+      "Rotation": "-0.00000000002911958,-0.01745241,-0.0000000000005082841,0.9998477",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -280,7 +283,7 @@
           "__guid": "40f32f37-4165-4d9e-997d-0a4df346a8cf",
           "BackgroundColor": "0,0,0,1",
           "ClearFlags": "All",
-          "FieldOfView": 75,
+          "FieldOfView": 70,
           "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
