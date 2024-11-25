@@ -10,11 +10,11 @@ public partial class MetaballRenderer : Panel
 	public float CutoffSharpness { get; set; }
 	public float InnerBlend { get; set; }
 
-	private Material _metaballMaterial = Metaball2D.Material;
+	private Material _metaballMaterial = Metaball.Material2D;
 
 	public override void Tick()
 	{
-		if ( Metaball2D.Debug )
+		if ( Metaball.Debug )
 		{
 			_lastTextPosition = new Vector2( 30f, 50f );
 			var screenSize = Screen.Size;

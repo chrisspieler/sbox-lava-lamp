@@ -1,16 +1,16 @@
 ﻿using Sandbox.Utility;
 
-public class Metaball2D
+public class Metaball
 {
 	[ConVar( "metaball_debug" )]
 	public static bool Debug { get; set; }
 
-	public Metaball2D( LavaWorld world ) 
+	public Metaball( LavaWorld world ) 
 	{
 		World = world;
 	}
 
-	public Metaball2D( LavaWorld world, Vector2 position, Color color, float radius )
+	public Metaball( LavaWorld world, Vector3 position, Color color, float radius )
 	{
 		World = world;
 		Position = position;
@@ -19,14 +19,14 @@ public class Metaball2D
 	}
 
 	public LavaWorld World { get; init; }
-	public Vector2 Position { get; set; }
+	public Vector3 Position { get; set; }
 	public Color BallColor { get; set; }
 	public float Radius { get; set; }
-	public Vector2 Velocity { get; set; }
+	public Vector3 Velocity { get; set; }
 
 
 	public const int MAX_BALLS = 256;
-	public static Material Material => Material.FromShader( "shaders/ui_metaball.shader" );
+	public static Material Material2D => Material.FromShader( "shaders/2d_metaball.shader" );
 
 	internal RenderData GetRenderData()
 	{
@@ -43,28 +43,31 @@ public class Metaball2D
 	internal readonly struct RenderData
 	{
 		public RenderData() { }
-		public RenderData( Vector2 position, Color color, float radius )
+		public RenderData( Vector3 position, Color color, float radius )
 		{
 			Position = new Vector4()
 			{
 				x = position.x,
 				y = position.y,
-				z = radius
+				w = radius
 			};
 			Color = color;
 		}
 
 		public Vector4 Position { get; init; }
 		public Vector4 Color { get; init; }
-		public float Radius => Position.z;
+		public float Radius => Position.w;
 
 		public readonly RenderData WithColor( Color color )
 			=> this with { Color = color };
 
 		public readonly RenderData WithPosition( Vector2 position )
-			=> this with { Position = Position with { x = position.x, y = position.y } };
+			=> this with { Position = Position with { x = position.x, y = position.y, z = 0 } };
+
+		public readonly RenderData WithPosition( Vector3 position )
+			=> this with { Position = Position with { x = position.x, y = position.y, z = position.z } };
 
 		public readonly RenderData WithRadius( float radius )
-			=> this with { Position = Position with { z = radius } };
+			=> this with { Position = Position with { w = radius } };
 	}
 }

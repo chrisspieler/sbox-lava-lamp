@@ -29,10 +29,10 @@ public partial class LavaLamp : PanelComponent
 
 	[Property] public bool Debug
 	{
-		get => Metaball2D.Debug;
+		get => Metaball.Debug;
 		set
 		{
-			Metaball2D.Debug = value;
+			Metaball.Debug = value;
 		}
 	}
 
@@ -99,11 +99,11 @@ public partial class LavaLamp : PanelComponent
 	[Property, Range( 0f, 1f ), Group( "Shader" )] public float CutoffSharpness { get; set; } = 0.5f;
 	[Property, Range( 0f, 1f ), Group( "Shader" )] public float InnerBlend { get; set; } = 0.5f;
 
-	public IEnumerable<Metaball2D> Metaballs => World?.Metaballs;
+	public IEnumerable<Metaball> Metaballs => World?.Metaballs;
 
 	private MetaballRenderer Renderer { get; set; }
 
-	private readonly Dictionary<Metaball2D, MetaballExtData> _metaballData = new();
+	private readonly Dictionary<Metaball, MetaballExtData> _metaballData = new();
 
 	private float _convectionNoiseSeed;
 
@@ -139,7 +139,7 @@ public partial class LavaLamp : PanelComponent
 		}
 	}
 
-	private void UpdateColor( Metaball2D metaball )
+	private void UpdateColor( Metaball metaball )
 	{
 		if ( metaball is null )
 			return;
@@ -169,7 +169,7 @@ public partial class LavaLamp : PanelComponent
 		}
 	}
 
-	private void InitializeMetaballData( Metaball2D metaball )
+	private void InitializeMetaballData( Metaball metaball )
 	{
 		var baseColor = GetLavaBaseColor( metaball.Velocity );
 		var data = RandomizeHsv();
@@ -209,7 +209,7 @@ public partial class LavaLamp : PanelComponent
 			var heatDir = HeatDirection + noise;
 			heatDir *= data.Temperature * ConvectionPower;
 			heatDir *= Time.Delta;
-			ball.Velocity += heatDir;
+			ball.Velocity += (Vector3)heatDir;
 		}
 	}
 
@@ -224,7 +224,7 @@ public partial class LavaLamp : PanelComponent
 		return dir * 0.2f;
 	}
 
-	public Metaball2D SpawnMetaball( Vector2 panelPos, Color color, float size = 0.15f )
+	public Metaball SpawnMetaball( Vector2 panelPos, Color color, float size = 0.15f )
 	{
 		if ( !World.IsValid() || !Renderer.IsValid() )
 			return null;

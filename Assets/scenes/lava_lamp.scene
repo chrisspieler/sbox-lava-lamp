@@ -2,9 +2,26 @@
   "__guid": "0f588b48-781c-4cbb-af1a-d50d88b93962",
   "GameObjects": [
     {
-      "__guid": "3780477f-8ed3-4a19-9171-c8e45f11c79e",
+      "__guid": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
       "Flags": 0,
-      "Name": "Screen",
+      "Name": "Lava World",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "LavaWorld",
+          "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
+          "GravityDirection": "0,1",
+          "GravityAttractionScale": 0.1,
+          "LavaAttractionRange": 0.05,
+          "LavaAttractionScale": 0.04,
+          "WallRestitution": 1
+        }
+      ]
+    },
+    {
+      "__guid": "1483f045-f12d-4942-bd1e-df2107f116b6",
+      "Flags": 0,
+      "Name": "2D Lava Lamp",
       "Enabled": true,
       "Components": [
         {
@@ -15,256 +32,235 @@
           "Scale": 1,
           "ScaleStrategy": "ConsistentHeight",
           "ZIndex": 100
+        },
+        {
+          "__type": "LavaLamp",
+          "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
+          "AttractAction": "attack1",
+          "AttractForce": 4,
+          "ConvectionNoiseScale": 10,
+          "ConvectionNoiseScrolling": "10,7,0",
+          "ConvectionPower": 0.01,
+          "CoolingPerSecond": 10,
+          "CutoffSharpness": 0.5,
+          "CutoffThreshold": 0.1,
+          "Debug": false,
+          "FastLavaColor": "1,1,0,1",
+          "HeatDirection": "0,-1",
+          "HeatPerSecond": 200,
+          "HueVariance": 0.02,
+          "InnerBlend": 1,
+          "LavaColor": "1,0.13333,0,1",
+          "LavaMaxSpeed": 0.5,
+          "LavaMinSpeed": 0,
+          "MaxHeatY": 1,
+          "MaxTemperature": 6,
+          "MinHeatY": -0.75,
+          "MinTemperature": 0,
+          "SaturationVariance": 0.05,
+          "SpawnAction": "attack2",
+          "ValueVariance": 0.05,
+          "World": {
+            "_type": "component",
+            "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+            "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
+            "component_type": "LavaWorld"
+          }
+        },
+        {
+          "__type": "LavaLampGenerator",
+          "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
+          "MaxRadius": 0.25,
+          "MetaballCount": 36,
+          "MinRadius": 0.05,
+          "World": {
+            "_type": "component",
+            "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
+            "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
+            "component_type": "LavaWorld"
+          }
         }
       ],
       "Children": [
         {
-          "__guid": "4dc97025-27f7-49f0-93c8-b93dd4b7bdc9",
+          "__guid": "0c7e26ec-aba1-4d11-b6e1-1187a5b52c52",
           "Flags": 0,
-          "Name": "3D Lava Lamp",
-          "Position": "24,0,0",
+          "Name": "Lava Lamp Mount",
+          "Position": "16,0.000005103648,3.800187",
           "Enabled": true,
           "Children": [
             {
-              "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+              "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
               "Flags": 0,
-              "Name": "Lava 3D",
-              "Position": "-8,-6,0",
-              "Scale": "0.25,0.25,0.25",
+              "Name": "Lava Glow Light",
+              "Position": "12,0.0000004442409,0.1998129",
+              "Tags": "light_point,light",
               "Enabled": true,
               "Components": [
                 {
-                  "__type": "Lava3D",
-                  "__guid": "c6f47e8a-e427-4561-9d4f-299f712e6204",
-                  "LavaWorld": {
+                  "__type": "Sandbox.PointLight",
+                  "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                  "Attenuation": 6.08,
+                  "FogMode": "Enabled",
+                  "FogStrength": 1,
+                  "LightColor": "0.53023,0.47039,0.25402,1",
+                  "Radius": 400,
+                  "Shadows": true
+                },
+                {
+                  "__type": "LavaLampFlicker",
+                  "__guid": "cfb52e67-3c47-40b9-b9a9-1007ac71e0fa",
+                  "HighVelocityAttenuation": 0.25,
+                  "LampLight": {
+                    "_type": "component",
+                    "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                    "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                    "component_type": "PointLight"
+                  },
+                  "LightSaturationOffset": -0.2,
+                  "LightValueOffset": -0.5,
+                  "LowVelocityAttenuation": 2,
+                  "PositionScale": 8,
+                  "VelocityMaxInput": 20,
+                  "World": {
                     "_type": "component",
                     "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
-                    "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
+                    "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
                     "component_type": "LavaWorld"
-                  },
-                  "SdfInitializeTime": "0.00ms",
-                  "SdfLastUpdateTime": "0.00ms",
-                  "SDFVolume": "sdf/sdf_lava_volume.sdfvol",
-                  "SDFWorld": {
-                    "_type": "component",
-                    "component_id": "75ecf460-a5f6-4c9a-8999-c08f3a0c8f60",
-                    "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
-                    "component_type": "Sdf3DWorld"
                   }
                 },
                 {
-                  "__type": "Sandbox.Sdf.Sdf3DWorld",
-                  "__guid": "75ecf460-a5f6-4c9a-8999-c08f3a0c8f60",
-                  "HasPhysics": false,
-                  "IsFinite": true,
-                  "Size": "64,64,64"
-                }
-              ],
-              "Children": [
-                {
-                  "__guid": "bd185004-7892-4cb4-a0c9-3f22ae9606ec",
-                  "Flags": 0,
-                  "Name": "Spot Light",
-                  "Position": "48,24,0.000004470348",
-                  "Rotation": "0,-0.7071067,0,0.7071068",
-                  "Tags": "light_spot,light",
-                  "Enabled": true,
-                  "Components": [
-                    {
-                      "__type": "Sandbox.SpotLight",
-                      "__guid": "a3d9e222-8db2-455f-9027-57f304121479",
-                      "Attenuation": 0.5,
-                      "ConeInner": 45,
-                      "ConeOuter": 50,
-                      "FogMode": "Enabled",
-                      "FogStrength": 1,
-                      "LightColor": "1,0.97442,0.84651,1",
-                      "Radius": 500,
-                      "Shadows": true
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "__guid": "65a01182-a0da-4965-a92a-23b68de59517",
-              "Flags": 0,
-              "Name": "Cube",
-              "Position": "4,0,16",
-              "Scale": "0.2,0.2,0.02",
-              "Enabled": true,
-              "Components": [
-                {
-                  "__type": "Sandbox.ModelRenderer",
-                  "__guid": "63e468f7-9475-44d4-aa9c-d3d3b9040968",
-                  "BodyGroups": 18446744073709551615,
-                  "CreateAttachments": false,
-                  "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
-                  "Model": "models/dev/box.vmdl",
-                  "RenderOptions": {
-                    "GameLayer": true,
-                    "OverlayLayer": false,
-                    "BloomLayer": false,
-                    "AfterUILayer": false
-                  },
-                  "RenderType": "On",
-                  "Tint": "0.37647,0.37647,0.37647,1"
-                }
-              ]
-            },
-            {
-              "__guid": "2519b758-9850-4e05-944e-8f8ee434e619",
-              "Flags": 0,
-              "Name": "Cube",
-              "Position": "4,0,0",
-              "Scale": "0.2,0.2,0.02",
-              "Enabled": true,
-              "Components": [
-                {
-                  "__type": "Sandbox.ModelRenderer",
-                  "__guid": "67a8451d-f606-46eb-8900-d8e18f266c0b",
-                  "BodyGroups": 18446744073709551615,
-                  "CreateAttachments": false,
-                  "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
-                  "Model": "models/dev/box.vmdl",
-                  "RenderOptions": {
-                    "GameLayer": true,
-                    "OverlayLayer": false,
-                    "BloomLayer": false,
-                    "AfterUILayer": false
-                  },
-                  "RenderType": "Off",
-                  "Tint": "0.37674,0.37674,0.37674,1"
+                  "__type": "ManagedLight",
+                  "__guid": "8cbfe7de-9273-4926-b536-b7f27697a803",
+                  "Index": 0,
+                  "ShadowResolution": 2048,
+                  "TargetLight": {
+                    "_type": "component",
+                    "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
+                    "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
+                    "component_type": "PointLight"
+                  }
                 }
               ]
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "__guid": "4dc97025-27f7-49f0-93c8-b93dd4b7bdc9",
+      "Flags": 0,
+      "Name": "3D Lava Lamp",
+      "Position": "24,0,0",
+      "Enabled": true,
+      "Children": [
         {
-          "__guid": "1483f045-f12d-4942-bd1e-df2107f116b6",
+          "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
           "Flags": 0,
-          "Name": "Lava Lamp",
+          "Name": "Lava libSDF",
+          "Position": "-4,-4,-0.0000005159527",
+          "Scale": "0.125,0.125,0.125",
           "Enabled": true,
           "Components": [
             {
-              "__type": "LavaLamp",
-              "__guid": "8eacfe0f-aa18-45d1-9b15-3bcacf6d96ed",
-              "AttractAction": "attack1",
-              "AttractForce": 4,
-              "ConvectionNoiseScale": 10,
-              "ConvectionNoiseScrolling": "10,7,0",
-              "ConvectionPower": 0.01,
-              "CoolingPerSecond": 10,
-              "CutoffSharpness": 0.5,
-              "CutoffThreshold": 0.1,
-              "Debug": false,
-              "FastLavaColor": "1,1,0,1",
-              "HeatDirection": "0,-1",
-              "HeatPerSecond": 200,
-              "HueVariance": 0.02,
-              "InnerBlend": 1,
-              "LavaColor": "1,0.13333,0,1",
-              "LavaMaxSpeed": 0.5,
-              "LavaMinSpeed": 0,
-              "MaxHeatY": 1,
-              "MaxTemperature": 6,
-              "MinHeatY": -0.75,
-              "MinTemperature": 0,
-              "SaturationVariance": 0.05,
-              "SpawnAction": "attack2",
-              "ValueVariance": 0.05,
-              "World": {
+              "__type": "LavaRendererLibsdf",
+              "__guid": "4cdeaa6d-23cf-4e69-8f75-788ed23f77fe",
+              "LavaWorld": {
                 "_type": "component",
                 "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
-                "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
+                "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
                 "component_type": "LavaWorld"
+              },
+              "SdfInitializeTime": "0.00ms",
+              "SdfLastUpdateTime": "0.00ms",
+              "SDFVolume": "sdf/sdf_lava_volume.sdfvol",
+              "SDFWorld": {
+                "_type": "component",
+                "component_id": "75ecf460-a5f6-4c9a-8999-c08f3a0c8f60",
+                "go": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
+                "component_type": "Sdf3DWorld"
               }
             },
             {
-              "__type": "LavaWorld",
-              "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-              "GravityDirection": "0,1",
-              "GravityAttractionScale": 0.1,
-              "LavaAttractionRange": 0.05,
-              "LavaAttractionScale": 0.04,
-              "WallRestitution": 1
-            },
-            {
-              "__type": "LavaLampGenerator",
-              "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-              "MaxRadius": 0.25,
-              "MetaballCount": 36,
-              "MinRadius": 0.05,
-              "World": {
-                "_type": "component",
-                "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
-                "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
-                "component_type": "LavaWorld"
-              }
+              "__type": "Sandbox.Sdf.Sdf3DWorld",
+              "__guid": "75ecf460-a5f6-4c9a-8999-c08f3a0c8f60",
+              "HasPhysics": false,
+              "IsFinite": true,
+              "Size": "64,64,64"
             }
-          ],
-          "Children": [
+          ]
+        },
+        {
+          "__guid": "bd185004-7892-4cb4-a0c9-3f22ae9606ec",
+          "Flags": 0,
+          "Name": "Lamp Base Light",
+          "Rotation": "0,-0.7071067,0,0.7071068",
+          "Scale": "0.25,0.25,0.25",
+          "Tags": "light_spot,light",
+          "Enabled": true,
+          "Components": [
             {
-              "__guid": "0c7e26ec-aba1-4d11-b6e1-1187a5b52c52",
-              "Flags": 0,
-              "Name": "Lava Lamp Mount",
-              "Position": "16,0.000005103648,3.800187",
-              "Enabled": true,
-              "Children": [
-                {
-                  "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
-                  "Flags": 0,
-                  "Name": "Lava Lamp Light",
-                  "Tags": "light_point,light",
-                  "Enabled": true,
-                  "Components": [
-                    {
-                      "__type": "Sandbox.PointLight",
-                      "__guid": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-                      "Attenuation": 6.08,
-                      "FogMode": "Enabled",
-                      "FogStrength": 1,
-                      "LightColor": "0.53023,0.47039,0.25402,1",
-                      "Radius": 400,
-                      "Shadows": true
-                    },
-                    {
-                      "__type": "LavaLampFlicker",
-                      "__guid": "cfb52e67-3c47-40b9-b9a9-1007ac71e0fa",
-                      "HighVelocityAttenuation": 0.25,
-                      "LampLight": {
-                        "_type": "component",
-                        "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-                        "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
-                        "component_type": "PointLight"
-                      },
-                      "LightSaturationOffset": -0.2,
-                      "LightValueOffset": -0.5,
-                      "LowVelocityAttenuation": 2,
-                      "PositionScale": 10,
-                      "VelocityMaxInput": 20,
-                      "World": {
-                        "_type": "component",
-                        "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
-                        "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
-                        "component_type": "LavaWorld"
-                      }
-                    },
-                    {
-                      "__type": "ManagedLight",
-                      "__guid": "8cbfe7de-9273-4926-b536-b7f27697a803",
-                      "Index": 0,
-                      "ShadowResolution": 2048,
-                      "TargetLight": {
-                        "_type": "component",
-                        "component_id": "c80f6069-6a82-4c82-b70e-56888aa0f889",
-                        "go": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
-                        "component_type": "PointLight"
-                      }
-                    }
-                  ]
-                }
-              ]
+              "__type": "Sandbox.SpotLight",
+              "__guid": "a3d9e222-8db2-455f-9027-57f304121479",
+              "Attenuation": 0.5,
+              "ConeInner": 45,
+              "ConeOuter": 50,
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "1,0.97442,0.84651,1",
+              "Radius": 500,
+              "Shadows": true
+            }
+          ]
+        },
+        {
+          "__guid": "65a01182-a0da-4965-a92a-23b68de59517",
+          "Flags": 0,
+          "Name": "Cap Model",
+          "Position": "0,0,8",
+          "Scale": "0.159,0.159,0.01",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "63e468f7-9475-44d4-aa9c-d3d3b9040968",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "0.37647,0.37647,0.37647,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2519b758-9850-4e05-944e-8f8ee434e619",
+          "Flags": 0,
+          "Name": "Base Model",
+          "Scale": "0.159,0.159,0.01",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "67a8451d-f606-46eb-8900-d8e18f266c0b",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialOverride": "materials/dev/dev_metal_rough70.vmat",
+              "Model": "models/dev/box.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "Off",
+              "Tint": "0.37674,0.37674,0.37674,1"
             }
           ]
         }
@@ -274,8 +270,8 @@
       "__guid": "05db56b1-81ea-49c5-8cec-e68fd728275e",
       "Flags": 0,
       "Name": "Camera",
-      "Position": "7.066666,0,13.33333",
-      "Rotation": "-0.001504625,0.09235831,0.01621937,0.9955926",
+      "Position": "0.4575729,-0.8174009,10.31898",
+      "Rotation": "0.0003444099,-0.01860527,0.01850504,0.9996555",
       "Tags": "maincamera",
       "Enabled": true,
       "Components": [
@@ -1048,7 +1044,7 @@
                 ],
                 "TextureOffset": [
                   "256,0",
-                  "0,0",
+                  "0.00003051758,0",
                   "0,0",
                   "0,0"
                 ],

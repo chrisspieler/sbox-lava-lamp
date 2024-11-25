@@ -44,7 +44,7 @@
 		}
 	}
 
-	private void AdvanceBall( Metaball2D ball, Vector2 wishTranslation, int depth )
+	private void AdvanceBall( Metaball ball, Vector3 wishTranslation, int depth )
 	{
 		if ( depth > 3 )
 		{
@@ -99,7 +99,7 @@
 	{
 		foreach( var ball in Metaballs )
 		{
-			ball.Velocity += GravityDirection * GravityAttractionScale * 0.25f * Time.Delta;
+			ball.Velocity += (Vector3)GravityDirection * GravityAttractionScale * 0.25f * Time.Delta;
 		}
 	}
 

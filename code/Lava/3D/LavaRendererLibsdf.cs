@@ -1,47 +1,19 @@
 ﻿using Sandbox.Diagnostics;
 using Sandbox.Sdf;
-using System;
 using System.Threading.Tasks;
 
-public partial class Lava3D : Component
+public partial class LavaRendererLibsdf : Component
 {
 	[Property] public LavaWorld LavaWorld { get; set; }
 	[Property] public Sdf3DWorld SDFWorld { get; set; }
 	[Property] public Sdf3DVolume SDFVolume { get; set; }
 
-	private Dictionary<Metaball2D, SphereSdf3D> _metaballSdf = new();
+	private Dictionary<Metaball, SphereSdf3D> _metaballSdf = new();
 	[Property] public string SdfLastUpdateTime => $"{_sdfLastUpdateTime:F2}ms";
 	private float _sdfLastUpdateTime;
 
 	[Property] public string SdfInitializeTime => $"{_sdfInitializeTime:F2}ms";
 	private float _sdfInitializeTime;
-
-	public Vector3 LavaToWorld( Vector2 lavaPos )
-	{
-		// SDF size is world scale, so LavaToWorld must be found before LavaToLocal.
-		var scale = SDFWorld.IsValid() ? SDFWorld.Size : WorldScale;
-		var localPos = new Vector3( 0f, -lavaPos.x, -lavaPos.y ) * scale;
-		// Awful hack to perpetuate another hack where the LavaWorld is scaled by aspect ratio.
-		localPos.y *= Screen.Height / Screen.Width;
-		localPos = ( localPos + SDFWorld.Size ) / 2f;
-		var worldPos = WorldPosition + localPos;
-		// Log.Info( $"lavaPos: {lavaPos}, scale: {scale}, localPos: {localPos}, worldPos: {worldPos}" );
-		return worldPos;
-	}
-
-	public Vector3 LavaScaleToWorld( Vector2 lavaScale )
-	{
-		var scale = SDFWorld.IsValid() ? SDFWorld.Size : WorldScale;
-		// Lava world is twice as large as SDF world.
-		scale *= 0.5f;
-		// We assume that a line or thin rectangle in 2D should have little depth in 3D.
-		var xScale = MathF.Min( lavaScale.x, lavaScale.y );
-		var worldScale = new Vector3( xScale, lavaScale.x, lavaScale.y ) * scale;
-		// Log.Info( $"lavaScale: {lavaScale}, scale: {scale}, xScale: {xScale}, worldScale: {worldScale}" );
-		return worldScale;
-	}
-
-	public Vector3 LavaToLocal( Vector2 lavaPos ) => WorldTransform.PointToLocal( LavaToWorld( lavaPos ) );
 
 	protected override void OnStart()
 	{
@@ -67,6 +39,21 @@ public partial class Lava3D : Component
 		}
 	}
 
+	public Vector3 LavaToLocal( Vector2 lavaPos )
+	{
+		var localPos = new Vector3( 0f, -lavaPos.x, -lavaPos.y ) * SDFWorld.Size;
+		// Awful hack to accomodate another hack where the screen aspect ratio is baked in to the LavaWorld size.
+		localPos.y *= Screen.Height / Screen.Width;
+		localPos = (localPos + SDFWorld.Size) / 2f;
+		// Log.Info( $"lavaPos: {lavaPos}, scale: {LavaWorldScale}, localPos: {localPos}" );
+		return localPos;
+	}
+
+	public Vector3 LavaToWorld( Vector2 lavaPos )
+	{
+		return SDFWorld.WorldPosition + LavaToLocal( lavaPos );
+	}
+
 	private async void InitializeSDFWorld()
 	{
 		if ( !SDFVolume.IsValid() )
@@ -88,13 +75,13 @@ public partial class Lava3D : Component
 		}
 	}
 
-	private Task CreateMetaballSDF( Sdf3DVolume volume, Metaball2D metaball )
+	private Task CreateMetaballSDF( Sdf3DVolume volume, Metaball metaball )
 	{
 		if ( metaball is null || volume is null )
 			return Task.CompletedTask;
 
-		var position = LavaToWorld( metaball.Position );
-		var radius = LavaScaleToWorld( metaball.Radius );
+		var position = LavaToLocal( metaball.Position );
+		var radius = metaball.Radius * SDFWorld.Size * 0.5f;
 		var sphere = new SphereSdf3D( position, radius.x );
 		_metaballSdf[metaball] = sphere;
 		return SDFWorld.AddAsync( sphere, volume );
@@ -123,18 +110,18 @@ public partial class Lava3D : Component
 		_sdfLastUpdateTime = (float)timer.ElapsedMilliSeconds;
 	}
 
-	private record MetaballModInfo( IEnumerable<Modification<Sdf3DVolume, ISdf3D>> Mods, Dictionary<Metaball2D, SphereSdf3D> NewSpheres);
+	private record MetaballModInfo( IEnumerable<Modification<Sdf3DVolume, ISdf3D>> Mods, Dictionary<Metaball, SphereSdf3D> NewSpheres);
 
-	private MetaballModInfo GetMetaballModifications( Sdf3DVolume volume, Dictionary<Metaball2D, SphereSdf3D> oldSpheres )
+	private MetaballModInfo GetMetaballModifications( Sdf3DVolume volume, Dictionary<Metaball, SphereSdf3D> oldSpheres )
 	{
 		var subtractions = new List<Modification<Sdf3DVolume, ISdf3D>>();
 		var additions = new List<Modification<Sdf3DVolume, ISdf3D>>();
-		var newSpheres = new Dictionary<Metaball2D, SphereSdf3D>();
-		foreach( ( Metaball2D metaball, SphereSdf3D sphere ) in oldSpheres )
+		var newSpheres = new Dictionary<Metaball, SphereSdf3D>();
+		foreach( ( Metaball metaball, SphereSdf3D sphere ) in oldSpheres )
 		{
 			subtractions.Add( new( sphere, volume, Operator.Subtract ) );
-			var position = LavaToWorld( metaball.Position );
-			var radius = LavaScaleToWorld( metaball.Radius );
+			var position = LavaToLocal( metaball.Position );
+			var radius = metaball.Radius * SDFWorld.Size * 0.5f;
 			var newSphere = new SphereSdf3D( position, radius.x );
 			additions.Add( new( newSphere, volume, Operator.Add ) );
 			newSpheres[metaball] = newSphere;

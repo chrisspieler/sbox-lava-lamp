@@ -41,9 +41,8 @@ PS
 
 	class Metaball 
 	{
-		float2 Position;
+		float3 Position;
 		float Radius;
-		float _pad;
 		float4 Color;
 
 		float SDF( float2 uv )

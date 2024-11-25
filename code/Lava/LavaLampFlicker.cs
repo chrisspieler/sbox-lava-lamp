@@ -43,10 +43,10 @@ public class LavaLampFlicker : Component
 		SetColor( averages.LavaColor );
 	}
 
-	private Averages GetAverages( List<Metaball2D> balls )
+	private Averages GetAverages( List<Metaball> balls )
 	{
-		Vector2 totalPosition = Vector2.Zero;
-		Vector2 totalVelocity = Vector2.Zero;
+		Vector3 totalPosition = Vector3.Zero;
+		Vector3 totalVelocity = Vector3.Zero;
 		Vector4 totalColor = Color.White;
 		for ( int i = 0; i < balls.Count; i++ )
 		{

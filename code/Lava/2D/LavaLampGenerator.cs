@@ -2,7 +2,7 @@
 {
 	[Property] public LavaWorld World { get; set; }
 
-	[Property, Range( 0f, Metaball2D.MAX_BALLS, 1f ), Group( "Generator" )]
+	[Property, Range( 0f, Metaball.MAX_BALLS, 1f ), Group( "Generator" )]
 	public int MetaballCount { get; set; } = 96;
 
 	[Property, Range( 0f, 1f ), Group( "Generator")] 
@@ -19,9 +19,9 @@
 		if ( count <= 0 || !World.IsValid() )
 			return;
 
-		if ( World.MetaballCount + count > Metaball2D.MAX_BALLS )
+		if ( World.MetaballCount + count > Metaball.MAX_BALLS )
 		{
-			Log.Info( $"Adding {count} balls would exceed limit of {Metaball2D.MAX_BALLS}" );
+			Log.Info( $"Adding {count} balls would exceed limit of {Metaball.MAX_BALLS}" );
 			return;
 		}
 
