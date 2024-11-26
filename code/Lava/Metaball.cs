@@ -2,8 +2,11 @@
 
 public class Metaball
 {
-	[ConVar( "metaball_debug" )]
-	public static bool Debug { get; set; }
+	[ConVar( "metaball_vis" )]
+	public static int MetaballVisMode { get; set; } = 0;
+
+	[ConVar( "metaball_world_debug" )]
+	public static bool WorldDebug { get; set; } = false;
 
 	public Metaball( LavaWorld world ) 
 	{
@@ -31,17 +34,33 @@ public class Metaball
 
 	internal RenderData GetRenderData()
 	{
-		var color = CalculatedColor;
-		if ( Debug )
+		var color = MetaballVisMode switch
 		{
-			var t = Velocity.Length.LerpInverse( 0f, 1f );
-			t = Easing.EaseIn( t );
-			var r = t * 0.4f;
-			var g = Temperature.LerpInverse( 0f, World.MaxTemperature );
-			var b = ( 1f - t ) * 0.7f;
-			color = new Color( r, g, b, 0.5f );
-		}
+			1 => GetVelocityVisColor(),
+			2 => GetHeatVisColor(),
+			_ => CalculatedColor
+		};
 		return new RenderData( Position, color, Radius );
+	}
+
+	private Color GetVelocityVisColor()
+	{
+		var t = Velocity.Length.LerpInverse( 0f, 1f );
+		t = Easing.EaseIn( t );
+		var r = t * 0.4f;
+		// Perhaps green will be used later for something?
+		var g = 0f;
+		var b = (1f - t) * 0.7f;
+		return new Color( r, g, b, 0.5f );
+	}
+
+	private Color GetHeatVisColor()
+	{
+		var t = Temperature.LerpInverse( 0f, World.MaxTemperature );
+		t = Easing.EaseIn( t );
+		var coldColor = Color.Blue;
+		var hotColor = Color.Red;
+		return Color.Lerp( coldColor, hotColor, t );
 	}
 
 	internal readonly struct RenderData

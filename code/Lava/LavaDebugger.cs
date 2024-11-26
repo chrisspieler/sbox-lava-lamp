@@ -1,14 +1,14 @@
-﻿public class LavaDebugger : Component
+﻿public partial class LavaDebugger : Component
 {
 	[Property] public LavaWorld World { get; set; }
 	[Property] public LavaRenderer2D Renderer2D { get; set; }
 
-	[Property] public bool Debug
+	[Property] public bool ShowWorldInfo
 	{
-		get => Metaball.Debug;
+		get => Metaball.WorldDebug;
 		set
 		{
-			Metaball.Debug = value;
+			Metaball.WorldDebug = value;
 		}
 	}
 

@@ -12,7 +12,7 @@
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
           "ConvectionNoiseScale": 0.35000008,
           "ConvectionNoiseScrolling": "0.5,0.5,0",
-          "ConvectionPower": 0.2,
+          "ConvectionPower": 0.05,
           "DampingStrength": 0.1,
           "EnableCollision": true,
           "EnableHeat": true,
