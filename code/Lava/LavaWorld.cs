@@ -33,7 +33,7 @@
 
 	protected override void OnStart()
 	{
-		_convectionNoiseSeed = Game.Random.Float( 0f, 5000f );
+		_convectionNoiseSeed = Game.Random.Int( 0, 5000 );
 	}
 
 	protected override void OnUpdate()

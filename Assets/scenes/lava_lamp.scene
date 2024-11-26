@@ -10,14 +10,14 @@
         {
           "__type": "LavaWorld",
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-          "ConvectionNoiseScale": 100,
-          "ConvectionNoiseScrolling": "200,15,0",
-          "ConvectionPower": 0,
+          "ConvectionNoiseScale": 0.35000008,
+          "ConvectionNoiseScrolling": "0.5,0.5,0",
+          "ConvectionPower": 0.2,
           "DampingStrength": 0.1,
           "EnableCollision": true,
           "EnableHeat": true,
           "FastLavaColor": "1,1,0,1",
-          "GravityForce": "0,0,-0.5",
+          "GravityForce": "0,0,-1.25",
           "HeatDirection": "0,0,1",
           "HueVariance": 0.02,
           "LavaAttractionRange": 0.05,
@@ -31,11 +31,18 @@
           "ValueVariance": 0.05,
           "VerticalCoolingCurve": [
             {
-              "x": 0.050000004,
+              "x": 0,
               "y": 0,
               "in": 0,
-              "out": 0,
-              "mode": "Linear"
+              "out": -0,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 0.70238096,
+              "y": 0.18863645,
+              "in": -0.8405906,
+              "out": 0.8405906,
+              "mode": "Mirrored"
             },
             {
               "x": 1,

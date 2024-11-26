@@ -107,6 +107,8 @@ public partial class LavaRenderer2D : Component
 		var mousePos = ScreenToPoint( Mouse.Position );
 		var mouseUv = ScreenToUV( Mouse.Position );
 		PrintDebugText( $"Mouse Position: {mousePos}, Mouse UV: {mouseUv}" );
+		var mouseCurrent = World.GetConvectionDirection( mousePos );
+		PrintDebugText( $"Convection Direction: {mouseCurrent}" );
 	}
 
 	private void DrawHeatGrid( HudPainter hud, float res = 32f )
@@ -124,6 +126,8 @@ public partial class LavaRenderer2D : Component
 				var screenPos = new Vector2( x, y );
 				var temp = GetTileTemperature( screenPos + res * 0.5f );
 				var color = GetTemperatureDebugColor( temp );
+				var current = GetTileCurrent( screenPos );
+				DebugDrawCurrent( hud, screenPos + res * 0.5f, current, res );
 				var xSize = MathF.Min( res, xMax - x );
 				var ySize = MathF.Min( res, yMax - y );
 				var tileSize = new Vector2( xSize, ySize );
@@ -139,6 +143,13 @@ public partial class LavaRenderer2D : Component
 		var heating = World.GetHeating( tilePoint );
 		var cooling = World.GetCooling( tilePoint );
 		return heating - cooling;
+	}
+
+	private Vector2 GetTileCurrent( Vector2 screenPos )
+	{
+		var tilePoint = ScreenToPoint( screenPos );
+		var current = World.GetConvectionDirection( tilePoint );
+		return new Vector2( -current.y, -current.z );
 	}
 
 	private Color GetTemperatureDebugColor( float temperature )
@@ -162,6 +173,31 @@ public partial class LavaRenderer2D : Component
 			var text = new TextRendering.Scope( $"{i}", Color.White, 12, "Consolas" );
 			hud.DrawText( text, rect );
 		}
+	}
+
+	private void DebugDrawCurrent( HudPainter hud, Vector2 screenPos, Vector2 current, float res = 32f )
+	{
+		res = MathF.Max( 16f, res );
+		var arrowLength = res * 0.5f;
+		var from = screenPos;
+		var to = from + current.Normal * arrowLength;
+		var color = Color.White.WithAlpha( 0.1f );
+		hud.DrawLine( from, to, 1f, color );
+		var arrowHeadLength = arrowLength * 0.5f;
+		var arrowHeadAngle = MathF.PI / 4;
+		var lineAngle = MathF.Atan2( to.y - from.y, to.x - from.x );
+		var arrowHead1 = new Vector2
+		{
+			x = to.x - arrowHeadLength * MathF.Cos( lineAngle - arrowHeadAngle ),
+			y = to.y - arrowHeadLength * MathF.Sin( lineAngle - arrowHeadAngle )
+		};
+		hud.DrawLine( to, arrowHead1, 1f, color );
+		var arrowHead2 = new Vector2
+		{
+			x = to.x - arrowHeadLength * MathF.Cos( lineAngle + arrowHeadAngle ),
+			y = to.y - arrowHeadLength * MathF.Sin( lineAngle + arrowHeadAngle )
+		};
+		hud.DrawLine( to, arrowHead2, 1f, color );
 	}
 
 	private Vector2 _lastTextPosition;
