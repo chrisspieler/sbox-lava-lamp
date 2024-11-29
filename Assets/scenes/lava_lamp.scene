@@ -10,7 +10,7 @@
         {
           "__type": "LavaWorld",
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-          "ConvectionNoiseScale": 0.35000008,
+          "ConvectionNoiseScale": 0.35000014,
           "ConvectionNoiseScrolling": "0.5,0.5,0",
           "ConvectionPower": 0.05,
           "DampingStrength": 0.1,
@@ -52,22 +52,25 @@
               "mode": "Mirrored"
             }
           ],
-          "VerticalHeatingCurve": [
-            {
-              "x": 0,
-              "y": 1,
-              "in": 1.8032783,
-              "out": -1.8032783,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 0.78303576,
-              "y": 0,
-              "in": -0.14492741,
-              "out": 0.14492741,
-              "mode": "Mirrored"
-            }
-          ],
+          "VerticalHeatingCurve": {
+            "rangey": "0,0.1",
+            "frames": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 1.8032783,
+                "out": -1.8032783,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 0.78303576,
+                "y": 0,
+                "in": -0.14492741,
+                "out": 0.14492741,
+                "mode": "Mirrored"
+              }
+            ]
+          },
           "WallBounce": 1
         },
         {
@@ -88,14 +91,15 @@
           "__guid": "2fb81853-6420-4c72-a193-9a275c60992f",
           "AttractAction": "attack1",
           "AttractForce": 10,
-          "Debug": true,
           "Renderer2D": {
             "_type": "component",
             "component_id": "e2bd6b12-9179-4364-99cd-3856606d17b1",
             "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
             "component_type": "LavaRenderer2D"
           },
+          "ShowWorldInfo": false,
           "SpawnAction": "attack2",
+          "VisMode": "None",
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
