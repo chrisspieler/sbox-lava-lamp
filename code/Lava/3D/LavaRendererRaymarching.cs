@@ -17,6 +17,15 @@
 	private readonly Material Material = Metaball.Material3D;
 	private SceneCustomObject _sceneObject;
 
+	protected override void DrawGizmos()
+	{
+		if ( !_sceneObject.IsValid() || !World.IsValid() )
+			return;
+
+		Gizmo.Draw.Color = Color.Green;
+		Gizmo.Draw.LineBBox( _sceneObject.LocalBounds );
+	}
+
 	protected override void OnEnabled()
 	{
 		World ??= GetComponent<LavaWorld>();
@@ -28,6 +37,7 @@
 		_sceneObject ??= new SceneCustomObject( Scene.SceneWorld );
 		_sceneObject.RenderOverride = Render;
 		_sceneObject.Tags.Add( Tags );
+		_sceneObject.LocalBounds = BBox.FromPositionAndSize( WorldPosition, World.SimulationSize * 1.5f );
 	}
 
 	protected override void OnUpdate()
@@ -55,6 +65,10 @@
 		Graphics.Blit( Material, attributes );
 	}
 
+	[Property, Range( 0, 10 )] public float ColorBlendScale { get; set; } = 2.5f;
+	[Property, Range( 0, 20 )] public float ShapeBlendScale { get; set; } = 5f;
+
+
 	private RenderAttributes UpdateAttributes()
 	{
 		var metaballData = World.Metaballs
@@ -64,6 +78,10 @@
 		var attributes = new RenderAttributes();
 		attributes.SetData( "BallBuffer", metaballData );
 		attributes.Set( "BallCount", metaballData.Count );
+		attributes.Set( "WorldPosition", WorldPosition );
+		attributes.Set( "SimulationSize", World.SimulationSize );
+		attributes.Set( "ColorBlendScale", ColorBlendScale );
+		attributes.Set( "ShapeBlendScale", ShapeBlendScale );
 		return attributes;
 	}
 }

@@ -149,11 +149,14 @@
           "__guid": "f750f124-1685-40e3-837a-8a32441f3b61",
           "Flags": 0,
           "Name": "Lava Raymarched",
+          "Position": "0,0,8",
           "Enabled": true,
           "Components": [
             {
               "__type": "LavaRendererRaymarching",
               "__guid": "31fd688e-1da5-496c-be11-f454548123b0",
+              "ColorBlendScale": 3.5,
+              "ShapeBlendScale": 4,
               "World": {
                 "_type": "component",
                 "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -233,6 +236,7 @@
               "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
               "Flags": 0,
               "Name": "Lava Glow Light",
+              "Position": "4,0,0",
               "Tags": "light_point,light",
               "Enabled": true,
               "Components": [
@@ -259,7 +263,7 @@
                   "LightSaturationOffset": -0.2,
                   "LightValueOffset": -0.5,
                   "LowVelocityAttenuation": 2,
-                  "PositionScale": 16,
+                  "PositionScale": 8,
                   "VelocityMaxInput": 20,
                   "World": {
                     "_type": "component",

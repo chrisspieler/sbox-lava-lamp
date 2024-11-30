@@ -33,12 +33,36 @@ VS
 PS
 {
     #include "common/pixel.hlsl"
+	#include "shared/metaball.hlsl"
+
+	int BallCount < Attribute( "BallCount" ); >;
+
+	class RaymarchResult
+	{
+		float Distance;
+		float3 Albedo;
+		float3 Normal;
+
+		static RaymarchResult From( float distance, float3 albedo )
+		{
+			RaymarchResult result;
+			result.Distance = distance;
+			result.Albedo = albedo;
+			return result;
+		}
+	};
+
 	RenderState( SrgbWriteEnable0, true );
 	RenderState( ColorWriteEnable0, RGBA );
 	RenderState( FillMode, SOLID );
 	RenderState( CullMode, NONE );
 	RenderState( DepthWriteEnable, false );
 	RenderState( DepthEnable, false );
+
+	float3 WorldPosition < Attribute( "WorldPosition" ); >;
+	float SimulationSize < Attribute( "SimulationSize" ); >;
+	float ColorBlendScale < Attribute( "ColorBlendScale" ); Default( 2.5 ); >;
+	float ShapeBlendScale < Attribute( "ShapeBlendScale" ); Default( 5 ); >;
 
 	float IntersectSDF( float distA, float distB )
 	{
@@ -51,44 +75,66 @@ PS
 		return min( a, b ) - h*h*h*k*1/6.0;
 	}
 
-	float SphereSDF( float3 p, float s )
+	float SphereSDF( float3 samplePoint, Metaball ball )
 	{
+		float3 p = samplePoint - WorldPosition - ball.Position * 0.5;
+		float s = ball.Radius * 0.25;
 		return length(p) - s;
 	}
 
-	float SceneSDF( float3 samplePoint )
+	float3 SphereColor( Metaball ball, float sdBall )
 	{
-		float3 sphereALocalPos = float3( 24, 2, 8 + sin( g_flTime * 0.7 ) * 6);
-		float sphereA = SphereSDF( samplePoint - sphereALocalPos, 3);
-
-		float3 sphereBLocalPos = float3( 24, sin( g_flTime ) * 7, 8 );
-		float sphereB = SphereSDF( samplePoint - sphereBLocalPos, 3 );
-
-		float3 sphereCLocalPos = float3( 24, 2 + sin( g_flTime ) * 4, 8 + sin( g_flTime * 0.2 ) * 5 );
-		float sphereC = SphereSDF( samplePoint - sphereCLocalPos, 3 );
-
-		float smooth1 = SmoothMin( sphereA, sphereB, 5 );
-		return SmoothMin( smooth1, sphereC, 5 );
+		float influence = pow( ball.Radius / sdBall, ColorBlendScale );
+		return ball.Color.rgb * influence;
 	}
 
-	float Raymarch( float3 eye, float3 dir, float start, float end )
+	RaymarchResult SceneSDF( float3 samplePoint )
 	{
-		float depth = 1;
+		if ( BallCount < 0 )
+			return RaymarchResult::From( 99999, float3( 0, 0, 0 ) );
+		
+		Metaball ball = Balls[0];
+		float sdScene = SphereSDF( samplePoint, ball );
+		float3 albedo = SphereColor( ball, sdScene );
+		
+		for ( int i = 1; i < BallCount; i++ )
+		{
+			Metaball ball = Balls[i];
+			float sdBall = SphereSDF( samplePoint, ball );
+			albedo += SphereColor( ball, sdBall );
+			sdScene = SmoothMin( sdScene, sdBall, ShapeBlendScale );
+		}
+		return RaymarchResult::From( sdScene, saturate( albedo ) );
+	}
+
+	float3 EstimateNormal( float3 p )
+	{
+		return normalize( float3 (
+			SceneSDF( float3( p.x + 0.0001, p.y, p.z ) ).Distance - SceneSDF( float3( p.x - 0.0001, p.y, p.z ) ).Distance,
+			SceneSDF( float3( p.x, p.y + 0.0001, p.z ) ).Distance - SceneSDF( float3( p.x, p.y - 0.0001, p.z ) ).Distance,
+			SceneSDF( float3( p.x, p.y, p.z + 0.0001 ) ).Distance - SceneSDF( float3( p.x, p.y, p.z - 0.0001 ) ).Distance
+		));
+	}
+
+	RaymarchResult Raymarch( float3 eye, float3 dir, float start, float end )
+	{
+		float depth = start;
 		for ( int i = 0; i < 255; i++ )
 		{
-			float dist = SceneSDF( eye + depth * dir );
-			if ( dist <= 0.0001 )
+			RaymarchResult stepResult = SceneSDF( eye + depth * dir );
+			if ( stepResult.Distance <= 0.0001 )
 			{
-				return depth;
+				stepResult.Normal = EstimateNormal( eye + depth * dir );
+				return stepResult;
 			}
 			
-			depth += dist;
-			if ( depth > 2000 )
+			depth += stepResult.Distance;
+			if ( depth > end )
 			{
-				return end;
+				return RaymarchResult::From( depth, float3( 0, 0, 0 ) );
 			}
 		}
-		return end;
+		return RaymarchResult::From( end, float3( 0, 0, 0 ) );
 	}
 
 	float3 RayDirection( PixelInput i )
@@ -101,19 +147,26 @@ PS
 		return mul( g_matProjectionToWorld, vRayCs );
 	}
 
+
+
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{	
-
 		float3 dir = RayDirection( i );
 		float3 eye = g_vCameraPositionWs;
 		dir = normalize( g_vCameraDirWs + dir );
-		float dist = Raymarch( eye, dir, 0, 2000 );
+		RaymarchResult result = Raymarch( eye, dir, 0, 2000 );
 		float depth = Depth::GetLinear( i.vPositionSs );
-		if ( depth > dist && dist < 2000 )
+		if ( result.Distance > depth || result.Distance > 2000 )
 		{
-			return float4( 1, 0, 0, 1 );
+			discard;
+			return float4( 0, 0, 0, 0 );
 		}
-		discard;
-		return float4( 0, 0, 0, 0 );
+		Material m = Material::From( i );
+		m.Albedo = result.Albedo;
+		m.Normal = result.Normal;
+		m.Emission = m.Albedo * 0.5;
+		m.Roughness = 0.2;
+		m.AmbientOcclusion = 1;
+		return ShadingModelStandard::Shade( i, m );
 	}
 }

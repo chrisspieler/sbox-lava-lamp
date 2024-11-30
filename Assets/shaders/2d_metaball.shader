@@ -33,29 +33,9 @@ VS
 PS
 {
 	#include "ui/pixel.hlsl"
-
-	// Setting this to 512 crashes my editor for some reason.
-	#define MAX_BALLS 256
+	#include "shared/metaball.hlsl"
 
 	int BallCount < Attribute( "BallCount" ); >;
-
-	class Metaball 
-	{
-		float3 Position;
-		float Radius;
-		float4 Color;
-
-		float SDF( float2 uv )
-		{
-			return length(uv - Position) - Radius;
-		}
-	};
-
-	cbuffer BallBuffer 
-	{
-		Metaball Balls[MAX_BALLS];
-	};
-
 	float InnerBlend < Attribute( "InnerBlend"); Default( 3 ); >;
 	float CutoffThreshold < Attribute( "CutoffThreshold" ); Default( 0.06 ); >;
 	float CutoffSharpness < Attribute( "CutoffSharpness" ); Default( 4 ); >;
