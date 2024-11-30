@@ -11,51 +11,54 @@
         {
           "__type": "LavaWorld",
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-          "ConvectionNoiseScale": 0.3500002,
-          "ConvectionNoiseScrolling": "0.5,0.5,0",
-          "ConvectionPower": 0.05,
+          "ConvectionNoiseScale": 0.07,
+          "ConvectionNoiseScrolling": "3,5,0",
+          "ConvectionPower": 0.5,
           "DampingStrength": 0.1,
           "EnableCollision": true,
           "EnableHeat": true,
           "FastLavaColor": "1,1,0,1",
-          "GravityForce": "0,0,0",
+          "GravityForce": "0,0,-2.5",
           "HeatDirection": "0,0,1",
           "HueVariance": 0.02,
           "LavaAttractionRange": 1,
           "LavaAttractionScale": 1,
           "LavaColor": "1,0.13333,0,1",
-          "MaxTemperature": 1.5,
-          "MaxVelocity": "0,100,100",
+          "MaxTemperature": 5,
+          "MaxVelocity": "0,1000,1000",
           "MetaballCount": 0,
           "PointToWorldScale": 8,
           "SaturationVariance": 0.05,
           "SimulationSize": "8,8,16",
           "ValueVariance": 0.05,
-          "VerticalCoolingCurve": [
-            {
-              "x": 0,
-              "y": 0,
-              "in": 0,
-              "out": -0,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 0.70238096,
-              "y": 0.18863645,
-              "in": -0.8405906,
-              "out": 0.8405906,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 1,
-              "y": 1,
-              "in": -2.4705884,
-              "out": 2.4705884,
-              "mode": "Mirrored"
-            }
-          ],
+          "VerticalCoolingCurve": {
+            "rangey": "0,20",
+            "frames": [
+              {
+                "x": 0,
+                "y": 0,
+                "in": 0,
+                "out": -0,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 0.70238096,
+                "y": 0.18863645,
+                "in": -0.8405906,
+                "out": 0.8405906,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 1,
+                "y": 1,
+                "in": -2.4705884,
+                "out": 2.4705884,
+                "mode": "Mirrored"
+              }
+            ]
+          },
           "VerticalHeatingCurve": {
-            "rangey": "0,0.1",
+            "rangey": "0,20",
             "frames": [
               {
                 "x": 0,
@@ -103,7 +106,7 @@
             "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
             "component_type": "LavaRenderer2D"
           },
-          "ShowWorldInfo": false,
+          "ShowWorldInfo": true,
           "SpawnAction": "attack2",
           "VisMode": "Heat",
           "World": {
@@ -206,7 +209,6 @@
       "Flags": 0,
       "Name": "3D Lava Lamp",
       "Position": "24,0,0",
-      "Enabled": true,
       "Children": [
         {
           "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",
@@ -227,6 +229,7 @@
               },
               "SdfInitializeTime": "0.00ms",
               "SdfLastUpdateTime": "0.00ms",
+              "SDFScale": 8,
               "SDFVolume": "sdf/sdf_lava_volume.sdfvol",
               "SDFWorld": {
                 "_type": "component",
