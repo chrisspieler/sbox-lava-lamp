@@ -1,23 +1,37 @@
-﻿public partial class LavaWorld : Component
+﻿using System;
+
+public partial class LavaWorld : Component, Component.IHasBounds
 {
 	/// <summary>
 	/// Defines the bounds of the simulation space. 
 	/// <br/><br/>
 	/// The origin of the simulation space is at the exact center of a bounding box of size SimulationSize.
+	/// In worldspace, the origin will be the postion of the GameObject that holds this component.
 	/// </summary>
 	[Property] public Vector3 SimulationSize 
 	{
-		get => _simulationSize;
+		get => _simulationSize * WorldScale;
 		set
 		{
+			value = value.Clamp( 1f, 1024f );
 			_simulationSize = value;
 			foreach ( var metaball in Metaballs )
 			{
-				metaball.Position = metaball.Position.Clamp( -_simulationSize * 0.95f, _simulationSize * 0.95f );
+				metaball.Position = metaball.Position.Clamp( -SimulationSize * 0.95f, SimulationSize * 0.95f );
 			}
 		}
 	}
-	private Vector3 _simulationSize = new Vector3( 1, 1, 1 );
+	private Vector3 _simulationSize = new( 16, 16, 16 );
+	[Property] public float PointToWorldScale
+	{
+		get
+		{
+			var xyMin = MathF.Min( SimulationSize.x, SimulationSize.y );
+			return MathF.Min( xyMin, SimulationSize.z );
+		}
+	}
+	[Property] public BBox WorldBounds => LocalBounds.Transform( WorldTransform );
+	public BBox LocalBounds => BBox.FromPositionAndSize( Vector3.Zero, SimulationSize );
 
 	public IEnumerable<Metaball> Metaballs => _metaballs;
 	private List<Metaball> _metaballs = new();
@@ -66,16 +80,6 @@
 		var worldPos = new Vector3( 0f, -uv.x, -uv.y );
 		worldPos *= SimulationSize;
 		return worldPos;
-	}
-
-	public Vector2 GetSimulationAspect()
-	{
-		var simScale = new Vector2( 1f, SimulationSize.z / SimulationSize.y );
-		if ( SimulationSize.z > SimulationSize.y )
-		{
-			simScale = new Vector2( SimulationSize.y / SimulationSize.z, 1f );
-		}
-		return simScale;
 	}
 
 	public Metaball AddMetaball( Vector3 position, Color color, float radius )

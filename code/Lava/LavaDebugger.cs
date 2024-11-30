@@ -14,7 +14,7 @@
 
 	[Property, Group( "Interactivity" )]
 	public float AttractForce { get; set; } = 4f;
-	[Property, Group( "Interactivity" ), InputAction]
+	[Property, Range( 0f, 10f ), Group( "Interactivity" )]
 	public string AttractAction { get; set; } = "attack1";
 	[Property, Group( "Interactivity" ), InputAction]
 	public string SpawnAction { get; set; } = "attack2";
@@ -44,7 +44,7 @@
 		if ( Input.Down( AttractAction ) )
 		{
 			var mousePoint = Renderer2D.ScreenToPoint( mousePos );
-			World.AttractToPoint( mousePoint, AttractForce );
+			World.AttractToPoint( mousePoint, AttractForce, minDistance: 0.25f );
 		}
 		if ( Input.Pressed( SpawnAction ) )
 		{
@@ -62,7 +62,7 @@
 		camera.Hud.DrawCircle( Mouse.Position, 10f, Color.Black );
 	}
 
-	public Metaball SpawnMetaball( Vector2 screenPos, Color color, float size = 0.15f )
+	public Metaball SpawnMetaball( Vector2 screenPos, Color color, float size = 0.5f )
 	{
 		if ( !World.IsValid() )
 			return null;

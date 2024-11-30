@@ -72,12 +72,15 @@ PS
 		
 		float shapeInfluence = 0;
 		float4 colorInfluence = 0;
+		float2 aspect = float2( g_vViewportSize.x / g_vViewportSize.y, 1 );
 		
 		for( int i = 0; i < BallCount.x; i++ )
 		{
 			Metaball ball = Balls[i];
 			float influence;
-			influence = pow( ball.Radius / length( worldPos - ball.Position.yz ), InnerBlend );
+			float radius = ball.Radius * aspect;
+			float distance = length( worldPos * aspect - ball.Position.yz * aspect);
+			influence = pow( radius / distance, InnerBlend );
 			shapeInfluence += influence;
 			colorInfluence += ball.Color * influence;
 		}
@@ -102,6 +105,8 @@ PS
 		uv *= 2;
 		float2 worldPos = float2( -uv.x, -uv.y );
 		worldPos *= SimulationSize.yz;
+		// float aspect = g_vViewportSize.x / g_vViewportSize.y;
+		// worldPos.x *= aspect;
 		return worldPos;
 	}
 

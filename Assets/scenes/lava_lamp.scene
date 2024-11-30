@@ -5,29 +5,31 @@
       "__guid": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
       "Flags": 0,
       "Name": "Lava World",
+      "Position": "24,0,8",
       "Enabled": true,
       "Components": [
         {
           "__type": "LavaWorld",
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
-          "ConvectionNoiseScale": 0.35000014,
+          "ConvectionNoiseScale": 0.3500002,
           "ConvectionNoiseScrolling": "0.5,0.5,0",
           "ConvectionPower": 0.05,
           "DampingStrength": 0.1,
           "EnableCollision": true,
           "EnableHeat": true,
           "FastLavaColor": "1,1,0,1",
-          "GravityForce": "0,0,-1.25",
+          "GravityForce": "0,0,0",
           "HeatDirection": "0,0,1",
           "HueVariance": 0.02,
-          "LavaAttractionRange": 0.05,
-          "LavaAttractionScale": 0.01,
+          "LavaAttractionRange": 1,
+          "LavaAttractionScale": 1,
           "LavaColor": "1,0.13333,0,1",
           "MaxTemperature": 1.5,
           "MaxVelocity": "0,100,100",
           "MetaballCount": 0,
+          "PointToWorldScale": 8,
           "SaturationVariance": 0.05,
-          "SimulationSize": "1,0.5,1",
+          "SimulationSize": "8,8,16",
           "ValueVariance": 0.05,
           "VerticalCoolingCurve": [
             {
@@ -71,14 +73,18 @@
               }
             ]
           },
-          "WallBounce": 1
+          "WallBounce": 1,
+          "WorldBounds": {
+            "Mins": "20,-4,0",
+            "Maxs": "28,4,16"
+          }
         },
         {
           "__type": "LavaLampGenerator",
           "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-          "MaxRadius": 0.08,
+          "MaxRadius": 1.28,
           "MetaballCount": 32,
-          "MinRadius": 0.04,
+          "MinRadius": 0.64,
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -90,7 +96,7 @@
           "__type": "LavaDebugger",
           "__guid": "2fb81853-6420-4c72-a193-9a275c60992f",
           "AttractAction": "attack1",
-          "AttractForce": 10,
+          "AttractForce": 100000,
           "Renderer2D": {
             "_type": "component",
             "component_id": "e2bd6b12-9179-4364-99cd-3856606d17b1",
@@ -99,7 +105,7 @@
           },
           "ShowWorldInfo": false,
           "SpawnAction": "attack2",
-          "VisMode": "None",
+          "VisMode": "Heat",
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -200,6 +206,7 @@
       "Flags": 0,
       "Name": "3D Lava Lamp",
       "Position": "24,0,0",
+      "Enabled": true,
       "Children": [
         {
           "__guid": "ad1e8070-48a5-413f-9ba4-ec95e6c1b9d7",

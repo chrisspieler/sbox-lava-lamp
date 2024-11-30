@@ -6,9 +6,9 @@
 	public int MetaballCount { get; set; } = 96;
 
 	[Property, Range( 0f, 1f ), Group( "Generator")] 
-	public float MinRadius { get; set; } = 0.05f;
+	public float MinRadius { get; set; } = 0.64f;
 	[Property, Range( 0f, 1f ), Group( "Generator" )]
-	public float MaxRadius { get; set; } = 0.15f;
+	public float MaxRadius { get; set; } = 1.28f;
 	protected override void OnStart()
 	{
 		World ??= GetComponent<LavaWorld>();

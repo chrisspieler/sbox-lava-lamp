@@ -23,11 +23,10 @@ public partial class LavaDebugger : Component
 
 	protected override void OnPreRender()
 	{
-		var camera = Scene.Camera;
-		if ( !Metaball.WorldDebug || !camera.IsValid() || !Renderer2D.IsValid() )
+		if ( !Metaball.WorldDebug || !Renderer2D.IsValid() || !Renderer2D.TargetCamera.IsValid() )
 			return;
 
-		var hud = camera.Hud;
+		var hud = Renderer2D.TargetCamera.Hud;
 		DebugDrawWorldInfo( hud );
 		if ( VisMode == LavaVisMode.None )
 			return;
@@ -43,9 +42,11 @@ public partial class LavaDebugger : Component
 	{
 		_lastTextPosition = new Vector2( 15f, 0f );
 		var screenSize = Screen.Size;
-		var renderRect = Renderer2D.GetCenteredScreenRect();
-		hud.DrawRect( renderRect, Color.Transparent, Vector4.Zero, Vector4.One * 2, Color.Green.WithAlpha( 0.15f ) );
-		PrintDebugText( $"Screen Size: {screenSize}, Render Rect: {renderRect.Size}" );
+		var viewportAspect = Renderer2D.TargetCamera.GetScreenToViewportScale();
+		var simAspect = Renderer2D.BoundsAspect;
+		var viewportRect = Renderer2D.TargetCamera.GetCenteredViewportRect( simAspect );
+		hud.DrawRect( viewportRect, Color.Transparent, Vector4.Zero, Vector4.One * 2, Color.Green.WithAlpha( 0.15f ) );
+		PrintDebugText( $"sizeScreen: {screenSize}, aspectWorld: {simAspect}, aspectViewport: {viewportAspect}, positionViewport: {viewportRect.Position}, sizeViewport: {viewportRect.Size}" );
 		var worldStart = -World.SimulationSize;
 		var worldEnd = World.SimulationSize;
 		PrintDebugText( $"World Size: {worldStart} to {worldEnd}" );
@@ -67,8 +68,9 @@ public partial class LavaDebugger : Component
 
 	private void DrawHeatGrid( HudPainter hud, float res = 32f )
 	{
+		
 		res = MathF.Max( 16f, res );
-		var screenRect = Renderer2D.GetCenteredScreenRect();
+		var screenRect = Renderer2D.TargetCamera.GetCenteredViewportRect( Renderer2D.BoundsAspect );
 		var xMin = screenRect.Position.x;
 		var xMax = xMin + screenRect.Size.x;
 		var yMin = screenRect.Position.y;
@@ -119,7 +121,7 @@ public partial class LavaDebugger : Component
 		{
 			var ball = World[i];
 			var screenPos = Renderer2D.PointToScreen( ball.Position );
-			var screenRadius = ball.Radius * Renderer2D.PointToScreenScale.x;
+			var screenRadius = ball.Radius * ( 1f / World.PointToWorldScale ) * Renderer2D.PointToScreenScale;
 			var rect = new Rect( screenPos - screenRadius, screenRadius * 2f );
 			var screenDiameter = screenRadius * 2f;
 			hud.DrawRect( rect, Color.Transparent, new Vector4( screenDiameter, screenDiameter ), new Vector4( 1f, 1f ), Color.Green.WithAlpha( 0.1f ) );

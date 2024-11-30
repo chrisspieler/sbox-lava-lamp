@@ -40,7 +40,7 @@ public class Metaball
 			2 => GetHeatVisColor(),
 			_ => CalculatedColor
 		};
-		return new RenderData( Position, color, Radius );
+		return new RenderData( Position, color, Radius);
 	}
 
 	private Color GetVelocityVisColor()

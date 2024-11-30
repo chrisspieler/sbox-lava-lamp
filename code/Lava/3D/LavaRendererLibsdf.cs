@@ -7,6 +7,7 @@ public partial class LavaRendererLibsdf : Component
 	[Property] public LavaWorld LavaWorld { get; set; }
 	[Property] public Sdf3DWorld SDFWorld { get; set; }
 	[Property] public Sdf3DVolume SDFVolume { get; set; }
+	[Property, Range( 1f, 16f )] public float SDFScale { get; set; } = 8f;
 
 	private Dictionary<Metaball, SphereSdf3D> _metaballSdf = new();
 	[Property] public string SdfLastUpdateTime => $"{_sdfLastUpdateTime:F2}ms";
@@ -33,23 +34,54 @@ public partial class LavaRendererLibsdf : Component
 		if ( LavaWorld.MetaballCount != 0 && InitializationTask == null && SDFWorld.ModificationCount == 0 )
 			InitializeSDFWorld();
 
+		UpdateTransform();
+
 		if ( UpdateTask is null )
 		{
 			UpdateMetaballs();
 		}
 	}
 
-	public Vector3 LavaToLocal( Vector3 lavaPos )
+	protected override void DrawGizmos()
 	{
-		var localPos = lavaPos * SDFWorld.Size;
-		localPos = (localPos + SDFWorld.Size) / 2f;
-		// Log.Info( $"lavaPos: {lavaPos}, scale: {LavaWorldScale}, localPos: {localPos}" );
-		return localPos;
+		Gizmo.Draw.IgnoreDepth = true;
+		Gizmo.Draw.Color = Color.Blue;
+		Gizmo.Draw.LineBBox( LocalBounds );
+		Gizmo.Draw.Color = Color.Green;
+		foreach( var metaball in _metaballSdf )
+		{
+			var metaballPosition = LavaToLocal( metaball.Key.Position );
+			Gizmo.Draw.LineSphere( new Sphere( metaballPosition, 4f ) );
+		}
 	}
 
-	public Vector3 LavaToWorld( Vector2 lavaPos )
+	private void UpdateTransform()
 	{
-		return SDFWorld.WorldPosition + LavaToLocal( lavaPos );
+		SDFWorld.Size = LavaWorld.SimulationSize * SDFScale;
+		LocalScale = 1f / ( SDFScale );
+		WorldRotation = LavaWorld.WorldRotation;
+		var offset = LavaWorld.WorldTransform.PointToWorld( -LavaWorld.SimulationSize * 0.5f );
+		WorldPosition = offset;
+	}
+
+	public BBox LocalBounds
+	{
+		get
+		{
+			if ( !SDFWorld.IsValid() || !LavaWorld.IsValid() )
+				return BBox.FromPositionAndSize( 32f, 64f );
+
+			var position = SDFScale * LavaWorld.SimulationSize * 0.5f;
+			var size = SDFScale * LavaWorld.SimulationSize;
+			return BBox.FromPositionAndSize( position, size );
+		}
+	}
+
+	public Vector3 LavaToLocal( Vector3 lavaPos )
+	{
+		lavaPos *= SDFScale * 0.5f;
+		lavaPos += LavaWorld.SimulationSize * SDFScale * 0.5f;
+		return lavaPos;
 	}
 
 	private async void InitializeSDFWorld()
@@ -79,8 +111,8 @@ public partial class LavaRendererLibsdf : Component
 			return Task.CompletedTask;
 
 		var position = LavaToLocal( metaball.Position );
-		var radius = metaball.Radius * SDFWorld.Size;
-		var sphere = new SphereSdf3D( position, radius.x );
+		var radius = metaball.Radius;
+		var sphere = new SphereSdf3D( position, radius );
 		_metaballSdf[metaball] = sphere;
 		return SDFWorld.AddAsync( sphere, volume );
 	}
@@ -119,7 +151,7 @@ public partial class LavaRendererLibsdf : Component
 		{
 			subtractions.Add( new( sphere, volume, Operator.Subtract ) );
 			var position = LavaToLocal( metaball.Position );
-			var radius = metaball.Radius * SDFWorld.Size;
+			var radius = metaball.Radius * ( 1f / LocalScale );
 			var newSphere = new SphereSdf3D( position, radius.x );
 			additions.Add( new( newSphere, volume, Operator.Add ) );
 			newSpheres[metaball] = newSphere;

@@ -1,12 +1,12 @@
 ﻿public partial class LavaWorld : Component
 {
 	[Property, Group( "Attraction" )]
-	public Vector3 GravityForce { get; set; } = Vector3.Left;
+	public Vector3 GravityForce { get; set; } = Vector3.Down * 20f;
 
 	[Property, Range( 0f, 5f ), Group( "Attraction" )]
 	public float LavaAttractionScale { get; set; } = 1f;
 
-	[Property, Range( 0f, 1f ), Group( "Attraction" )]
+	[Property, Group( "Attraction" )]
 	public float LavaAttractionRange { get; set; } = 0.05f;
 
 	private void AttractToGravity()
@@ -31,7 +31,7 @@
 		}
 	}
 
-	public void AttractToPoint( Vector3 attractPos, float force = 1f, float minDistance = 0.002f, float worldScale = 0.05f )
+	public void AttractToPoint( Vector3 attractPos, float force = 1f, float minDistance = 0.25f )
 	{
 		if ( attractPos.IsNaN || Metaballs is null )
 			return;
@@ -43,7 +43,6 @@
 				return;
 
 			var mass = ball.Radius * 20f;
-			sqrDistance *= worldScale;
 			var intensity = 1f / sqrDistance;
 			// More massive balls are affected less strongly.
 			intensity *= (1f / mass);
