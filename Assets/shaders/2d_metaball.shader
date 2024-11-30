@@ -72,7 +72,7 @@ PS
 		
 		float shapeInfluence = 0;
 		float4 colorInfluence = 0;
-		float2 aspect = float2( g_vViewportSize.x / g_vViewportSize.y, 1 );
+		float aspect = float2( g_vViewportSize.x / g_vViewportSize.y, 1 );
 		
 		for( int i = 0; i < BallCount.x; i++ )
 		{

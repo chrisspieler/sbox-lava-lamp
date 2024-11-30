@@ -30,7 +30,9 @@ public class Metaball
 	public float Temperature { get; set; }
 
 	public const int MAX_BALLS = 256;
+
 	public static Material Material2D => Material.FromShader( "shaders/2d_metaball.shader" );
+	public static Material Material3D => Material.FromShader( "shaders/3d_metaball.shader" );
 
 	internal RenderData GetRenderData()
 	{
