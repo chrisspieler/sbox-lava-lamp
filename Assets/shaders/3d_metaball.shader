@@ -25,7 +25,6 @@ VS
 	PixelInput MainVs( VertexInput i )
 	{
 		PixelInput o = ProcessVertex( i );
-		// Add your vertex manipulation functions here
 		o.vPositionPs = float4( i.vPositionOs.xyz, 1 );
 		return FinalizeVertex( o );
 	}
@@ -38,13 +37,8 @@ PS
 	RenderState( ColorWriteEnable0, RGBA );
 	RenderState( FillMode, SOLID );
 	RenderState( CullMode, NONE );
-	RenderState( DepthWriteEnable, true );
+	RenderState( DepthWriteEnable, false );
 	RenderState( DepthEnable, false );
-
-	const int MAX_MARCHING_STEPS = 255;
-	const float MIN_DIST = 0.0;
-	const float MAX_DIST = 2000.0;
-	const float EPSILON = 0.0001;
 
 	float IntersectSDF( float distA, float distB )
 	{
@@ -57,11 +51,6 @@ PS
 		return min( a, b ) - h*h*h*k*1/6.0;
 	}
 
-	float TestSDF( float3 p )
-	{
-		return p.y;
-	}
-
 	float SphereSDF( float3 p, float s )
 	{
 		return length(p) - s;
@@ -69,20 +58,21 @@ PS
 
 	float SceneSDF( float3 samplePoint )
 	{
-		// float testDist = TestSDF( samplePoint );
-		// float sphereDist = SphereSDF( samplePoint + float3( 10, 0, 0 ), 1 );
-		// return IntersectSDF( testDist, sphereDist );
-		// return TestSDF( samplePoint );
-		float sphereA = SphereSDF( samplePoint - float3( 10, 2, -0.1 + sin( g_flTime * 0.7 ) * 6), 3);
-		float sphereB = SphereSDF( samplePoint - float3( 10, sin( g_flTime ) * 7, 0.2 ), 3 );
-		float sphereC = SphereSDF( samplePoint - float3( 10, 2 + sin( g_flTime ) * 4, 1 + sin( g_flTime * 0.2 ) * 5 ), 3 );
+		float3 sphereALocalPos = float3( 24, 2, 8 + sin( g_flTime * 0.7 ) * 6);
+		float sphereA = SphereSDF( samplePoint - sphereALocalPos, 3);
+
+		float3 sphereBLocalPos = float3( 24, sin( g_flTime ) * 7, 8 );
+		float sphereB = SphereSDF( samplePoint - sphereBLocalPos, 3 );
+
+		float3 sphereCLocalPos = float3( 24, 2 + sin( g_flTime ) * 4, 8 + sin( g_flTime * 0.2 ) * 5 );
+		float sphereC = SphereSDF( samplePoint - sphereCLocalPos, 3 );
+
 		float smooth1 = SmoothMin( sphereA, sphereB, 5 );
 		return SmoothMin( smooth1, sphereC, 5 );
 	}
 
 	float Raymarch( float3 eye, float3 dir, float start, float end )
 	{
-		// return SceneSDF( eye + dir );
 		float depth = 1;
 		for ( int i = 0; i < 255; i++ )
 		{
@@ -93,7 +83,7 @@ PS
 			}
 			
 			depth += dist;
-			if ( depth > 1000 )
+			if ( depth > 2000 )
 			{
 				return end;
 			}
@@ -101,27 +91,29 @@ PS
 		return end;
 	}
 
-	float3 RayDirection( float fieldOfView, float2 size, float2 fragCoord )
+	float3 RayDirection( PixelInput i )
 	{
-		float2 uv = fragCoord - size / 2.0;
-		float x = size.y / tan(radians(fieldOfView / 2.0));
-		return normalize( float3(x, uv.x, uv.y ) );
+		float2 vUV = i.vPositionSs.xy / g_vViewportSize.xy;
+		vUV -= 0.5;
+		vUV *= 2;
+		float3 vRayCs = mul( g_matWorldToProjection, g_vCameraDirWs );
+		vRayCs += float3( vUV.x, -vUV.y, 0 );
+		return mul( g_matProjectionToWorld, vRayCs );
 	}
 
 	float4 MainPs( PixelInput i ) : SV_Target0
-	{
+	{	
+
+		float3 dir = RayDirection( i );
 		float3 eye = g_vCameraPositionWs;
-		float3 dir = RayDirection( 90, g_vViewportSize.xy, i.vPositionSs.xy );
 		dir = normalize( g_vCameraDirWs + dir );
-		float dist = Raymarch( eye, dir, MIN_DIST, MAX_DIST );
-		if ( dist > 0 )
+		float dist = Raymarch( eye, dir, 0, 2000 );
+		float depth = Depth::GetLinear( i.vPositionSs );
+		if ( depth > dist && dist < 2000 )
 		{
 			return float4( 1, 0, 0, 1 );
 		}
-		else 
-		{
-			discard;
-			return float4( 0, 0, 0, 0 );
-		}
+		discard;
+		return float4( 0, 0, 0, 0 );
 	}
 }

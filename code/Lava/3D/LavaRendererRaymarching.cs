@@ -24,6 +24,7 @@
 		if ( !World.IsValid() )
 			return;
 
+		
 		_sceneObject ??= new SceneCustomObject( Scene.SceneWorld );
 		_sceneObject.RenderOverride = Render;
 		_sceneObject.Tags.Add( Tags );
@@ -48,18 +49,21 @@
 		if ( !World.IsValid() )
 			return;
 
-		UpdateAttributes();
+		sceneObject.Transform = Transform.World;
+		var attributes = UpdateAttributes();
 
-		Graphics.Blit( Material );
+		Graphics.Blit( Material, attributes );
 	}
 
-	private void UpdateAttributes()
+	private RenderAttributes UpdateAttributes()
 	{
 		var metaballData = World.Metaballs
 			.Select( mb => mb.GetRenderData() )
 			.ToList();
 
-		Graphics.Attributes.SetData( "BallBuffer", metaballData );
-		Graphics.Attributes.Set( "BallCount", metaballData.Count );
+		var attributes = new RenderAttributes();
+		attributes.SetData( "BallBuffer", metaballData );
+		attributes.Set( "BallCount", metaballData.Count );
+		return attributes;
 	}
 }
