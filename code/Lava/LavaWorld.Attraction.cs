@@ -3,8 +3,8 @@
 	[Property, Group( "Attraction" )]
 	public Vector3 GravityForce { get; set; } = Vector3.Down * 20f;
 
-	[Property, Range( 0f, 500f ), Group( "Attraction" )]
-	public float LavaAttractionForce { get; set; } = 100f;
+	[Property, Range( 0f, 50f ), Group( "Attraction" )]
+	public float LavaAttractionForce { get; set; } = 20f;
 
 	[Property, Range( 0f, 5f ), Group( "Attraction" )]
 	public float LavaAttractionMinRange { get; set; } = 0.5f;
@@ -22,7 +22,7 @@
 
 	private void AttractToLava()
 	{
-		if ( LavaAttractionForce == 0f )
+		if ( LavaAttractionForce.AlmostEqual( 0f ) )
 			return;
 
 		foreach ( var ball in Metaballs )
@@ -31,7 +31,7 @@
 		}
 	}
 
-	public void AttractToPoint( Vector3 attractPos, float force = 1f, float minDistance = 0.25f )
+	public void AttractToPoint( Vector3 attractPos, float force = 1f, float minDistance = 0.5f, float massDamping = 0f )
 	{
 		if ( attractPos.IsNaN || Metaballs is null )
 			return;
@@ -42,16 +42,16 @@
 			if ( sqrDistance < minDistance )
 				return;
 
-			var density = 1f;
-			var mass = ball.Volume * density;
+			massDamping = massDamping.Clamp( 0f, 1f );
+
+			var mass = ball.Mass;
+			var intensity = force * Time.Delta;
 			// More massive balls are affected less strongly.
-			var intensity = ( 1f / mass );
-			intensity *= force;
+			intensity *= ( 1f / mass ).LerpTo( 0f, massDamping );
 			intensity *= 1f / sqrDistance;
 			var direction = (attractPos - ball.Position).Normal;
 			var targetVelocity = direction * intensity;
-			targetVelocity = targetVelocity.Clamp( -MaxVelocity, MaxVelocity );
-			ball.Velocity = ball.Velocity.LerpTo( targetVelocity, Time.Delta * 0.01f );
+			ball.Velocity += targetVelocity * Time.Delta;
 		}
 	}
 }

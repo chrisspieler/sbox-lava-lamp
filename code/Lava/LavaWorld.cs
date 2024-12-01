@@ -67,8 +67,13 @@ public partial class LavaWorld : Component, Component.IHasBounds
 		ApplyDamping();
 		AttractToGravity();
 		AttractToLava();
-		ApplyVelocity();
+		UpdateVelocity();
 		UpdateColor();
+	}
+
+	protected override void OnFixedUpdate()
+	{
+		FixedUpdateVelocity();
 	}
 
 	/// <summary>

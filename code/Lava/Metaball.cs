@@ -26,8 +26,11 @@ public class Metaball
 	public Color InitialColor { get; set; }
 	public Color CalculatedColor { get; set; }
 	public float Radius { get; set; }
+	public float Density { get; set; } = 1f;
 	public float Volume => new Sphere( Vector3.Zero, Radius ).GetVolume();
+	public float Mass => Volume * Density;
 	public Vector3 Velocity { get; set; }
+	public float LinearDamping { get; set; }
 	public float Temperature { get; set; }
 
 	public const int MAX_BALLS = 256;

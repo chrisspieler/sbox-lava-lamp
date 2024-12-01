@@ -2,7 +2,7 @@
 {
 	[Property, Group( "Velocity")]
 	public Vector3 MaxVelocity { get; set; } = new Vector3( 0f, 16f, 16f );
-	[Property, Range( 0f, 2f ), Group( "Velocity" )]
+	[Property, Range( 0f, 5f ), Group( "Velocity" )]
 	public float DampingStrength { get; set; } = 1f;
 
 	private void ApplyDamping()
@@ -12,29 +12,35 @@
 
 		foreach ( var ball in Metaballs )
 		{
-			ball.Velocity = ball.Velocity.LerpTo( Vector3.Zero, DampingStrength * 0.1f * ball.Volume );
+			ball.Velocity += -ball.Velocity * DampingStrength * Time.Delta;
 		}
 	}
 
-	private void ApplyVelocity()
+	private void UpdateVelocity()
 	{
-		foreach ( var ball in Metaballs )
+		if ( EnableCollision )
+			return;
+
+		foreach( var ball in Metaballs )
 		{
 			var velocity = ball.Velocity * Time.Delta;
 			if ( velocity.Length < 0.0001f )
 				continue;
 
+			ball.Position += velocity;
 			KeepInBounds( ball );
+		}
+	}
 
-			// Log.Info( $"ball velocity: {velocity}" );
-			if ( EnableCollision )
-			{
-				AdvanceBall( ball, velocity );
-			}
-			else
-			{
-				ball.Position += velocity;
-			}
+	private void FixedUpdateVelocity()
+	{
+		if ( !EnableCollision )
+			return;
+
+		foreach( var ball in Metaballs )
+		{
+			ApplyRigidbodyForces( ball );
+			KeepInBounds( ball );
 		}
 	}
 }

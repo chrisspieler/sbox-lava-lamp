@@ -13,19 +13,19 @@
           "__guid": "2f5371b0-6717-4613-841b-57781636b4b9",
           "ConvectionNoiseScale": 0.07,
           "ConvectionNoiseScrolling": "3,5,0",
-          "ConvectionPower": 5,
-          "DampingStrength": 0.1,
+          "ConvectionPower": 0.2,
+          "DampingStrength": 1.2,
           "EnableCollision": true,
           "EnableHeat": true,
           "FastLavaColor": "1,0.13333,0,1",
-          "GravityForce": "0,0,-2.5",
+          "GravityForce": "0,0,-1.5",
           "HeatDirection": "0,0,1",
           "HueVariance": 0.02,
-          "LavaAttractionForce": 200,
-          "LavaAttractionMinRange": 0.5,
+          "LavaAttractionForce": 10,
+          "LavaAttractionMinRange": 0.6,
           "LavaColliderCount": 0,
           "LavaColor": "1,0.13333,0,1",
-          "MaxTemperature": 5,
+          "MaxTemperature": 2.5,
           "MaxVelocity": "0,16,16",
           "MetaballCount": 0,
           "PointToWorldScale": 8,
@@ -58,22 +58,25 @@
               }
             ]
           },
-          "VerticalHeatingCurve": [
-            {
-              "x": 0.15,
-              "y": 1,
-              "in": 1.8032783,
-              "out": -1.8032783,
-              "mode": "Mirrored"
-            },
-            {
-              "x": 0.25,
-              "y": 0,
-              "in": -0.14492741,
-              "out": 0.14492741,
-              "mode": "Mirrored"
-            }
-          ],
+          "VerticalHeatingCurve": {
+            "rangey": "0,0.25",
+            "frames": [
+              {
+                "x": 0.15,
+                "y": 1,
+                "in": 1.8032783,
+                "out": -1.8032783,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 0.25,
+                "y": 0,
+                "in": -0.14492741,
+                "out": 0.14492741,
+                "mode": "Mirrored"
+              }
+            ]
+          },
           "WallBounce": 1,
           "WorldBounds": {
             "Mins": "20,-4,0",
@@ -83,9 +86,9 @@
         {
           "__type": "LavaLampGenerator",
           "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-          "MaxRadius": 0.9,
+          "MaxRadius": 1.1,
           "MetaballCount": 48,
-          "MinRadius": 0.5,
+          "MinRadius": 0.7,
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -97,7 +100,7 @@
           "__type": "LavaDebugger",
           "__guid": "2fb81853-6420-4c72-a193-9a275c60992f",
           "AttractAction": "attack1",
-          "AttractForce": 1000000,
+          "AttractForce": 10000,
           "Renderer2D": {
             "_type": "component",
             "component_id": "e2bd6b12-9179-4364-99cd-3856606d17b1",

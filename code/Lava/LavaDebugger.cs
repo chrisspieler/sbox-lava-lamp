@@ -83,29 +83,27 @@
 
 	private void UpdateInput2D()
 	{
-		var mousePos = Mouse.Position;
+		var mousePoint = Renderer2D.ScreenToPoint( Mouse.Position );
 		if ( Input.Down( AttractAction ) )
 		{
-			var mousePoint = Renderer2D.ScreenToPoint( mousePos );
-			World.AttractToPoint( mousePoint, AttractForce, minDistance: 0.25f );
+			World.AttractToPoint( mousePoint, AttractForce, minDistance: 2f, massDamping: 0.5f );
 		}
 		if ( Input.Pressed( SpawnAction ) )
 		{
-			SpawnMetaball( Renderer2D.ScreenToPoint( mousePos ), World.LavaColor );
+			SpawnMetaball( mousePoint, World.LavaColor );
 		}
 	}
 
 	private void UpdateInput3D()
 	{
-		var mousePos = Mouse.Position;
+		var mousePoint = Renderer3D.ScreenToPoint( Mouse.Position );
 		if ( Input.Down( AttractAction ) )
 		{
-			var mousePoint = Renderer3D.ScreenToPoint( mousePos );
-			World.AttractToPoint( mousePoint, AttractForce, minDistance: 0.25f );
+			World.AttractToPoint( mousePoint, AttractForce, minDistance: 2f, massDamping: 0.5f );
 		}
 		if ( Input.Pressed( SpawnAction ) )
 		{
-			SpawnMetaball( Renderer3D.ScreenToPoint( mousePos ), World.LavaColor );
+			SpawnMetaball( mousePoint, World.LavaColor );
 		}
 	}
 

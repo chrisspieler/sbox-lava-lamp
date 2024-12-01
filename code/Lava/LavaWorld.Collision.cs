@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 
 public partial class LavaWorld : Component
 {
@@ -82,7 +83,8 @@ public partial class LavaWorld : Component
 		var density = 1f;
 		rigidbody.MassOverride = ball.Volume * density;
 		rigidbody.Gravity = false;
-		rigidbody.Locking = new PhysicsLock() { X = true };
+		rigidbody.Locking = new PhysicsLock() { X = true, Pitch = true, Yaw = true, Roll = true };
+		rigidbody.RigidbodyFlags = RigidbodyFlags.DisableCollisionSounds;
 		_activeLavaColliders[ball] = new LavaCollider( ball, collider, rigidbody );
 	}
 
@@ -99,8 +101,8 @@ public partial class LavaWorld : Component
 
 	private void KeepInBounds( Metaball metaball )
 	{
-		var size = SimulationSize.WithX( 0f ) * 0.5f;
-		var bounds = LocalBounds * 1.001f;
+		var size = SimulationSize * 0.5f;
+		var bounds = LocalBounds * 1.1f;
 		var isOutOfBounds = !bounds.Contains( metaball.Position );
 		if ( !isOutOfBounds )
 			return;
@@ -108,17 +110,23 @@ public partial class LavaWorld : Component
 		metaball.Position = metaball.Position.Clamp( -size, size );
 		if ( _activeLavaColliders.TryGetValue( metaball, out var collider ) )
 		{
+			var sphere = new Sphere( WorldTransform.PointToWorld( metaball.Position ), metaball.Radius * 2f );
+			DebugOverlay.Sphere( sphere, color: Color.Red, duration: 1f, overlay: true );
 			collider.Rigidbody.LocalPosition = metaball.Position;
+			collider.Rigidbody.Transform.ClearInterpolation();
 		}
 	}
 
-	private void AdvanceBall( Metaball ball, Vector3 velocity )
+	private void ApplyRigidbodyForces( Metaball ball )
 	{
 		if ( !_activeLavaColliders.ContainsKey( ball ) )
 		{
 			CreateBallCollider( ball );
 		}
 		var collider = _activeLavaColliders[ball];
-		collider.Rigidbody.ApplyForce( velocity );
+		var rb = collider.Rigidbody;
+		ball.Velocity = ball.Velocity.Clamp( -MaxVelocity, MaxVelocity );
+		var targetPos = WorldTransform.PointToWorld( ball.Position + ball.Velocity );
+		rb.SmoothMove( targetPos, 1f, Time.Delta );
 	}
 }

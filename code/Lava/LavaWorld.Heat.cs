@@ -50,9 +50,9 @@ public partial class LavaWorld : Component
 			ball.Temperature -= cooling * heatChangeAmount;
 			ball.Temperature += heating * heatChangeAmount;
 			ball.Temperature = ball.Temperature.Clamp( 0f, MaxTemperature );
-			var heatDir = HeatDirection.Normal * ball.Temperature * Time.Delta;
-			heatDir += GetConvectionDirection( ball.Position ) * GetConvectionForce( ball.Position );
-			ball.Velocity += heatDir;
+			var heatForce = HeatDirection.Normal * ball.Temperature * Time.Delta;
+			heatForce += GetConvectionDirection( ball.Position ) * GetConvectionForce( ball.Position );
+			ball.Velocity += heatForce;
 		}
 	}
 
