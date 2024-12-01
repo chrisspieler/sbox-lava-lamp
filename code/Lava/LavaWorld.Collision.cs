@@ -42,10 +42,11 @@
 
 	private void KeepInBounds( Metaball metaball )
 	{
-		metaball.Position = metaball.Position.Clamp( -SimulationSize.WithX( 0f ), SimulationSize.WithX( 0 ) );
+		var size = SimulationSize.WithX( 0f ) * 0.5f;
+		metaball.Position = metaball.Position.Clamp( -size, size );
 	}
 
-	private Vector2 PhysicsBounds => new Vector2( -SimulationSize.y, -SimulationSize.z );
+	private Vector2 PhysicsBounds => new Vector2( -SimulationSize.y, -SimulationSize.z ) * 0.5f;
 	private Line LeftEdge => new( new Vector2( -PhysicsBounds.x, -PhysicsBounds.y ), new Vector2( -PhysicsBounds.x, PhysicsBounds.y ) );
 	private Line BottomEdge => new( new Vector2( -PhysicsBounds.x, PhysicsBounds.y ), new Vector2( PhysicsBounds.x, PhysicsBounds.y ) );
 	private Line RightEdge => new( new Vector2( PhysicsBounds.x, PhysicsBounds.y ), new Vector2( PhysicsBounds.x, -PhysicsBounds.y ) );

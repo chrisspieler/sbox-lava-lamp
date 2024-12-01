@@ -99,12 +99,18 @@
           "__type": "LavaDebugger",
           "__guid": "2fb81853-6420-4c72-a193-9a275c60992f",
           "AttractAction": "attack1",
-          "AttractForce": 100000,
+          "AttractForce": 1000000,
           "Renderer2D": {
             "_type": "component",
             "component_id": "e2bd6b12-9179-4364-99cd-3856606d17b1",
             "go": "1483f045-f12d-4942-bd1e-df2107f116b6",
             "component_type": "LavaRenderer2D"
+          },
+          "Renderer3D": {
+            "_type": "component",
+            "component_id": "31fd688e-1da5-496c-be11-f454548123b0",
+            "go": "f750f124-1685-40e3-837a-8a32441f3b61",
+            "component_type": "LavaRendererRaymarching"
           },
           "ShowWorldInfo": false,
           "SpawnAction": "attack2",

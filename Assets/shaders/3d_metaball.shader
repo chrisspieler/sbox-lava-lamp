@@ -77,8 +77,8 @@ PS
 
 	float SphereSDF( float3 samplePoint, Metaball ball )
 	{
-		float3 p = samplePoint - WorldPosition - ball.Position * 0.5;
-		float s = ball.Radius * 0.25;
+		float3 p = samplePoint - WorldPosition - ball.Position;
+		float s = ball.Radius;
 		return length(p) - s;
 	}
 

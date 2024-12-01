@@ -17,13 +17,17 @@
 	private readonly Material Material = Metaball.Material3D;
 	private SceneCustomObject _sceneObject;
 
-	protected override void DrawGizmos()
+	public Vector3 ScreenToPoint( Vector2 mousePos )
 	{
-		if ( !_sceneObject.IsValid() || !World.IsValid() )
-			return;
+		var camera = Scene?.Camera;
+		if ( !camera.IsValid() )
+			return default;
 
-		Gizmo.Draw.Color = Color.Green;
-		Gizmo.Draw.LineBBox( _sceneObject.LocalBounds );
+		var plane = new Plane( WorldPosition, WorldRotation.Forward );
+		var ray = camera.ScreenPixelToRay( mousePos );
+		var position = plane.Trace( ray, true ) ?? default;
+		position = WorldTransform.PointToLocal( position );
+		return position;
 	}
 
 	protected override void OnEnabled()
