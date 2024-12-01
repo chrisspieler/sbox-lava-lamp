@@ -235,14 +235,13 @@
           "__guid": "0c7e26ec-aba1-4d11-b6e1-1187a5b52c52",
           "Flags": 0,
           "Name": "Lava Lamp Mount",
-          "Position": "0,0.0000004442409,8",
+          "Position": "4,0.0000004442409,8",
           "Enabled": true,
           "Children": [
             {
               "__guid": "c2e48be1-0fd2-45c8-be6e-c749825f121a",
               "Flags": 0,
               "Name": "Lava Glow Light",
-              "Position": "4,0,0",
               "Tags": "light_point,light",
               "Enabled": true,
               "Components": [
@@ -269,7 +268,7 @@
                   "LightSaturationOffset": -0.2,
                   "LightValueOffset": -0.5,
                   "LowVelocityAttenuation": 2,
-                  "PositionScale": 8,
+                  "PositionScale": 4,
                   "VelocityMaxInput": 20,
                   "World": {
                     "_type": "component",

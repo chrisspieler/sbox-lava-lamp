@@ -65,7 +65,7 @@ public partial class LavaWorld : Component, Component.IHasBounds
 	/// </summary>
 	public Vector2 PointToUV( Vector3 simPosition )
 	{
-		var normalPos = simPosition / SimulationSize;
+		var normalPos = simPosition / ( SimulationSize * 0.5f );
 		var uv = new Vector2( -normalPos.y, -normalPos.z );
 		uv /= 2f;
 		uv += 0.5f;
