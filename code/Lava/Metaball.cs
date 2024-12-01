@@ -48,8 +48,9 @@ public class Metaball
 
 	private Color GetVelocityVisColor()
 	{
-		var t = Velocity.Length.LerpInverse( 0f, 1f );
-		t = Easing.EaseIn( t );
+		var maxLength = World.MaxVelocity.Length;
+		var t = Velocity.Length.LerpInverse( 0f, maxLength );
+		t = Easing.QuadraticOut( t );
 		var r = t * 0.4f;
 		// Perhaps green will be used later for something?
 		var g = 0f;

@@ -1,7 +1,7 @@
 ﻿public partial class LavaWorld : Component
 {
 	[Property, Group( "Velocity")]
-	public Vector3 MaxVelocity { get; set; } = new Vector3( 0f, 100f, 100f );
+	public Vector3 MaxVelocity { get; set; } = new Vector3( 0f, 16f, 16f );
 	[Property, Range( 0f, 2f ), Group( "Velocity" )]
 	public float DampingStrength { get; set; } = 1f;
 
