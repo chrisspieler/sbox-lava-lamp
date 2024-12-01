@@ -46,10 +46,11 @@ public partial class LavaWorld : Component
 		{
 			var heating = GetHeating( ball.Position );
 			var cooling = GetCooling( ball.Position );
-			ball.Temperature -= cooling * Time.Delta * ( 1f - ball.Radius );
-			ball.Temperature += heating * Time.Delta * ( 1f - ball.Radius );
+			var heatChangeAmount = Time.Delta * (1f / ball.Volume);
+			ball.Temperature -= cooling * heatChangeAmount;
+			ball.Temperature += heating * heatChangeAmount;
 			ball.Temperature = ball.Temperature.Clamp( 0f, MaxTemperature );
-			var heatDir = HeatDirection * ball.Temperature * Time.Delta;
+			var heatDir = HeatDirection.Normal * ball.Temperature * Time.Delta;
 			heatDir += GetConvectionDirection( ball.Position ) * GetConvectionForce( ball.Position );
 			ball.Velocity += heatDir;
 		}
@@ -57,13 +58,15 @@ public partial class LavaWorld : Component
 
 	public float GetHeating( Vector3 position )
 	{
-		var height = position.z.LerpInverse( -SimulationSize.z, SimulationSize.z );
+		var size = SimulationSize * 0.5f;
+		var height = position.z.LerpInverse( -size.z, size.z );
 		return VerticalHeatingCurve.Evaluate( height );
 	}
 
 	public float GetCooling( Vector3 position )
 	{
-		var height = position.z.LerpInverse( -SimulationSize.z, SimulationSize.z );
+		var size = SimulationSize * 0.5f;
+		var height = position.z.LerpInverse( -size.z, size.z );
 		return VerticalCoolingCurve.Evaluate( height );
 	}
 

@@ -14,18 +14,18 @@
           "ConvectionNoiseScale": 0.07,
           "ConvectionNoiseScrolling": "3,5,0",
           "ConvectionPower": 0.5,
-          "DampingStrength": 0.1,
+          "DampingStrength": 0.5,
           "EnableCollision": true,
           "EnableHeat": true,
-          "FastLavaColor": "1,1,0,1",
+          "FastLavaColor": "1,0.13333,0,1",
           "GravityForce": "0,0,-2.5",
           "HeatDirection": "0,0,1",
           "HueVariance": 0.02,
-          "LavaAttractionRange": 2,
-          "LavaAttractionScale": 2,
+          "LavaAttractionForce": 200,
+          "LavaAttractionMinRange": 0.5,
           "LavaColliderCount": 0,
           "LavaColor": "1,0.13333,0,1",
-          "MaxTemperature": 3,
+          "MaxTemperature": 3.5,
           "MaxVelocity": "0,1000,1000",
           "MetaballCount": 0,
           "PointToWorldScale": 8,
@@ -33,50 +33,47 @@
           "SimulationSize": "8,8,16",
           "ValueVariance": 0.05,
           "VerticalCoolingCurve": {
-            "rangey": "0,20",
+            "rangey": "0,10",
             "frames": [
               {
-                "x": 0,
+                "x": 0.15,
                 "y": 0,
                 "in": 0,
-                "out": -0,
-                "mode": "Mirrored"
+                "out": 0,
+                "mode": "Linear"
               },
               {
-                "x": 0.70238096,
-                "y": 0.18863645,
-                "in": -0.8405906,
-                "out": 0.8405906,
+                "x": 0.75,
+                "y": 0.010000026,
+                "in": -0.048780274,
+                "out": 0.048780274,
                 "mode": "Mirrored"
               },
               {
                 "x": 1,
                 "y": 1,
-                "in": -2.4705884,
-                "out": 2.4705884,
+                "in": -3.5483875,
+                "out": 3.5483875,
                 "mode": "Mirrored"
               }
             ]
           },
-          "VerticalHeatingCurve": {
-            "rangey": "0,20",
-            "frames": [
-              {
-                "x": 0,
-                "y": 1,
-                "in": 1.8032783,
-                "out": -1.8032783,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.78303576,
-                "y": 0,
-                "in": -0.14492741,
-                "out": 0.14492741,
-                "mode": "Mirrored"
-              }
-            ]
-          },
+          "VerticalHeatingCurve": [
+            {
+              "x": 0.15,
+              "y": 1,
+              "in": 1.8032783,
+              "out": -1.8032783,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 0.25,
+              "y": 0,
+              "in": -0.14492741,
+              "out": 0.14492741,
+              "mode": "Mirrored"
+            }
+          ],
           "WallBounce": 1,
           "WorldBounds": {
             "Mins": "20,-4,0",
@@ -86,9 +83,9 @@
         {
           "__type": "LavaLampGenerator",
           "__guid": "673a4768-2a6b-48e3-83f7-6cb6fc6d742c",
-          "MaxRadius": 1.28,
-          "MetaballCount": 32,
-          "MinRadius": 0.64,
+          "MaxRadius": 0.9,
+          "MetaballCount": 48,
+          "MinRadius": 0.5,
           "World": {
             "_type": "component",
             "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",
@@ -113,7 +110,7 @@
             "go": "f750f124-1685-40e3-837a-8a32441f3b61",
             "component_type": "LavaRendererRaymarching"
           },
-          "ShowWorldInfo": true,
+          "ShowWorldInfo": false,
           "SpawnAction": "attack2",
           "VisMode": "None",
           "World": {
@@ -284,8 +281,8 @@
             {
               "__type": "LavaRendererRaymarching",
               "__guid": "31fd688e-1da5-496c-be11-f454548123b0",
-              "ColorBlendScale": 3.5,
-              "ShapeBlendScale": 4,
+              "ColorBlendScale": 5,
+              "ShapeBlendScale": 2,
               "World": {
                 "_type": "component",
                 "component_id": "2f5371b0-6717-4613-841b-57781636b4b9",

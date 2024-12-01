@@ -26,6 +26,7 @@ public class Metaball
 	public Color InitialColor { get; set; }
 	public Color CalculatedColor { get; set; }
 	public float Radius { get; set; }
+	public float Volume => new Sphere( Vector3.Zero, Radius ).GetVolume();
 	public Vector3 Velocity { get; set; }
 	public float Temperature { get; set; }
 

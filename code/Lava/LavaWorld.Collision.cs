@@ -79,10 +79,8 @@ public partial class LavaWorld : Component
 		var collider = ballGo.AddComponent<SphereCollider>();
 		collider.Radius = ball.Radius * 0.3f;
 		var rigidbody = ballGo.AddComponent<Rigidbody>();
-		var r = collider.Radius;
-		var volume = 1.33f * MathF.PI * (r * r * r);
 		var density = 1f;
-		rigidbody.MassOverride = volume * density;
+		rigidbody.MassOverride = ball.Volume * density;
 		rigidbody.Gravity = false;
 		rigidbody.Locking = new PhysicsLock() { X = true };
 		_activeLavaColliders[ball] = new LavaCollider( ball, collider, rigidbody );

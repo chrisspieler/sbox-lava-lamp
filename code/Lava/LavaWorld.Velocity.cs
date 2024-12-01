@@ -12,7 +12,7 @@
 
 		foreach ( var ball in Metaballs )
 		{
-			ball.Velocity = ball.Velocity.LerpTo( Vector2.Zero, DampingStrength * 0.1f * ball.Radius );
+			ball.Velocity = ball.Velocity.LerpTo( Vector3.Zero, DampingStrength * 0.1f * ball.Volume );
 		}
 	}
 

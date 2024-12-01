@@ -84,7 +84,7 @@ PS
 
 	float3 SphereColor( Metaball ball, float sdBall )
 	{
-		float influence = pow( ball.Radius / sdBall, ColorBlendScale );
+		float influence = saturate( pow( ball.Radius / sdBall, ColorBlendScale / ball.Radius ) );
 		return ball.Color.rgb * influence;
 	}
 
@@ -102,7 +102,7 @@ PS
 			Metaball ball = Balls[i];
 			float sdBall = SphereSDF( samplePoint, ball );
 			albedo += SphereColor( ball, sdBall );
-			sdScene = SmoothMin( sdScene, sdBall, ShapeBlendScale );
+			sdScene = SmoothMin( sdScene, sdBall, ShapeBlendScale * ball.Radius );
 		}
 		return RaymarchResult::From( sdScene, saturate( albedo ) );
 	}

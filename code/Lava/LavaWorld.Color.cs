@@ -41,7 +41,7 @@ public partial class LavaWorld : Component
 		if ( EnableHeat )
 		{
 			heat = metaball.Temperature.LerpInverse( 0, MaxTemperature );
-			heat = Easing.SineEaseIn( heat );
+			heat = heat * heat * heat * heat * heat;
 		}
 		return Color.Lerp( metaball.InitialColor, FastLavaColor, heat );
 	}

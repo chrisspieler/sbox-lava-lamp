@@ -105,7 +105,7 @@ public partial class LavaWorld : Component, Component.IHasBounds
 		color = RandomizeHsv( color );
 		var metaball = new Metaball( this, position, color, radius )
 		{
-			Temperature = Game.Random.Float( 0, MaxTemperature * 0.5f )
+			Temperature = Game.Random.Float( 0, MaxTemperature * 0.2f )
 		};
 		_metaballs.Add( metaball );
 		CreateBallCollider( metaball );

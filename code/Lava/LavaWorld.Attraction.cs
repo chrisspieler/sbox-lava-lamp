@@ -3,11 +3,11 @@
 	[Property, Group( "Attraction" )]
 	public Vector3 GravityForce { get; set; } = Vector3.Down * 20f;
 
-	[Property, Range( 0f, 5f ), Group( "Attraction" )]
-	public float LavaAttractionScale { get; set; } = 1f;
+	[Property, Range( 0f, 500f ), Group( "Attraction" )]
+	public float LavaAttractionForce { get; set; } = 100f;
 
-	[Property, Group( "Attraction" )]
-	public float LavaAttractionRange { get; set; } = 0.05f;
+	[Property, Range( 0f, 5f ), Group( "Attraction" )]
+	public float LavaAttractionMinRange { get; set; } = 0.5f;
 
 	private void AttractToGravity()
 	{
@@ -22,12 +22,12 @@
 
 	private void AttractToLava()
 	{
-		if ( LavaAttractionScale == 0f )
+		if ( LavaAttractionForce == 0f )
 			return;
 
 		foreach ( var ball in Metaballs )
 		{
-			AttractToPoint( ball.Position, LavaAttractionScale, minDistance: LavaAttractionRange );
+			AttractToPoint( ball.Position, LavaAttractionForce, minDistance: LavaAttractionMinRange );
 		}
 	}
 
@@ -42,11 +42,12 @@
 			if ( sqrDistance < minDistance )
 				return;
 
-			var mass = ball.Radius * 20f;
-			var intensity = 1f / sqrDistance;
+			var density = 1f;
+			var mass = ball.Volume * density;
 			// More massive balls are affected less strongly.
-			intensity *= (1f / mass);
+			var intensity = ( 1f / mass );
 			intensity *= force;
+			intensity *= 1f / sqrDistance;
 			var direction = (attractPos - ball.Position).Normal;
 			var targetVelocity = direction * intensity;
 			targetVelocity = targetVelocity.Clamp( -MaxVelocity, MaxVelocity );
