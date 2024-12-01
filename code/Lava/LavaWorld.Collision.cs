@@ -1,71 +1,125 @@
-﻿public partial class LavaWorld : Component
+﻿using System;
+
+public partial class LavaWorld : Component
 {
+	internal record LavaCollider( Metaball Metaball, SphereCollider Collider, Rigidbody Rigidbody ) : IValid
+	{
+		public float Radius
+		{
+			get => Collider.Radius;
+			set => Collider.Radius = value;
+		}
+
+		public bool IsValid => Rigidbody.IsValid();
+
+		public void DestroyGameObject()
+		{
+			Rigidbody.DestroyGameObject();
+		}
+	}
+
 	[Property, FeatureEnabled( "Collision", Icon = "sports_tennis" )]
 	public bool EnableCollision { get; set; } = true;
 
 	[Property, Range( -10f, 10f ), Feature( "Collision" )]
 	public float WallBounce { get; set; } = 2f;
 
-	private void AdvanceBall( Metaball ball, Vector2 wishTranslation, int depth )
-	{
-		if ( depth > 3 )
-		{
-			// Log.Info( $"Max collision depth reached! Position: {ball.Position}, Wish translation: {wishTranslation}");
-			ball.Velocity = Vector3.Zero;
-			return;
-		}
-		// HACK: we're using old 2D coordinates for the physics until using real physics with a PhysicsWorld or something.
-		var from = new Vector2( -ball.Position.y, -ball.Position.z );
-		var to = from + wishTranslation;
-		var wishLine = new Line( from, to );
-		if ( !IntersectWall( wishLine, ball.Radius, out Vector2 normal, out Vector2 hitPosition, out float distance ) )
-		{
-			ball.Position += new Vector3( 0f, -wishTranslation.x, -wishTranslation.y );
-			return;
-		}
+	[Property, Feature( "Collision" )]
+	public GameObject LavaColliderContainer { get; set; }
+	[Property, Feature( "Collision" )]
+	public int LavaColliderCount => _activeLavaColliders.Count;
+	internal IEnumerable<LavaCollider> LavaColliders => _activeLavaColliders.Values;
+	private readonly Dictionary<Metaball, LavaCollider> _activeLavaColliders = new();
 
-		// HACK: Continue using 2D coordinates
-		var velocity2d = new Vector2( -ball.Velocity.y, -ball.Velocity.z );
-		var reflection2d = Vector3.Reflect( velocity2d, normal );
-		var reflection3d = new Vector3( 0f, -reflection2d.x, -reflection2d.y );
-		var bounce = reflection3d * WallBounce;
-		ball.Velocity += bounce;
-		// Log.Info( $"Intersect wall! BallPos - {ball.Position}, WishLine - from:{wishLine.Start} to:{wishLine.End}, Wish Translation - {wishTranslation}, Normal - {normal}, Hit Position: {hitPosition}, Distance: {distance}" );
-		var wishRay = new Ray( from, Vector3.Direction( from, to ) );
-		var nextLength = wishTranslation.Length - distance;
-		var nextDir = Vector3.Reflect( wishRay.Forward, normal );
-		var nextFrom = wishRay.Project( distance );
-		var nextWishTranslation = nextFrom + nextDir * nextLength;
-		// Log.Info( $"Next dir: {nextDir}, next from: {nextFrom}, next wish translation: {nextWishTranslation}" );
-		AdvanceBall( ball, nextWishTranslation, depth + 1 );
+	private void InitializeColliders()
+	{
+		DestroyColliders();
+		if ( !EnableCollision )
+			return;
+
+		foreach( var ball in Metaballs )
+		{
+			CreateBallCollider( ball );
+		}
+	}
+
+	private void DestroyColliders()
+	{
+		// Just in case we changed containers or something...
+		if ( LavaColliderContainer.IsValid() )
+		{
+			foreach( var child in LavaColliderContainer.Children )
+			{
+				child.Destroy();
+			}
+		}
+		foreach( ( _, LavaCollider collider ) in _activeLavaColliders )
+		{
+			if ( collider.IsValid() )
+			{
+				collider.DestroyGameObject();
+			}
+		}
+		_activeLavaColliders.Clear();
+	}
+
+	private void CreateBallCollider( Metaball ball )
+	{
+		if ( _activeLavaColliders.ContainsKey( ball ) )
+			return;
+
+		if ( !LavaColliderContainer.IsValid() )
+		{
+			LavaColliderContainer = new GameObject( GameObject, true, "Metaball Colliders" );
+		}
+		var ballGo = new GameObject( LavaColliderContainer, true, "Metaball Collider" )
+		{
+			LocalPosition = ball.Position
+		};
+		var collider = ballGo.AddComponent<SphereCollider>();
+		collider.Radius = ball.Radius * 0.3f;
+		var rigidbody = ballGo.AddComponent<Rigidbody>();
+		var r = collider.Radius;
+		var volume = 1.33f * MathF.PI * (r * r * r);
+		var density = 1f;
+		rigidbody.MassOverride = volume * density;
+		rigidbody.Gravity = false;
+		rigidbody.Locking = new PhysicsLock() { X = true };
+		_activeLavaColliders[ball] = new LavaCollider( ball, collider, rigidbody );
+	}
+
+	private void ApplyColliderPositions()
+	{
+		if ( !EnableCollision )
+			return;
+
+		foreach( ( Metaball ball, LavaCollider collider ) in _activeLavaColliders )
+		{
+			ball.Position = collider.Rigidbody.LocalPosition;
+		}
 	}
 
 	private void KeepInBounds( Metaball metaball )
 	{
 		var size = SimulationSize.WithX( 0f ) * 0.5f;
+		var isOutOfBounds = !LocalBounds.Contains( metaball.Position );
+		if ( !isOutOfBounds )
+			return;
+
 		metaball.Position = metaball.Position.Clamp( -size, size );
+		if ( _activeLavaColliders.TryGetValue( metaball, out var collider ) )
+		{
+			collider.Rigidbody.LocalPosition = metaball.Position;
+		}
 	}
 
-	private Vector2 PhysicsBounds => new Vector2( -SimulationSize.y, -SimulationSize.z ) * 0.5f;
-	private Line LeftEdge => new( new Vector2( -PhysicsBounds.x, -PhysicsBounds.y ), new Vector2( -PhysicsBounds.x, PhysicsBounds.y ) );
-	private Line BottomEdge => new( new Vector2( -PhysicsBounds.x, PhysicsBounds.y ), new Vector2( PhysicsBounds.x, PhysicsBounds.y ) );
-	private Line RightEdge => new( new Vector2( PhysicsBounds.x, PhysicsBounds.y ), new Vector2( PhysicsBounds.x, -PhysicsBounds.y ) );
-	private Line TopEdge => new( new Vector2( PhysicsBounds.x, -PhysicsBounds.y ), new Vector2( -PhysicsBounds.x, -PhysicsBounds.y ) );
-
-	private bool IntersectWall( Line self, float radius, out Vector2 hitNormal, out Vector2 hitPosition, out float distance )
+	private void AdvanceBall( Metaball ball, Vector3 velocity )
 	{
-		if ( CollisionDetection.IntersectLine( self, LeftEdge, out hitNormal, out hitPosition, out distance ) )
-			return true;
-
-		if ( CollisionDetection.IntersectLine( self, BottomEdge, out hitNormal, out hitPosition, out distance ) )
-			return true;
-
-		if ( CollisionDetection.IntersectLine( self, RightEdge, out hitNormal, out hitPosition, out distance ) )
-			return true;
-
-		if ( CollisionDetection.IntersectLine( self, TopEdge, out hitNormal, out hitPosition, out distance ) )
-			return true;
-
-		return false;
+		if ( !_activeLavaColliders.ContainsKey( ball ) )
+		{
+			CreateBallCollider( ball );
+		}
+		var collider = _activeLavaColliders[ball];
+		collider.Rigidbody.ApplyForce( velocity );
 	}
 }

@@ -69,6 +69,13 @@ public partial class LavaDebugger : Component
 			var position = World.WorldTransform.PointToWorld( ball.Position );
 			var scale = World.WorldScale * ball.Radius;
 			var sphere = new Sphere( position, scale.x );
+			DebugOverlay.Sphere( sphere, Color.White.WithAlpha( 0.25f ), overlay: true );
+		}
+		foreach( var collider in World.LavaColliders )
+		{
+			var position = collider.Collider.WorldPosition;
+			var scale = collider.Collider.Radius;
+			var sphere = new Sphere( position, scale );
 			DebugOverlay.Sphere( sphere, Color.Green, overlay: true );
 		}
 	}

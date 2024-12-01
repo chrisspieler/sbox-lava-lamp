@@ -50,8 +50,19 @@ public partial class LavaWorld : Component, Component.IHasBounds
 		_convectionNoiseSeed = Game.Random.Int( 0, 5000 );
 	}
 
+	protected override void OnEnabled()
+	{
+		InitializeColliders();
+	}
+
+	protected override void OnDisabled()
+	{
+		DestroyColliders();
+	}
+
 	protected override void OnUpdate()
 	{
+		ApplyColliderPositions();
 		ApplyHeat();
 		ApplyDamping();
 		AttractToGravity();
@@ -97,6 +108,7 @@ public partial class LavaWorld : Component, Component.IHasBounds
 			Temperature = Game.Random.Float( 0, MaxTemperature * 0.5f )
 		};
 		_metaballs.Add( metaball );
+		CreateBallCollider( metaball );
 		return metaball;
 	}
 }

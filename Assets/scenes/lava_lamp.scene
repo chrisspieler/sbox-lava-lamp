@@ -21,10 +21,11 @@
           "GravityForce": "0,0,-2.5",
           "HeatDirection": "0,0,1",
           "HueVariance": 0.02,
-          "LavaAttractionRange": 1,
-          "LavaAttractionScale": 1,
+          "LavaAttractionRange": 2,
+          "LavaAttractionScale": 2,
+          "LavaColliderCount": 0,
           "LavaColor": "1,0.13333,0,1",
-          "MaxTemperature": 5,
+          "MaxTemperature": 3,
           "MaxVelocity": "0,1000,1000",
           "MetaballCount": 0,
           "PointToWorldScale": 8,
@@ -112,7 +113,7 @@
             "go": "f750f124-1685-40e3-837a-8a32441f3b61",
             "component_type": "LavaRendererRaymarching"
           },
-          "ShowWorldInfo": false,
+          "ShowWorldInfo": true,
           "SpawnAction": "attack2",
           "VisMode": "None",
           "World": {
@@ -121,6 +122,128 @@
             "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
             "component_type": "LavaWorld"
           }
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "ea677b6f-55ad-497d-9a0a-b408f09dd56b",
+          "Flags": 0,
+          "Name": "Static Colliders",
+          "Enabled": true,
+          "Children": [
+            {
+              "__guid": "7f2901a3-5f16-4af7-a8eb-79ac87d4303b",
+              "Flags": 0,
+              "Name": "Top",
+              "Position": "0,0,8",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "2ca81559-d655-4d51-afae-1e93d1b60070",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "8,8,0.5",
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            },
+            {
+              "__guid": "371a101b-d026-4d24-aca6-c715f565d89c",
+              "Flags": 0,
+              "Name": "Bottom",
+              "Position": "0,0,-8",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "bf2745f9-7a43-4849-ade9-3fb9f1af4322",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "8,8,0.5",
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            },
+            {
+              "__guid": "45af0f76-6823-4022-827c-2d22ceaf810f",
+              "Flags": 0,
+              "Name": "Front",
+              "Position": "4,0,0",
+              "Rotation": "0,-0.7071067,0,0.7071068",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "d2d07a6a-7663-45f4-a7c2-6990f13e9714",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "16,8,0.5",
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            },
+            {
+              "__guid": "071a8dca-6b38-4dce-a804-4d53a5057b61",
+              "Flags": 0,
+              "Name": "Right",
+              "Position": "0,-4,-0.0000009536743",
+              "Rotation": "-0.4999999,-0.5,-0.5,0.5000001",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "5c8f1ddd-5014-4046-ae09-4de54592253f",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "16,8,0.5",
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            },
+            {
+              "__guid": "26889045-a3dd-4459-a155-b49c8d2ede73",
+              "Flags": 0,
+              "Name": "Back",
+              "Position": "-4,0,0",
+              "Rotation": "-0.7071067,-0.0000001192093,-0.7071068,0.0000001490116",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "b58054c7-86a0-4c39-b92a-801cb42838a6",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "16,8,0.5",
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            },
+            {
+              "__guid": "478169f3-3952-4af0-a29e-80634c3cc08c",
+              "Flags": 0,
+              "Name": "Left",
+              "Position": "0,4,0",
+              "Rotation": "-0.5000001,0.4999998,-0.5000002,-0.4999999",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.BoxCollider",
+                  "__guid": "01badd14-1aad-408d-ae61-ca04a49d2e61",
+                  "Center": "0,0,0",
+                  "IsTrigger": false,
+                  "Scale": "16,8,0.5",
+                  "Static": true,
+                  "SurfaceVelocity": "0,0,0"
+                }
+              ]
+            }
+          ]
         }
       ]
     },

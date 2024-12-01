@@ -24,12 +24,12 @@
 			if ( velocity.Length < 0.0001f )
 				continue;
 
+			KeepInBounds( ball );
+
 			// Log.Info( $"ball velocity: {velocity}" );
 			if ( EnableCollision )
 			{
-				// HACK: Use 2D vectors for physics for now.
-				AdvanceBall( ball, new Vector2( -velocity.y, -velocity.z ), 0 );
-				KeepInBounds( ball );
+				AdvanceBall( ball, velocity );
 			}
 			else
 			{
