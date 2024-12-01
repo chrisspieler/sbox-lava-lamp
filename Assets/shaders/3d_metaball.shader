@@ -122,13 +122,14 @@ PS
 		for ( int i = 0; i < 255; i++ )
 		{
 			RaymarchResult stepResult = SceneSDF( eye + depth * dir );
+			depth += stepResult.Distance;
 			if ( stepResult.Distance <= 0.0001 )
 			{
+				stepResult.Distance = depth;
 				stepResult.Normal = EstimateNormal( eye + depth * dir );
 				return stepResult;
 			}
 			
-			depth += stepResult.Distance;
 			if ( depth > end )
 			{
 				return RaymarchResult::From( depth, float3( 0, 0, 0 ) );
