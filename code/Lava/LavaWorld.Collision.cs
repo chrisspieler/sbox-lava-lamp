@@ -100,7 +100,8 @@ public partial class LavaWorld : Component
 	private void KeepInBounds( Metaball metaball )
 	{
 		var size = SimulationSize.WithX( 0f ) * 0.5f;
-		var isOutOfBounds = !LocalBounds.Contains( metaball.Position );
+		var bounds = LocalBounds * 1.001f;
+		var isOutOfBounds = !bounds.Contains( metaball.Position );
 		if ( !isOutOfBounds )
 			return;
 
