@@ -3,6 +3,12 @@ FEATURES
     #include "common/features.hlsl"
 }
 
+MODES 
+{
+	VrForward();
+	ToolsVis( S_MODE_TOOLS_VIS );   
+}
+
 COMMON
 {
 	#include "common/shared.hlsl"
@@ -32,6 +38,7 @@ VS
 
 PS
 {
+
     #include "common/pixel.hlsl"
 	#include "shared/metaball.hlsl"
 
@@ -55,9 +62,6 @@ PS
 	RenderState( SrgbWriteEnable0, true );
 	RenderState( ColorWriteEnable0, RGBA );
 	RenderState( FillMode, SOLID );
-	RenderState( CullMode, NONE );
-	RenderState( DepthWriteEnable, false );
-	RenderState( DepthEnable, false );
 
 	float3 WorldPosition < Attribute( "WorldPosition" ); >;
 	float SimulationSize < Attribute( "SimulationSize" ); >;
@@ -147,8 +151,6 @@ PS
 		vRayCs += float3( vUV.x, -vUV.y, 0 );
 		return mul( g_matProjectionToWorld, vRayCs );
 	}
-
-
 
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{	

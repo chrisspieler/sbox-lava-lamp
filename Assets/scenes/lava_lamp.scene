@@ -1481,6 +1481,49 @@
           ]
         }
       ]
+    },
+    {
+      "__guid": "b6929206-b9e8-44d0-8341-7861ed6a25b5",
+      "Flags": 0,
+      "Name": "Orbit Point",
+      "Position": "24,0,8",
+      "Scale": "0.1,0.1,0.1",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "24aa2931-a139-47ed-8004-52db95f4685b",
+          "Flags": 0,
+          "Name": "Orbiting Glass",
+          "Position": "80,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "eed6d049-95e8-4e6f-b355-6c4bef03ed35",
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialOverride": "materials/glass/glass_c.vmat",
+              "Model": "models/dev/sphere.vmdl",
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "Off",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Orbiter",
+              "__guid": "f1af376c-aecf-4cdf-93a7-c22938eec74d",
+              "ClockwiseFactor": 1,
+              "Distance": 50,
+              "Period": 4,
+              "RPM": 15
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -1516,6 +1559,7 @@
     "facepunch.carpet_c#18624",
     "facepunch.cereal_open#55837",
     "facepunch.floor_wood_laminated#18686",
+    "facepunch.glass_c#70691",
     "facepunch.mattress#33675",
     "facepunch.modern_shelving_a1#43529",
     "facepunch.plaster_a#18740",

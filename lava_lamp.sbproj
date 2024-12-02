@@ -22,7 +22,7 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/minimal.scene",
+    "StartupScene": "scenes/lava_lamp.scene",
     "Compiler": {
       "RootNamespace": "",
       "DefineConstants": "SANDBOX;ADDON;DEBUG",
@@ -38,6 +38,7 @@
         "unittest"
       ],
       "DistinctAssemblyReferences": []
-    }
+    },
+    "LaunchMode": "Normal"
   }
 }

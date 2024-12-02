@@ -5,5 +5,8 @@
     <Compile Update="Lava\LavaWorld.Heat.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Lava\LavaWorld.Velocity.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
