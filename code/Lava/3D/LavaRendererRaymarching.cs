@@ -11,10 +11,12 @@
 				return BBox.FromPositionAndSize( 0f, 1f );
 			}
 
-			return BBox.FromPositionAndSize( Vector3.Zero, World.SimulationSize );
+			return BBox.FromPositionAndSize( Vector3.Zero, World.SimulationSize * 1.5f );
 		}
 	}
-	private readonly Material Material = Metaball.Material3D;
+
+	[Property] public Model BoundsModel { get; set; }
+
 	private SceneCustomObject _sceneObject;
 
 	public Vector3 ScreenToPoint( Vector2 mousePos )
@@ -40,6 +42,7 @@
 		
 		_sceneObject ??= new SceneCustomObject( Scene.SceneWorld );
 		_sceneObject.RenderOverride = Render;
+		_sceneObject.Flags.IsOpaque = true;
 		_sceneObject.Tags.Add( Tags );
 		_sceneObject.LocalBounds = BBox.FromPositionAndSize( WorldPosition, World.SimulationSize * 1.5f );
 	}
@@ -64,22 +67,34 @@
 			return;
 
 		sceneObject.Transform = Transform.World;
-		var attributes = UpdateAttributes();
-
-		Graphics.Blit( Material, attributes );
+		var attributes = GetMetaballShaderAttributes();
+		var tx = new Transform()
+		{
+			Position = WorldPosition,
+			Rotation = WorldRotation,
+			Scale = LocalBounds.Size
+		};
+		Graphics.DrawModel( BoundsModel, tx, attributes );
 	}
 
 	[Property, Range( 0, 10 )] public float ColorBlendScale { get; set; } = 2.5f;
 	[Property, Range( 0, 20 )] public float ShapeBlendScale { get; set; } = 5f;
+	[Property] public bool ShowBounds { get; set; } = false;
+	[Property, Range( 0f, 4f )] public float BoundsMargin { get; set; } = 0.25f;
 
-
-	private RenderAttributes UpdateAttributes()
+	private RenderAttributes GetMetaballShaderAttributes()
 	{
 		var metaballData = World.Metaballs
 			.Select( mb => mb.GetRenderData() )
 			.ToList();
 
 		var attributes = new RenderAttributes();
+		var transform = Matrix.CreateScale( LocalBounds.Size, Vector3.Zero )
+			* Matrix.CreateRotation( _sceneObject.Rotation )
+			* Matrix.CreateTranslation( _sceneObject.Position );
+		attributes.Set( "Transform", transform );
+		attributes.Set( "ShowBounds", ShowBounds ? 1 : 0 );
+		attributes.Set( "BoundsMarginWs", BoundsMargin );
 		attributes.SetData( "BallBuffer", metaballData );
 		attributes.Set( "BallCount", metaballData.Count );
 		attributes.Set( "WorldPosition", WorldPosition );

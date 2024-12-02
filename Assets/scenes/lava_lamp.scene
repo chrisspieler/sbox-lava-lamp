@@ -284,6 +284,7 @@
             {
               "__type": "LavaRendererRaymarching",
               "__guid": "31fd688e-1da5-496c-be11-f454548123b0",
+              "BoundsModel": "models/sdf_bounds.vmdl",
               "ColorBlendScale": 5,
               "ShapeBlendScale": 2,
               "World": {

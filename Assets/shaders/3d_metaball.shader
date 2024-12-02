@@ -6,43 +6,22 @@ FEATURES
 MODES 
 {
 	VrForward();
-	ToolsVis( S_MODE_TOOLS_VIS );   
+	ToolsVis( S_MODE_TOOLS_VIS );
+	ToolsShadingComplexity( "tools_shading_complexity.shader" );
+	Depth( S_MODE_DEPTH );
 }
 
 COMMON
 {
 	#include "common/shared.hlsl"
-}
-
-struct VertexInput
-{
-	#include "common/vertexinput.hlsl"
-};
-
-struct PixelInput
-{
-	#include "common/pixelinput.hlsl"
-};
-
-VS
-{
-	#include "common/vertex.hlsl"
-
-	PixelInput MainVs( VertexInput i )
-	{
-		PixelInput o = ProcessVertex( i );
-		o.vPositionPs = float4( i.vPositionOs.xyz, 1 );
-		return FinalizeVertex( o );
-	}
-}
-
-PS
-{
-
-    #include "common/pixel.hlsl"
 	#include "shared/metaball.hlsl"
 
 	int BallCount < Attribute( "BallCount" ); >;
+	float BoundsMarginWs < Attribute( "BoundsMarginWs" ); Default( 0.25 ); Range( 0, 4 ); >;
+	float3 WorldPosition < Attribute( "WorldPosition" ); >;
+	float SimulationSize < Attribute( "SimulationSize" ); >;
+	float ColorBlendScale < Attribute( "ColorBlendScale" ); Default( 2.5 ); >;
+	float ShapeBlendScale < Attribute( "ShapeBlendScale" ); Default( 5 ); >;
 
 	class RaymarchResult
 	{
@@ -58,15 +37,6 @@ PS
 			return result;
 		}
 	};
-
-	RenderState( SrgbWriteEnable0, true );
-	RenderState( ColorWriteEnable0, RGBA );
-	RenderState( FillMode, SOLID );
-
-	float3 WorldPosition < Attribute( "WorldPosition" ); >;
-	float SimulationSize < Attribute( "SimulationSize" ); >;
-	float ColorBlendScale < Attribute( "ColorBlendScale" ); Default( 2.5 ); >;
-	float ShapeBlendScale < Attribute( "ShapeBlendScale" ); Default( 5 ); >;
 
 	float IntersectSDF( float distA, float distB )
 	{
@@ -110,6 +80,56 @@ PS
 		}
 		return RaymarchResult::From( sdScene, saturate( albedo ) );
 	}
+}
+
+struct VertexInput
+{
+	#include "common/vertexinput.hlsl"
+};
+
+struct PixelInput
+{
+	#include "common/pixelinput.hlsl"
+};
+
+VS
+{
+	#include "common/vertex.hlsl"
+
+	float4x4 Transform < Attribute("Transform"); >;
+
+	PixelInput MainVs( VertexInput i )
+	{
+		PixelInput o = ProcessVertex( i );
+		o.vPositionWs = mul( Transform, float4( i.vPositionOs.xyz, 1 ) ).xyz;
+		RaymarchResult result = SceneSDF( o.vPositionWs );
+		float3 rayToCenter = normalize( WorldPosition - o.vPositionWs.xyz );
+		if ( result.Distance > length(o.vPositionWs) )
+		{
+			o.vPositionWs = mul( Transform, float3( 0, 0, 0 ) ).xyz;
+		}
+		else 
+		{
+			float distance = max( -BoundsMarginWs, result.Distance - BoundsMarginWs );
+			o.vPositionWs = o.vPositionWs + rayToCenter * distance;
+		}
+		o.vPositionPs = Position3WsToPs( o.vPositionWs.xyz );
+		return FinalizeVertex( o );
+	}
+}
+
+PS
+{
+	StaticCombo( S_MODE_DEPTH, 0..1, Sys(ALL) );
+    #include "common/pixel.hlsl"
+
+	int ShowBounds < Attribute( "ShowBounds" ); >;
+
+	RenderState( SrgbWriteEnable0, true );
+	RenderState( ColorWriteEnable0, RGBA );
+	RenderState( DepthEnable, true );
+	RenderState( DepthWriteEnable, S_MODE_DEPTH );
+
 
 	float3 EstimateNormal( float3 p )
 	{
@@ -153,17 +173,23 @@ PS
 	}
 
 	float4 MainPs( PixelInput i ) : SV_Target0
-	{	
+	{
+		if ( ShowBounds > 0 )
+			return 1;
+
 		float3 dir = RayDirection( i );
 		float3 eye = g_vCameraPositionWs;
 		dir = normalize( g_vCameraDirWs + dir );
 		RaymarchResult result = Raymarch( eye, dir, 0, 2000 );
-		float depth = Depth::GetLinear( i.vPositionSs );
-		if ( result.Distance > depth || result.Distance > 2000 )
+		// Check if we're beyond the maximum distance we bother to raymarch.
+		if ( result.Distance > 2000 )
 		{
 			discard;
-			return float4( 0, 0, 0, 0 );
+			return 0;
 		}
+		#if S_MODE_DEPTH
+			return 1;
+		#endif
 		Material m = Material::From( i );
 		m.Albedo = result.Albedo;
 		m.Normal = result.Normal;
