@@ -82,6 +82,17 @@
 	[Property] public bool ShowBounds { get; set; } = false;
 	[Property, Range( 0f, 4f )] public float BoundsMargin { get; set; } = 0.25f;
 
+	[Property, Group( "Lamp" )] 
+	public Vector3 LampOffset { get; set; } = Vector3.Zero;
+	[Property, Group( "Lamp" )]
+	public Vector3 LampBottomCenter { get; set; } = Vector3.Down * 7.75f;
+	[Property, Group( "Lamp" )]
+	public Vector3 LampTopCenter { get; set; } = Vector3.Up * 7.75f;
+	[Property, Group( "Lamp" ), Range( 0.125f, 16f )]
+	public float LampBottomRadius { get; set; } = 3.75f;
+	[Property, Group( "Lamp" ), Range( 0.125f, 16f )]
+	public float LampTopRadius { get; set; } = 2.5f;
+
 	private RenderAttributes GetMetaballShaderAttributes()
 	{
 		var metaballData = World.Metaballs
@@ -101,6 +112,11 @@
 		attributes.Set( "SimulationSize", World.SimulationSize );
 		attributes.Set( "ColorBlendScale", ColorBlendScale );
 		attributes.Set( "ShapeBlendScale", ShapeBlendScale );
+		attributes.Set( "LampOffset", LampOffset );
+		attributes.Set( "LampBottomCenter", LampBottomCenter );
+		attributes.Set( "LampTopCenter", LampTopCenter );
+		attributes.Set( "LampBottomRadius", LampBottomRadius );
+		attributes.Set( "LampTopRadius", LampTopRadius );
 		return attributes;
 	}
 }

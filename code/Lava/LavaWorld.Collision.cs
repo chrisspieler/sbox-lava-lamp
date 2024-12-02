@@ -110,8 +110,11 @@ public partial class LavaWorld : Component
 		metaball.Position = metaball.Position.Clamp( -size, size );
 		if ( _activeLavaColliders.TryGetValue( metaball, out var collider ) )
 		{
-			var sphere = new Sphere( WorldTransform.PointToWorld( metaball.Position ), metaball.Radius * 2f );
-			DebugOverlay.Sphere( sphere, color: Color.Red, duration: 1f, overlay: true );
+			if ( Metaball.WorldDebug )
+			{
+				var sphere = new Sphere( WorldTransform.PointToWorld( metaball.Position ), metaball.Radius * 2f );
+				DebugOverlay.Sphere( sphere, color: Color.Red, duration: 1f, overlay: true );
+			}
 			collider.Rigidbody.LocalPosition = metaball.Position;
 			collider.Rigidbody.Transform.ClearInterpolation();
 		}
