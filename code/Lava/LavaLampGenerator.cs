@@ -3,18 +3,19 @@
 	[Property] public LavaWorld World { get; set; }
 
 	[Property, Range( 0f, Metaball.MAX_BALLS, 1f ), Group( "Generator" )]
-	public int MetaballCount { get; set; } = 96;
+	public int InitialCount { get; set; } = 48;
 
 	[Property, Range( 0f, 1f ), Group( "Generator")] 
-	public float MinRadius { get; set; } = 0.64f;
+	public float MinRadius { get; set; } = 0.45f;
 	[Property, Range( 0f, 1f ), Group( "Generator" )]
-	public float MaxRadius { get; set; } = 1.28f;
+	public float MaxRadius { get; set; } = 0.8f;
 	protected override void OnStart()
 	{
 		World ??= GetComponent<LavaWorld>();
-		InitializeMetaballs( MetaballCount );
+		GenerateMetaballs( InitialCount );
 	}
-	private void InitializeMetaballs( int count )
+
+	public void GenerateMetaballs( int count )
 	{
 		if ( count <= 0 || !World.IsValid() )
 			return;
@@ -27,11 +28,11 @@
 
 		for ( int i = 0; i < count; i++ )
 		{
-			InitializeMetaball();
+			GenerateMetaball();
 		}
 	}
 
-	public void InitializeMetaball()
+	private void GenerateMetaball()
 	{
 		if ( !World.IsValid() )
 			return;

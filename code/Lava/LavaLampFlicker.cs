@@ -33,7 +33,7 @@ public class LavaLampFlicker : Component
 
 	protected override void OnUpdate()
 	{
-		if ( !World.IsValid() )
+		if ( !World.IsValid() || World.MetaballCount < 1 )
 			return;
 
 		var balls = World.Metaballs.ToList();

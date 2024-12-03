@@ -3,6 +3,12 @@ using System;
 
 public static class HudPainterExtensions
 {
+	public static void DrawText( this HudPainter hud, string text, Vector3 point, Color color, TextFlag flags = TextFlag.Center )
+	{
+		var textScope = new TextRendering.Scope( text, color, Screen.Size.x * 0.015f, "Consolas" );
+		hud.DrawText( textScope, point, flags );
+	}
+
 	public static void DrawText( this HudPainter hud, string text, Vector3 point, TextFlag flags = TextFlag.Center )
 	{
 		var textScope = new TextRendering.Scope( text, Color.White, Screen.Size.x * 0.015f, "Consolas" );

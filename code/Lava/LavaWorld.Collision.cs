@@ -34,7 +34,7 @@ public partial class LavaWorld : Component
 
 	private void InitializeColliders()
 	{
-		DestroyColliders();
+		DestroyAllBallColliders();
 		if ( !EnableCollision )
 			return;
 
@@ -44,7 +44,7 @@ public partial class LavaWorld : Component
 		}
 	}
 
-	private void DestroyColliders()
+	private void DestroyAllBallColliders()
 	{
 		// Just in case we changed containers or something...
 		if ( LavaColliderContainer.IsValid() )
@@ -54,11 +54,11 @@ public partial class LavaWorld : Component
 				child.Destroy();
 			}
 		}
-		foreach( ( _, LavaCollider collider ) in _activeLavaColliders )
+		foreach( ( _, LavaCollider ballCollider ) in _activeLavaColliders )
 		{
-			if ( collider.IsValid() )
+			if ( ballCollider.IsValid() )
 			{
-				collider.DestroyGameObject();
+				ballCollider.DestroyGameObject();
 			}
 		}
 		_activeLavaColliders.Clear();
@@ -86,6 +86,18 @@ public partial class LavaWorld : Component
 		rigidbody.Locking = new PhysicsLock() { X = true, Pitch = true, Yaw = true, Roll = true };
 		rigidbody.RigidbodyFlags = RigidbodyFlags.DisableCollisionSounds;
 		_activeLavaColliders[ball] = new LavaCollider( ball, collider, rigidbody );
+	}
+
+	private void DestroyBallCollider( Metaball ball )
+	{
+		if ( !_activeLavaColliders.TryGetValue( ball, out var collider ) )
+			return;
+
+		if ( !collider.Rigidbody.IsValid() )
+			return;
+
+		collider.Rigidbody.DestroyGameObject();
+		_activeLavaColliders.Remove( ball );
 	}
 
 	private void ApplyColliderPositions()

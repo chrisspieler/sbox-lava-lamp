@@ -10,6 +10,7 @@ public partial class LavaDebugger : Component
 	}
 
 	[Property] public LavaWorld World { get; set; }
+	[Property] public LavaLampGenerator Generator { get; set; }
 	[Property] public LavaRenderer2D Renderer2D { get; set; }
 	[Property] public LavaRendererRaymarching Renderer3D { get; set; }
 
@@ -31,6 +32,8 @@ public partial class LavaDebugger : Component
 	[Property, Group( "Interactivity" ), InputAction]
 	public string SpawnAction { get; set; } = "attack2";
 	public float SpawnRampUpTime { get; set; } = 1f;
+	[Property, Group( "Interactivity" )]
+	public string ResetAction { get; set; } = "reload";
 
 	private DebugMode Mode
 	{
@@ -76,6 +79,10 @@ public partial class LavaDebugger : Component
 		var mousePoint = GetMousePoint();
 		UpdateAttract( mousePoint );
 		UpdateSpawn( mousePoint );
+		if ( Input.Pressed( ResetAction ) )
+		{
+			ResetLavaWorld();
+		}
 	}
 
 	private TimeSince _sinceFirstHeldAttract;
@@ -105,6 +112,15 @@ public partial class LavaDebugger : Component
 			var size = MathX.Remap( _sinceFirstHeldSpawn, 0f, SpawnRampUpTime, 0.3f, 1.2f );
 			SpawnMetaball( mousePoint, World.LavaColor, size );
 		}
+	}
+
+	public void ResetLavaWorld()
+	{
+		if ( !World.IsValid() || !Generator.IsValid() )
+			return;
+
+		World.ClearWorld();
+		Generator.GenerateMetaballs( Generator.InitialCount );
 	}
 
 	private Vector3 GetMousePoint()
@@ -137,15 +153,16 @@ public partial class LavaDebugger : Component
 	private void PaintHelpText( HudPainter hud )
 	{
 		var position = new Vector2( Screen.Size.x * 0.8f, Screen.Size.y * 0.05f );
-		hud.DrawText( "HELP", position );
+		hud.DrawText( "HELP", position, Color.Yellow );
 		position.y += Screen.Size.y * 0.025f;
 		hud.DrawText( "-------------", position );
 		position.y += Screen.Size.y * 0.025f;
 		hud.DrawText( "Hold LMB to ATTRACT LAVA", position );
 		position.y += Screen.Size.y * 0.025f;
 		hud.DrawText( "Hold and release RMB to SPAWN LAVA", position );
+		position.y += Screen.Size.y * 0.025f;
+		hud.DrawText( "Press R key to RESET ALL LAVA", position, Color.Red );
 	}
-
 
 	public Metaball SpawnMetaball( Vector3 simPos, Color color, float size = 0.5f )
 	{

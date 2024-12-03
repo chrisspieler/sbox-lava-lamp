@@ -57,7 +57,7 @@ public partial class LavaWorld : Component, Component.IHasBounds
 
 	protected override void OnDisabled()
 	{
-		DestroyColliders();
+		DestroyAllBallColliders();
 	}
 
 	protected override void OnUpdate()
@@ -115,5 +115,17 @@ public partial class LavaWorld : Component, Component.IHasBounds
 		_metaballs.Add( metaball );
 		CreateBallCollider( metaball );
 		return metaball;
+	}
+
+	public void DestroyMetaball( Metaball ball )
+	{
+		DestroyBallCollider( ball );
+		_metaballs.Remove( ball );
+	}
+
+	public void ClearWorld()
+	{
+		DestroyAllBallColliders();
+		_metaballs.Clear();
 	}
 }
