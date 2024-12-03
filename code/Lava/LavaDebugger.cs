@@ -1,4 +1,6 @@
-﻿public partial class LavaDebugger : Component
+﻿using Sandbox.Rendering;
+
+public partial class LavaDebugger : Component
 {
 	private enum DebugMode
 	{
@@ -21,11 +23,14 @@
 	}
 
 	[Property, Group( "Interactivity" )]
-	public float AttractForce { get; set; } = 4f;
+	public float AttractForce { get; set; } = 10000f;
+	[Property, Group( "Interactivity" )]
+	public float AttractRampUpTime { get; set; } = 1f;
 	[Property, Range( 0f, 10f ), Group( "Interactivity" )]
 	public string AttractAction { get; set; } = "attack1";
 	[Property, Group( "Interactivity" ), InputAction]
 	public string SpawnAction { get; set; } = "attack2";
+	public float SpawnRampUpTime { get; set; } = 1f;
 
 	private DebugMode Mode
 	{
@@ -60,7 +65,7 @@
 			return;
 
 		UpdateInput();
-		UpdateCursor();
+		UpdateUI();
 	}
 
 	private void UpdateInput()
@@ -68,54 +73,79 @@
 		if ( !World.IsValid() )
 			return;
 
-		switch ( Mode )
-		{
-			case DebugMode.Sdf2D:
-				UpdateInput2D();
-				break;
-			case DebugMode.Sdf3D:
-				UpdateInput3D();
-				break;
-			default:
-				break;
-		}
+		var mousePoint = GetMousePoint();
+		UpdateAttract( mousePoint );
+		UpdateSpawn( mousePoint );
 	}
 
-	private void UpdateInput2D()
+	private TimeSince _sinceFirstHeldAttract;
+
+	private void UpdateAttract( Vector3 mousePoint)
 	{
-		var mousePoint = Renderer2D.ScreenToPoint( Mouse.Position );
+		if ( Input.Pressed( AttractAction ) )
+			_sinceFirstHeldAttract = 0;
+
 		if ( Input.Down( AttractAction ) )
 		{
-			World.AttractToPoint( mousePoint, AttractForce, minDistance: 2f, massDamping: 0.5f );
-		}
-		if ( Input.Pressed( SpawnAction ) )
-		{
-			SpawnMetaball( mousePoint, World.LavaColor );
+			var power = MathX.Remap( _sinceFirstHeldAttract, 0f, AttractRampUpTime, AttractForce * 0.3f, AttractForce );
+			World.AttractToPoint( mousePoint, power, minDistance: 2f, massDamping: 0f );
 		}
 	}
 
-	private void UpdateInput3D()
+	private TimeSince _sinceFirstHeldSpawn;
+
+	private void UpdateSpawn( Vector3 mousePoint )
 	{
-		var mousePoint = Renderer3D.ScreenToPoint( Mouse.Position );
-		if ( Input.Down( AttractAction ) )
-		{
-			World.AttractToPoint( mousePoint, AttractForce, minDistance: 2f, massDamping: 0.5f );
-		}
 		if ( Input.Pressed( SpawnAction ) )
+			_sinceFirstHeldSpawn = 0;
+
+
+		if ( Input.Released( SpawnAction ) )
 		{
-			SpawnMetaball( mousePoint, World.LavaColor );
+			var size = MathX.Remap( _sinceFirstHeldSpawn, 0f, SpawnRampUpTime, 0.3f, 1.2f );
+			SpawnMetaball( mousePoint, World.LavaColor, size );
 		}
 	}
 
-	private void UpdateCursor()
+	private Vector3 GetMousePoint()
+	{
+		return Mode switch
+		{
+			DebugMode.Sdf2D => Renderer2D.ScreenToPoint( Mouse.Position ),
+			DebugMode.Sdf3D => Renderer3D.ScreenToPoint( Mouse.Position ),
+			_ => default
+		};
+	}
+
+	private void UpdateUI()
 	{
 		var camera = Scene.Camera;
 		if ( !camera.IsValid() )
 			return;
 
-		camera.Hud.DrawCircle( Mouse.Position, 12f, Color.White );
-		camera.Hud.DrawCircle( Mouse.Position, 10f, Color.Black );
+		var hud = camera.Hud;
+		PaintCursor( hud );
+		PaintHelpText( hud );
 	}
+
+	private void PaintCursor( HudPainter hud )
+	{
+		hud.DrawCircle( Mouse.Position, 12f, Color.White );
+		hud.DrawCircle( Mouse.Position, 10f, Color.Black );
+	}
+
+	private void PaintHelpText( HudPainter hud )
+	{
+		var position = new Vector2( Screen.Size.x * 0.8f, Screen.Size.y * 0.05f );
+		hud.DrawText( "HELP", position );
+		position.y += Screen.Size.y * 0.025f;
+		hud.DrawText( "-------------", position );
+		position.y += Screen.Size.y * 0.025f;
+		hud.DrawText( "Hold LMB to ATTRACT LAVA", position );
+		position.y += Screen.Size.y * 0.025f;
+		hud.DrawText( "Hold and release RMB to SPAWN LAVA", position );
+	}
+
 
 	public Metaball SpawnMetaball( Vector3 simPos, Color color, float size = 0.5f )
 	{
