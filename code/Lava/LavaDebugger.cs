@@ -27,13 +27,15 @@ public partial class LavaDebugger : Component
 	public float AttractForce { get; set; } = 10000f;
 	[Property, Group( "Interactivity" )]
 	public float AttractRampUpTime { get; set; } = 1f;
-	[Property, Range( 0f, 10f ), Group( "Interactivity" )]
+	[Property, Range( 0f, 10f ), Group( "Interactivity" ), InputAction]
 	public string AttractAction { get; set; } = "attack1";
 	[Property, Group( "Interactivity" ), InputAction]
 	public string SpawnAction { get; set; } = "attack2";
 	public float SpawnRampUpTime { get; set; } = 1f;
-	[Property, Group( "Interactivity" )]
+	[Property, Group( "Interactivity" ), InputAction]
 	public string ResetAction { get; set; } = "reload";
+	[Property, Group( "Interactivity" ), InputAction]
+	public string HelpAction { get; set; } = "help";
 
 	private DebugMode Mode
 	{
@@ -83,9 +85,13 @@ public partial class LavaDebugger : Component
 		{
 			ResetLavaWorld();
 		}
+		if ( Input.Pressed( HelpAction ) )
+		{
+			_shouldShowHelp = !_shouldShowHelp;
+		}
 	}
 
-	private TimeSince _sinceFirstHeldAttract;
+    private TimeSince _sinceFirstHeldAttract;
 
 	private void UpdateAttract( Vector3 mousePoint)
 	{
@@ -150,8 +156,13 @@ public partial class LavaDebugger : Component
 		hud.DrawCircle( Mouse.Position, 10f, Color.Black );
 	}
 
+	private bool _shouldShowHelp = true;
+
 	private void PaintHelpText( HudPainter hud )
 	{
+		if ( !_shouldShowHelp )
+			return;
+
 		var position = new Vector2( Screen.Size.x * 0.8f, Screen.Size.y * 0.05f );
 		hud.DrawText( "HELP", position, Color.Yellow );
 		position.y += Screen.Size.y * 0.025f;
@@ -162,6 +173,10 @@ public partial class LavaDebugger : Component
 		hud.DrawText( "Hold and release RMB to SPAWN LAVA", position );
 		position.y += Screen.Size.y * 0.025f;
 		hud.DrawText( "Press R key to RESET ALL LAVA", position, Color.Red );
+		position.y += Screen.Size.y * 0.025f;
+		hud.DrawText( "Press H key to hide all help text.", position, Color.Gray );
+		position = new Vector2( Screen.Size.x / 2f, Screen.Size.y * 0.95f );
+		hud.DrawText( "TIP: If you wait a while, the lava should begin rising on its own.", position, Color.White );
 	}
 
 	public Metaball SpawnMetaball( Vector3 simPos, Color color, float size = 0.5f )

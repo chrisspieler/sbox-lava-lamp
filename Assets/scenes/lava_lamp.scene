@@ -127,7 +127,7 @@
             {
               "__type": "LavaDebugger",
               "__guid": "2fb81853-6420-4c72-a193-9a275c60992f",
-              "AttractAction": "attack1",
+              "AttractAction": "primary",
               "AttractForce": 10000,
               "AttractRampUpTime": 1,
               "Generator": {
@@ -136,6 +136,7 @@
                 "go": "015d39ed-7806-4067-b47d-0de4ae1e9e22",
                 "component_type": "LavaLampGenerator"
               },
+              "HelpAction": "help",
               "Renderer2D": {
                 "_type": "component",
                 "component_id": "e2bd6b12-9179-4364-99cd-3856606d17b1",
@@ -148,9 +149,9 @@
                 "go": "f750f124-1685-40e3-837a-8a32441f3b61",
                 "component_type": "LavaRendererRaymarching"
               },
-              "ResetAction": "reload",
+              "ResetAction": "reset",
               "ShowWorldInfo": false,
-              "SpawnAction": "attack2",
+              "SpawnAction": "secondary",
               "VisMode": "None",
               "World": {
                 "_type": "component",

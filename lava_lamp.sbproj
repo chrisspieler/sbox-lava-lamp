@@ -39,6 +39,11 @@
       ],
       "DistinctAssemblyReferences": []
     },
-    "LaunchMode": "Normal"
+    "LaunchMode": "Normal",
+    "ControlModes": {
+      "Keyboard": false,
+      "VR": false,
+      "Gamepad": false
+    }
   }
 }
