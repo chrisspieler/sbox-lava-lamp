@@ -62,7 +62,7 @@ public class LavaLampFlicker : Component
 			}
 			totalPosition += ball.Position;
 			totalVelocity += ball.Velocity;
-			totalColor += color;
+			totalColor += (Vector4)color;
 		}
 		var averagePos = totalPosition / balls.Count;
 		var averageVel = totalVelocity / balls.Count;
