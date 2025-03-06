@@ -93,11 +93,19 @@
 	[Property, Group( "Lamp" ), Range( 0.125f, 16f )]
 	public float LampTopRadius { get; set; } = 2.5f;
 
+	private GpuBuffer<Metaball.RenderData> _metaballDataGpu;
+
 	private RenderAttributes GetMetaballShaderAttributes()
 	{
 		var metaballData = World.Metaballs
 			.Select( mb => mb.GetRenderData() )
 			.ToList();
+
+		if ( !_metaballDataGpu.IsValid() || _metaballDataGpu.ElementCount < metaballData.Count )
+		{
+			_metaballDataGpu = new GpuBuffer<Metaball.RenderData>( metaballData.Count );
+		}
+		_metaballDataGpu.SetData( metaballData );
 
 		var attributes = new RenderAttributes();
 		var transform = Matrix.CreateScale( LocalBounds.Size, Vector3.Zero )
@@ -106,7 +114,7 @@
 		attributes.Set( "Transform", transform );
 		attributes.Set( "ShowBounds", ShowBounds ? 1 : 0 );
 		attributes.Set( "BoundsMarginWs", BoundsMargin );
-		attributes.SetData( "BallBuffer", metaballData );
+		attributes.Set( "Balls", _metaballDataGpu );
 		attributes.Set( "BallCount", metaballData.Count );
 		attributes.Set( "WorldPosition", WorldPosition );
 		attributes.Set( "SimulationSize", World.SimulationSize );

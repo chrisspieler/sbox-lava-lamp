@@ -6,8 +6,6 @@ FEATURES
 MODES 
 {
 	VrForward();
-	ToolsVis( S_MODE_TOOLS_VIS );
-	ToolsShadingComplexity( "tools_shading_complexity.shader" );
 	Depth( S_MODE_DEPTH );
 }
 
@@ -235,9 +233,9 @@ PS
 		float2 vUV = i.vPositionSs.xy / g_vViewportSize.xy;
 		vUV -= 0.5;
 		vUV *= 2;
-		float3 vRayCs = mul( g_matWorldToProjection, g_vCameraDirWs );
+		float3 vRayCs = mul( g_matWorldToProjection, float4( g_vCameraDirWs.xyz, 0 ) ).xyz;
 		vRayCs += float3( vUV.x, -vUV.y, 0 );
-		return mul( g_matProjectionToWorld, vRayCs );
+		return mul( g_matProjectionToWorld, float4( vRayCs.xyz, 0 ) ).xyz;
 	}
 
 	float4 MainPs( PixelInput i ) : SV_Target0

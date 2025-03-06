@@ -7,7 +7,4 @@ class Metaball
     float4 Color;
 };
 
-cbuffer BallBuffer 
-{
-    Metaball Balls[MAX_BALLS];
-};
+StructuredBuffer<Metaball> Balls < Attribute( "Balls" ); >;
